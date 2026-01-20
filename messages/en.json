@@ -1,0 +1,29 @@
+{
+    "home": {
+        "work": "Projects",
+        "talk": "Contact",
+        "version": "Version {version}"
+    },
+    "about": {
+        "title": "About me",
+        "increment": "Increment"
+    },
+    "messages": {
+        "morning": {
+            "message": "Good morning? Getting ready for the day - {time}",
+            "icon": "{preparation}"
+        },
+        "afternoon": {
+            "message": "Good afternoon?, I'm working - {time}",
+            "icon": "{work}"
+        },
+        "night": {
+            "message": "Good night?, probably I'm sleeping - {time}",
+            "icon": "{sleep}"
+        }
+    },
+    "construction": {
+        "title": "Under construction",
+        "description": "This page is under construction. Please try again later."
+    }
+}

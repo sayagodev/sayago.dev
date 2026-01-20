@@ -1,0 +1,26 @@
+{
+    "home": {
+        "work": "Proyectos",
+        "talk": "Hablemos",
+        "version": "Versión {version}"
+    },
+    "about": {
+        "title": "Acerca de mí",
+        "increment": "Incrementar"
+    },
+    "messages": {
+        "morning": {
+            "message": "¿Buenos días? Preparándome para el día - {time}"
+        },
+        "afternoon": {
+            "message": "¿Buenas tardes?, estoy trabajando - {time}"
+        },
+        "night": {
+            "message": "¿Buenas noches?, probablemente estoy durmiendo - {time}"
+        }
+    },
+    "construction": {
+        "title": "En construcción",
+        "description": "Esta página está en construcción. Por favor, inténtelo más tarde."
+    }
+}
