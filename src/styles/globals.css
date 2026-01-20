@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+[data-theme="red"] {
+  --color-base-100: hsl(356.74, 100%, 25.29%);
+  --color-base-content: hsl(40.75, 34.64%, 70%);
+  --color-corners: hsl(40.75, 34.64%, 70%);
+  --color-cursor: hsl(40.75, 34.64%, 70%);
+}
+
+[data-theme="green"] {
+  --color-base-100: hsl(135, 38.89%, 14.12%);
+  --color-base-content: hsl(40.75, 34.64%, 70%);
+  --color-corners: hsl(40.75, 34.64%, 70%);
+  --color-cursor: hsl(40.75, 34.64%, 70%);
+}
+
+[data-theme="beish"] {
+  --color-base-100: hsl(40.75, 34.64%, 70%);
+  --color-base-content: hsl(0, 1.96%, 10%);
+  --color-corners: hsl(356.74, 100%, 25.29%);
+  --color-cursor: hsl(356.74, 100%, 25.29%);
+}
+
+
+@theme inline {
+  --color-background: var(--color-base-100);
+  --color-foreground: var(--color-base-content);
+
+  --color-corners: var(--color-corners);
+  --color-cursor: var(--color-cursor);
+
+  --font-argon: var(--font-mona-argon);
+  --font-krypton: var(--font-mona-krypton);
+  --font-neon: var(--font-mona-neon);
+
+  --color-primary: hsl(356.74, 100%, 25.29%);
+  --color-primary-content: hsl(40.75, 34.64%, 85%);
+  --color-secondary: hsl(135, 38.89%, 14.12%);
+  --color-secondary-content: hsl(40.75, 34.64%, 85%);
+  --color-accent: hsl(30.26, 53.99%, 41.76%);
+  --color-accent-content: hsl(40.75, 34.64%, 85%);
+  --color-neutral: hsl(0, 1.96%, 10%);
+  --color-neutral-content: hsl(45, 42.86%, 94.51%);
+  --color-info: hsl(210, 100%, 20%);
+  --color-info-content: hsl(45, 42.86%, 94.51%);
+  --color-success: hsl(79.63, 60.45%, 34.71%);
+  --color-success-content: hsl(45, 42.86%, 94.51%);
+  --color-warning: hsl(25, 100%, 40%);
+  --color-warning-content: hsl(45, 42.86%, 94.51%);
+  --color-error: hsl(0, 67.92%, 41.57%);
+  --color-error-content: hsl(45, 42.86%, 94.51%);
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 1;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Cursor custom habilitado: oculta cursor nativo en lg+ */
+@media (min-width: 1024px) {
+  body.custom-cursor-enabled {
+    cursor: none;
+  }
+
+  body.custom-cursor-enabled a,
+  body.custom-cursor-enabled button,
+  body.custom-cursor-enabled [role="button"],
+  body.custom-cursor-enabled input,
+  body.custom-cursor-enabled select,
+  body.custom-cursor-enabled textarea,
+  body.custom-cursor-enabled summary {
+    cursor: none !important;
+  }
+}
+
+.theme-btn {
+  transition:
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s ease;
+}
+
+.theme-btn--red {
+  background-color: hsl(356.74, 100%, 25.29%);
+}
+
+.theme-btn--beish {
+  background-color: hsl(40.75, 34.64%, 70%);
+}
+
+.theme-btn--green {
+  background-color: hsl(135, 38.89%, 14.12%);
+}
