@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { motion, useMotionValue, useSpring } from "motion/react"
 import { useCursor } from "@/hooks/use-cursor"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export function CustomCursor() {
     const { isCustomCursorEnabled } = useCursor()
@@ -12,6 +13,7 @@ export function CustomCursor() {
     const [isDragging, setIsDragging] = useState(false)
     const x = useMotionValue(0)
     const y = useMotionValue(0)
+    const isMobile = useIsMobile()
     // Spring suave para el anillo exterior (sigue con delay)
     const xSpring = useSpring(x, { stiffness: 150, damping: 20, mass: 0.5 })
     const ySpring = useSpring(y, { stiffness: 150, damping: 20, mass: 0.5 })
@@ -98,7 +100,7 @@ export function CustomCursor() {
         }
     }, [isVisible, x, y])
 
-    if (!isClient || !isCustomCursorEnabled) return null
+    if (!isClient || !isCustomCursorEnabled || isMobile) return null
 
     const showCursor = isVisible && !isDragging
 
