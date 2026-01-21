@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const packageJson = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8')
@@ -15,10 +16,14 @@ export const VERSION = '${version}';
 export default VERSION;
 `;
 
-fs.writeFileSync(
-  path.join(__dirname, '../src/version.ts'),
-  versionFile,
-  'utf8'
-);
+const versionFilePath = path.join(__dirname, '../src/version.ts');
+fs.writeFileSync(versionFilePath, versionFile, 'utf8');
 
-console.log(`✅ Version ${version} updated in src/version.ts`);
+// Agregar el archivo al staging area para que se incluya en el commit del release
+try {
+  execSync(`git add ${versionFilePath}`, { stdio: 'ignore' });
+  console.error(`✅ Version ${version} updated in src/version.ts and staged`);
+} catch (error) {
+  console.error(`⚠️ Version ${version} updated in src/version.ts (git add failed, but file is updated)`);
+  process.exit(1);
+}

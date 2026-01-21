@@ -47,6 +47,6 @@
         }
     ],
     "scripts": {
-        "postchangelog": "node scripts/update-version.js"
+        "postbump": "node scripts/update-version.js"
     }
 }
