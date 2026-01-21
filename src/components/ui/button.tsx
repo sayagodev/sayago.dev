@@ -1,4 +1,5 @@
 import { Link } from "@/utils/i18n-navigation"
+import { TransitionLink } from "@/components/ui/transition-link"
 import { Button as HeadlessButton } from "@headlessui/react"
 import { cn } from "@/utils/cn"
 import { forwardRef } from "react"
@@ -11,6 +12,7 @@ import { forwardRef } from "react"
 type ButtonProps = {
     variant?: 'primary' | 'secondary' | "outline" | "link"
     title?: string
+    transition?: boolean
 } & (
         | React.ComponentPropsWithoutRef<typeof Link>
         | (React.ComponentPropsWithoutRef<typeof HeadlessButton> & { href?: undefined })
@@ -19,7 +21,7 @@ type ButtonProps = {
 export const Button = forwardRef<
     HTMLButtonElement | HTMLAnchorElement,
     ButtonProps
->(function Button({ variant: _variant = "primary", className, ...props }, ref) {
+>(function Button({ variant: _variant = "primary", transition = true, className, ...props }, ref) {
     className = cn(
         "focus-visible:ring-2 focus-visible:ring-corners focus:outline-none",
         className)
@@ -27,5 +29,11 @@ export const Button = forwardRef<
     if (typeof props.href === "undefined") {
         return <HeadlessButton {...props} ref={ref as React.Ref<HTMLButtonElement>} className={className} />
     }
+
+    // Use TransitionLink for animated page transitions
+    if (transition) {
+        return <TransitionLink {...props} ref={ref as React.Ref<HTMLAnchorElement>} className={className} />
+    }
+
     return <Link {...props} ref={ref as React.Ref<HTMLAnchorElement>} className={className} />
 })

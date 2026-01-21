@@ -8,6 +8,7 @@ import "@/styles/globals.css";
 import { Corners } from "@/components/layout/corners";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { CursorToggle } from "@/components/ui/cursor-toggle";
+import { PageTransition } from "@/components/layout/page-transition";
 
 const monaArgon = localFont({
   src: [{
@@ -67,6 +68,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           {/* <EntryOverlay /> */}
           <Corners />
+          <PageTransition />
           <CustomCursor />
           <CursorToggle />
           {children}
