@@ -1,1 +1,5 @@
+#!/usr/bin/env sh
+
+export PATH="$HOME/.local/share/pnpm:$HOME/.config/pnpm:$PATH"
+
 pnpm commitlint --edit $1

@@ -1,1 +1,9 @@
-pnpm lint-staged
+#!/usr/bin/env sh
+
+export PATH="$HOME/.local/share/pnpm:$HOME/.config/pnpm:$PATH"
+
+if command -v pnpm >/dev/null 2>&1; then
+  export PATH="$(pnpm bin -g):$PATH"
+fi
+
+npx lint-staged
