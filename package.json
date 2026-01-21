@@ -1,6 +1,6 @@
 {
   "name": "sayago.dev",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,10 +9,10 @@
     "lint": "eslint",
     "type-check": "tsc --noEmit",
     "prepare": "husky",
-    "release": "commit-and-tag-version",
-    "release:minor": "commit-and-tag-version --release-as minor",
-    "release:major": "commit-and-tag-version --release-as major",
-    "release:first": "commit-and-tag-version --first-release",
+    "release": "commit-and-tag-version -a",
+    "release:minor": "commit-and-tag-version --release-as minor -a",
+    "release:major": "commit-and-tag-version --release-as major -a",
+    "release:first": "commit-and-tag-version --first-release -a",
     "version:update": "node scripts/update-version.js"
   },
   "lint-staged": {
