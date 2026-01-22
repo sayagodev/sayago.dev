@@ -6,7 +6,6 @@ interface ReducedMotionState {
     initialize: () => () => void
 }
 
-// Variable para almacenar el cleanup function
 let cleanup: (() => void) | null = null
 
 export const useReducedMotion = create<ReducedMotionState>((set, get) => ({
