@@ -43,3 +43,5 @@ next-env.d.ts
 /docs
 /public/images/design
 /src/components/theme-switcher.tsx
+/src/components/providers/animated-title-provider.tsx
+/src/hooks/use-animated-title.ts

@@ -9,6 +9,8 @@ import { Corners } from "@/components/layout/corners";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { CursorToggle } from "@/components/ui/cursor-toggle";
 import { PageTransition } from "@/components/layout/page-transition";
+import { ReducedMotionProvider } from "@/components/providers/reduced-motion-provider";
+import { AnimatedTitleProvider } from "@/components/providers/animated-title-provider";
 
 const monaArgon = localFont({
   src: [{
@@ -38,7 +40,7 @@ const monaNeon = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "sāyago;dev ... portafolío",
+  title: "sāyago;dev - portafolío",
   description: "Ángel Sáyago Portafolio",
 };
 
@@ -66,6 +68,7 @@ export default async function LocaleLayout({
         ].join(' ')} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
+          <ReducedMotionProvider />
           {/* <EntryOverlay /> */}
           <Corners />
           <PageTransition />

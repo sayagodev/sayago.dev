@@ -1,45 +1,47 @@
 'use client'
-// Corner images
+
 import topIzq from '@/public/images/corners/top-izq.svg'
 import topDer from '@/public/images/corners/top-der.svg'
 import bottomIzq from '@/public/images/corners/bottom-izq.svg'
 import bottomDer from '@/public/images/corners/bottom-der.svg'
 
-// Center images
 import recCenter from '@/public/images/rec_center.svg'
 import colon from '@/public/images/colon.svg'
 
 import { TransitionState, usePageTransition } from "@/hooks/use-page-transition"
 import { usePathname, useRouter } from "@/utils/i18n-navigation"
 import { MaskIcon } from "@/utils/mask-icon"
-import { AnimatePresence, motion } from "motion/react"
+import { AnimatePresence, cubicBezier, motion } from "motion/react"
 import { useEffect, useMemo, useRef } from "react"
 import { useIsMobile } from '@/hooks/use-mobile'
+import { ANIMATION_EASING } from '@/lib/animations'
+import { useAnimationTiming } from '@/hooks/use-animation-timing'
+import { usePrefersReducedMotion } from '@/hooks/use-reduced-motion'
 
-const TIMING = {
-    cornersOut: 0.4,
-    centerIn: 0.2,
-    colonIn: 0.2,
-    hold: 0.03,
-    fadeOut: 0.2,
-    cornersIn: 0.4,
-} as const
-
+// Possbile changes in the future
 const EASING = {
-    in: 'easeIn',
-    out: 'easeOut',
+    in: ANIMATION_EASING.easeInOut,
+    out: ANIMATION_EASING.easeInOut,
 } as const
+
 
 export function PageTransition() {
     const { state, setState, targetHref, reset } = usePageTransition()
     const isMobile = useIsMobile()
-    const preferReduced = useMemo(
-        () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion)').matches,
-        []
-    )
+    const prefersReducedMotion = usePrefersReducedMotion()
     const router = useRouter()
     const pathname = usePathname()
     const prevPathname = useRef(pathname)
+    const { fast, normal, slow, stagger } = useAnimationTiming()
+
+    const TIMING = useMemo(() => ({
+        cornersOut: fast,
+        centerIn: normal,
+        colonIn: normal,
+        hold: stagger,
+        fadeOut: slow,
+        cornersIn: fast,
+    }), [fast, normal, slow, stagger])
 
     const isTransitioning = state !== 'idle'
     const isClosing = ['corners-out', 'center-in', 'colon-in', 'navigating', 'fade-out'].includes(state)
@@ -48,11 +50,11 @@ export function PageTransition() {
     const showColon = ['colon-in', 'navigating', 'fade-out'].includes(state)
     const isFadingOut = state === 'fade-out'
     const duration = isOpening ? TIMING.cornersIn : TIMING.cornersOut
-    const ease = isOpening ? EASING.out : EASING.in
-    const padding = isMobile ? '8px' : '30px'
+    const ease = isOpening ? cubicBezier(...EASING.out) : cubicBezier(...EASING.in)
+    const padding = isMobile ? '10px' : '32px'
 
     useEffect(() => {
-        if (preferReduced || state === 'idle') return
+        if (prefersReducedMotion || state === 'idle') return
 
         const next: Record<Exclude<TransitionState, 'idle'>, { wait: number, to: TransitionState }> = {
             'corners-out': { wait: TIMING.cornersOut, to: 'center-in' },
@@ -73,10 +75,10 @@ export function PageTransition() {
         }, step.wait * 1000)
 
         return () => clearTimeout(timer)
-    }, [state, setState, targetHref, router, reset, preferReduced])
+    }, [state, setState, targetHref, router, reset, prefersReducedMotion])
 
     useEffect(() => {
-        if (!preferReduced || state === 'idle') return
+        if (!prefersReducedMotion || state === 'idle') return
 
         if (state === 'corners-out' && targetHref) {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,19 +86,19 @@ export function PageTransition() {
             reset()
         }
 
-    }, [preferReduced, state, targetHref, router, reset])
+    }, [prefersReducedMotion, state, targetHref, router, reset])
 
 
     // Detect when navigation completes (pathname changes)
     useEffect(() => {
-        if (preferReduced) return
+        if (prefersReducedMotion) return
         if (state === 'navigating' && pathname !== prevPathname.current) {
             prevPathname.current = pathname
             setState('fade-out')
         }
-    }, [pathname, state, setState, preferReduced])
+    }, [pathname, state, setState, prefersReducedMotion])
 
-    if (preferReduced) return null
+    if (prefersReducedMotion) return null
 
     return (
         <AnimatePresence>
@@ -129,40 +131,40 @@ export function PageTransition() {
                     {/* Top-Right Corner */}
                     <motion.div className="absolute w-[60px] h-[60px] top-2.5 right-2.5 lg:top-8 lg:right-8"
                         animate={{
-                            x: isClosing ? `calc(-50dvw + ${padding} + 2rem)` : 0,
-                            y: isClosing ? `calc(50dvh - ${padding} - 2rem)` : 0,
+                            x: isClosing ? `calc(-50dvw + ${padding} + 30px)` : 0,
+                            y: isClosing ? `calc(50dvh - ${padding} - 30px)` : 0,
                         }}
-                        transition={{ duration, ease }}
+                        transition={{ duration, ease: cubicBezier(...EASING.out) }}
                     >
                         <MaskIcon src={topDer.src} className='w-full h-full bg-corners' />
                     </motion.div>
                     {/* Top-Left Corner */}
                     <motion.div className="absolute w-[60px] h-[60px] top-2.5 left-2.5 lg:top-8 lg:left-8"
                         animate={{
-                            x: isClosing ? `calc(50dvw - ${padding} - 2rem)` : 0,
-                            y: isClosing ? `calc(50dvh - ${padding} - 2rem)` : 0,
+                            x: isClosing ? `calc(50dvw - ${padding} - 30px)` : 0,
+                            y: isClosing ? `calc(50dvh - ${padding} - 30px)` : 0,
                         }}
-                        transition={{ duration, ease }}
+                        transition={{ duration, ease: cubicBezier(...EASING.out) }}
                     >
                         <MaskIcon src={topIzq.src} className='w-full h-full bg-corners' />
                     </motion.div>
                     {/* Bottom-Right Corner */}
                     <motion.div className="absolute w-[60px] h-[60px] bottom-2.5 right-2.5 lg:bottom-8 lg:right-8"
                         animate={{
-                            x: isClosing ? `calc(-50dvw + ${padding} + 2rem)` : 0,
-                            y: isClosing ? `calc(-50dvh + ${padding} + 2rem)` : 0,
+                            x: isClosing ? `calc(-50dvw + ${padding} + 30px)` : 0,
+                            y: isClosing ? `calc(-50dvh + ${padding} + 30px)` : 0,
                         }}
-                        transition={{ duration, ease }}
+                        transition={{ duration, ease: cubicBezier(...EASING.out) }}
                     >
                         <MaskIcon src={bottomDer.src} className='w-full h-full bg-corners' />
                     </motion.div>
                     {/* Bottom-Left Corner */}
                     <motion.div className="absolute w-[60px] h-[60px] bottom-2.5 left-2.5 lg:bottom-8 lg:left-8"
                         animate={{
-                            x: isClosing ? `calc(50dvw - ${padding} - 2rem)` : 0,
-                            y: isClosing ? `calc(-50dvh + ${padding} + 2rem)` : 0,
+                            x: isClosing ? `calc(50dvw - ${padding} - 30px)` : 0,
+                            y: isClosing ? `calc(-50dvh + ${padding} + 30px)` : 0,
                         }}
-                        transition={{ duration, ease }}
+                        transition={{ duration, ease: cubicBezier(...EASING.out) }}
                     >
                         <MaskIcon src={bottomIzq.src} className='w-full h-full bg-corners' />
                     </motion.div>
@@ -175,7 +177,7 @@ export function PageTransition() {
                         }}
                         transition={{
                             duration: isFadingOut ? TIMING.fadeOut : TIMING.centerIn,
-                            ease: EASING.out,
+                            ease: cubicBezier(...EASING.out),
                         }}
                     >
                         <MaskIcon src={recCenter.src} className="w-[40px] h-[35px] bg-corners" />
@@ -190,7 +192,7 @@ export function PageTransition() {
                         }}
                         transition={{
                             duration: isFadingOut ? TIMING.fadeOut : TIMING.colonIn,
-                            ease: EASING.out,
+                            ease: cubicBezier(...EASING.out),
                         }}
                     >
                         <MaskIcon src={colon.src} className="w-[60px] h-[120px] bg-corners" />
