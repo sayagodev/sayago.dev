@@ -10,7 +10,7 @@ import { CustomCursor } from "@/components/ui/custom-cursor";
 import { CursorToggle } from "@/components/ui/cursor-toggle";
 import { PageTransition } from "@/components/layout/page-transition";
 import { ReducedMotionProvider } from "@/components/providers/reduced-motion-provider";
-import { AnimatedTitleProvider } from "@/components/providers/animated-title-provider";
+// import { AnimatedTitleProvider } from "@/components/providers/animated-title-provider";
 
 const monaArgon = localFont({
   src: [{
