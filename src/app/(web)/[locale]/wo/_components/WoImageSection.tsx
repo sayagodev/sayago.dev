@@ -80,14 +80,14 @@ export function WoImageSection({ altText }: WoImageSectionProps) {
 
   return (
     <div className="mb-8 w-fit space-y-2 lg:sticky lg:top-6">
-      <div className="relative w-fit">
+      <div className="relative mx-auto w-full max-w-[500px]">
         <Image
           src={woImage}
           alt={altText}
           width={500}
           height={400}
           priority
-          className="h-full w-full"
+          className="h-auto w-full"
         />
         <motion.div
           ref={ref}

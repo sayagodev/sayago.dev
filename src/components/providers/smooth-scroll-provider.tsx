@@ -2,10 +2,10 @@
 
 import { useEffect } from "react"
 import Lenis from "lenis"
-import { useReducedMotion } from "@/hooks/use-reduced-motion"
+import { usePrefersReducedMotion, useReducedMotion } from "@/hooks/use-reduced-motion"
 
 export function SmoothScrollProvider() {
-  const prefersReducedMotion = useReducedMotion((state) => state.prefersReducedMotion)
+  const prefersReducedMotion = usePrefersReducedMotion()
 
   useEffect(() => {
     // Skip Lenis if user prefers reduced motion
