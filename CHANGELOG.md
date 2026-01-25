@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.3.2](https://github.com/sayagodev/sayago.dev/compare/v0.3.1...v0.3.2) (2026-01-25)
+
+### Features
+
+- enhance WoResume component with animated icons ([e9ebe5d](https://github.com/sayagodev/sayago.dev/commit/e9ebe5d7e021596d4e407beb1ab1d00b57460d5e))
+- implement loading progress indicator during page transitions ([a864e1a](https://github.com/sayagodev/sayago.dev/commit/a864e1a2d09de2c383fd9a316231e8dc4b5d3e08))
+
+### Bug Fixes
+
+- adjust positioning of elements in ShowVersion and PageTransition components ([b4a7961](https://github.com/sayagodev/sayago.dev/commit/b4a796137cdadd1c675b772b43cab7c6ee8f0ed3))
+
+### Refactoring
+
+- reorganize imports in SmoothScrollProvider for clarity ([d4fd196](https://github.com/sayagodev/sayago.dev/commit/d4fd1967c16275d1c682ea22e4dcf9936838989a))
+
 ## [0.3.1](https://github.com/sayagodev/sayago.dev/compare/v0.3.0...v0.3.1) (2026-01-25)
 
 ## [0.3.0](https://github.com/sayagodev/sayago.dev/compare/v0.2.0...v0.3.0) (2026-01-25)
