@@ -286,7 +286,7 @@ export function PageTransition() {
               {/* Loading Progress */}
               {showColon && (
                 <motion.div
-                  className="font-neon text-corners absolute -top-28 left-1/2 z-10 -translate-x-1/2 text-sm font-bold"
+                  className="font-neon text-background absolute -top-17.5 left-1/2 z-10 -translate-x-1/2 text-sm font-bold"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
