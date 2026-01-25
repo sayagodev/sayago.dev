@@ -1,0 +1,179 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { ANIMATION_EASING, ANIMATION_TIMING } from "@/lib/animations"
+import colon from "@/public/images/colon.svg"
+import { MaskIcon } from "@/utils/mask-icon"
+import { ArrowRight, Zap, ZapOff } from "lucide-react"
+import { AnimatePresence, cubicBezier, motion } from "motion/react"
+import { useTranslations } from "next-intl"
+import { useEffect, useRef, useState } from "react"
+import { CollapsibleMarkdown } from "./CollapsibleMarkdown"
+
+interface WoResumeProps {
+  mContent: string
+  mContentShort: string
+}
+
+type CurtainPhase = "down" | "hold" | "exit"
+
+const CURTAIN_POSITIONS: Record<CurtainPhase, string> = {
+  down: "0%",
+  hold: "0%",
+  exit: "100%",
+} as const
+
+export function WoResume({ mContent, mContentShort }: WoResumeProps) {
+  const t = useTranslations("pages.wo")
+  const [isShort, setIsShort] = useState(false)
+  const [isOn, setIsOn] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [curtainPhase, setCurtainPhase] = useState<CurtainPhase>("down")
+  const [showColon, setShowColon] = useState(false)
+  const isCancelledRef = useRef(false)
+
+  const durations = {
+    curtainDown: ANIMATION_TIMING.normal, // 0.2s
+    colonDisplay: ANIMATION_TIMING.slow * 2, // 0.6s
+    colonFadeOut: ANIMATION_TIMING.normal, // 0.2s
+    curtainExit: ANIMATION_TIMING.normal, // 0.2s
+    contentChange: 50, // ms
+  }
+
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  const handleTLDR = async () => {
+    // Cancelar animación anterior si existe
+    isCancelledRef.current = true
+    await delay(0) // Permitir que React procese el cambio
+    isCancelledRef.current = false
+
+    setIsAnimating(true)
+    setCurtainPhase("down")
+    setShowColon(false)
+
+    // Fase 1: Cortina baja desde arriba hasta cubrir todo
+    await delay(durations.curtainDown * 1000)
+    setIsOn(!isOn)
+    if (isCancelledRef.current) return
+
+    setCurtainPhase("hold")
+    setShowColon(true)
+
+    // Fase 2: Se queda mostrando el logo
+    await delay(durations.colonDisplay * 1000)
+    if (isCancelledRef.current) return
+
+    // Fase 3: Colon desaparece
+    setShowColon(false)
+    await delay(durations.colonFadeOut * 1000)
+    if (isCancelledRef.current) return
+
+    // Fase 4: Cambiar contenido
+    setIsShort((prev) => !prev)
+    await delay(durations.contentChange)
+    if (isCancelledRef.current) return
+
+    // Fase 5: Bajar cortina
+    setCurtainPhase("exit")
+    await delay(durations.curtainExit * 1000)
+    if (isCancelledRef.current) return
+
+    // Fase 6: Finalizar
+    setIsAnimating(false)
+    setCurtainPhase("down")
+    setShowColon(false)
+  }
+
+  const currentContent = isShort ? mContentShort : mContent
+
+  const getCurtainY = () => {
+    if (curtainPhase === "down") return "0%"
+    if (curtainPhase === "hold") return "0%"
+    if (curtainPhase === "exit") return "100%"
+    return "0%"
+  }
+
+  const getCurtainTransitionDuration = () => {
+    if (curtainPhase === "down") return durations.curtainDown
+    if (curtainPhase === "exit") return durations.curtainExit
+    return 0
+  }
+
+  useEffect(() => {
+    return () => {
+      isCancelledRef.current = true
+    }
+  }, [])
+
+  return (
+    <article className="w-full">
+      <div className="mb-4 flex items-center gap-2 place-self-start">
+        <h2 className="text-[16px] md:text-xl">{t("title")}</h2>
+        <ArrowRight className="size-3 font-bold md:size-4" />
+        <Button
+          className="flex items-center justify-center gap-2 text-[16px] font-semibold md:text-xl"
+          onClick={handleTLDR}
+          disabled={isAnimating}
+        >
+          TL;DR
+          <motion.span
+            layout
+            animate={{ rotate: isOn ? 180 : 0, scale: isOn ? 1.2 : 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20,
+              duration: 0.4,
+            }}
+          >
+            {!isOn ? (
+              <ZapOff className="text-warning size-4" />
+            ) : (
+              <Zap className="text-warning size-4" />
+            )}
+          </motion.span>
+        </Button>
+      </div>
+
+      <div className="relative min-h-[200px] w-full overflow-hidden">
+        <div className="w-full">
+          <CollapsibleMarkdown content={currentContent} maxHeight={400} />
+        </div>
+
+        {/* Curtain that drops down from above */}
+        <AnimatePresence>
+          {isAnimating && (
+            <motion.div
+              className="bg-background absolute inset-0 z-10"
+              initial={{ y: "-100%" }}
+              animate={{ y: getCurtainY() }}
+              transition={{
+                duration: getCurtainTransitionDuration(),
+                ease: cubicBezier(...ANIMATION_EASING.easeInOut),
+              }}
+            >
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <AnimatePresence>
+                  {showColon && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{
+                        duration: durations.colonFadeOut,
+                        ease: cubicBezier(...ANIMATION_EASING.easeOut),
+                      }}
+                    >
+                      <MaskIcon src={colon.src} className="bg-corners h-[120px] w-[60px]" />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </article>
+  )
+}
