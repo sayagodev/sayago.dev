@@ -12,7 +12,7 @@ import { TransitionState, usePageTransition } from "@/hooks/use-page-transition"
 import { usePathname, useRouter } from "@/utils/i18n-navigation"
 import { MaskIcon } from "@/utils/mask-icon"
 import { AnimatePresence, cubicBezier, motion } from "motion/react"
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { ANIMATION_EASING } from "@/lib/animations"
 import { useAnimationTiming } from "@/hooks/use-animation-timing"
@@ -57,6 +57,7 @@ export function PageTransition() {
   const duration = isOpening ? TIMING.cornersIn : TIMING.cornersOut
   const ease = isOpening ? cubicBezier(...EASING.out) : cubicBezier(...EASING.in)
   const padding = isMobile ? "10px" : "32px"
+  const [loadingProgress, setLoadingProgress] = useState(0)
 
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -130,11 +131,46 @@ export function PageTransition() {
     }
   }, [prefersReducedMotion, state, targetHref, router, reset])
 
+  // Calculate loading progress based on transition state
+  useEffect(() => {
+    if (prefersReducedMotion || !isTransitioning) {
+      setLoadingProgress(0)
+      return
+    }
+
+    let progress = 0
+    switch (state) {
+      case "corners-out":
+        progress = 10
+        break
+      case "center-in":
+        progress = 30
+        break
+      case "colon-in":
+        progress = Math.floor(Math.random() * (70 - 30) + 30)
+        break
+      case "navigating":
+        progress = Math.floor(Math.random() * (100 - 70) + 70)
+        break
+      case "fade-out":
+        progress = 100
+        break
+      case "corners-in":
+        progress = 100
+        break
+      default:
+        progress = 0
+    }
+
+    setLoadingProgress(progress)
+  }, [state, isTransitioning, prefersReducedMotion])
+
   // Detect when navigation completes (pathname changes)
   useEffect(() => {
     if (prefersReducedMotion) return
     if (state === "navigating" && pathname !== prevPathname.current) {
       prevPathname.current = pathname
+      setLoadingProgress(100)
       setState("fade-out")
     }
   }, [pathname, state, setState, prefersReducedMotion])
@@ -245,7 +281,21 @@ export function PageTransition() {
               ease: cubicBezier(...EASING.out),
             }}
           >
-            <MaskIcon src={colon.src} className="bg-corners h-[120px] w-[60px]" />
+            <div className="relative flex flex-col items-center">
+              <MaskIcon src={colon.src} className="bg-corners h-[120px] w-[60px]" />
+              {/* Loading Progress */}
+              {showColon && (
+                <motion.div
+                  className="font-neon text-corners absolute -top-28 left-1/2 z-10 -translate-x-1/2 text-sm font-bold"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {loadingProgress}%
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}
