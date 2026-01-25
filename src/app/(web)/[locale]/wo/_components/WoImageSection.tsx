@@ -81,7 +81,14 @@ export function WoImageSection({ altText }: WoImageSectionProps) {
   return (
     <div className="mb-8 w-fit space-y-2 lg:sticky lg:top-6">
       <div className="relative w-fit">
-        <Image src={woImage} alt={altText} width={500} height={400} className="h-full w-full" />
+        <Image
+          src={woImage}
+          alt={altText}
+          width={500}
+          height={400}
+          priority
+          className="h-full w-full"
+        />
         <motion.div
           ref={ref}
           onMouseMove={handleMouseMove}
