@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ANIMATION_EASING, ANIMATION_TIMING } from "@/lib/animations"
 import colon from "@/public/images/colon.svg"
+import recCenter from "@/public/images/rec_center.svg"
 import { MaskIcon } from "@/utils/mask-icon"
 import { ArrowRight, Zap, ZapOff } from "lucide-react"
 import { AnimatePresence, cubicBezier, motion } from "motion/react"
@@ -153,20 +154,38 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
                 ease: cubicBezier(...ANIMATION_EASING.easeInOut),
               }}
             >
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <AnimatePresence>
                   {showColon && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{
-                        duration: durations.colonFadeOut,
-                        ease: cubicBezier(...ANIMATION_EASING.easeOut),
-                      }}
-                    >
-                      <MaskIcon src={colon.src} className="bg-corners h-[120px] w-[60px]" />
-                    </motion.div>
+                    <>
+                      {/* RecCenter arriba */}
+                      <motion.div
+                        className="relative mb-[10px]"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{
+                          duration: durations.colonFadeOut,
+                          ease: cubicBezier(...ANIMATION_EASING.easeOut),
+                        }}
+                      >
+                        <MaskIcon src={recCenter.src} className="bg-corners h-[60px] w-[60px]" />
+                      </motion.div>
+
+                      {/* Colon abajo */}
+                      <motion.div
+                        className="relative"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{
+                          duration: durations.colonFadeOut,
+                          ease: cubicBezier(...ANIMATION_EASING.easeOut),
+                        }}
+                      >
+                        <MaskIcon src={colon.src} className="bg-corners h-[120px] w-[60px]" />
+                      </motion.div>
+                    </>
                   )}
                 </AnimatePresence>
               </div>
