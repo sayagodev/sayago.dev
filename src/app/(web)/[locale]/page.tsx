@@ -1,11 +1,10 @@
-import { FooterClock } from "@/components/ui/footer-clock";
-import { HomeContent } from "./_components/home-content";
-import { ShowVersion } from "./_components/show-version";
+import { FooterClock } from "@/components/ui/footer-clock"
+import { HomeContent } from "./_components/home-content"
+import { ShowVersion } from "./_components/show-version"
 
 export default function HomePage() {
-
   return (
-    <main className="flex flex-col min-h-dvh relative overflow-hidden">
+    <main className="relative flex min-h-dvh flex-col overflow-hidden">
       {/* Main Content */}
       <HomeContent />
 
@@ -15,5 +14,5 @@ export default function HomePage() {
       {/* Footer */}
       <FooterClock />
     </main>
-  );
+  )
 }

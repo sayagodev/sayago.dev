@@ -7,10 +7,50 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+html.lenis {
+  height: auto;
+}
+
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+}
+
+[data-theme="red"] ::selection,
+[data-theme="red"] ::-moz-selection {
+  background-color: hsl(45, 42.86%, 94.51%);
+  color: hsl(0, 1.96%, 10%);
+}
+
+[data-theme="green"] ::selection,
+[data-theme="green"] ::-moz-selection {
+  background-color: hsl(45, 42.86%, 94.51%);
+  color: hsl(0, 1.96%, 10%);
+}
+
+[data-theme="beish"] ::selection,
+[data-theme="beish"] ::-moz-selection {
+  background-color: hsl(356.74, 100%, 25.29%);
+  color: hsl(40.75, 34.64%, 70%);
 }
 
 [data-theme="red"] {
@@ -18,6 +58,7 @@
   --color-base-content: hsl(40.75, 34.64%, 70%);
   --color-corners: hsl(40.75, 34.64%, 70%);
   --color-cursor: hsl(40.75, 34.64%, 70%);
+  --color-symbol: hsl(45, 42.86%, 94.51%);
 }
 
 [data-theme="green"] {
@@ -25,6 +66,7 @@
   --color-base-content: hsl(40.75, 34.64%, 70%);
   --color-corners: hsl(40.75, 34.64%, 70%);
   --color-cursor: hsl(40.75, 34.64%, 70%);
+  --color-symbol: hsl(45, 42.86%, 94.51%);
 }
 
 [data-theme="beish"] {
@@ -32,8 +74,8 @@
   --color-base-content: hsl(0, 1.96%, 10%);
   --color-corners: hsl(356.74, 100%, 25.29%);
   --color-cursor: hsl(356.74, 100%, 25.29%);
+  --color-symbol: hsl(356.74, 100%, 25.29%);
 }
-
 
 @theme inline {
   --color-background: var(--color-base-100);
@@ -41,10 +83,12 @@
 
   --color-corners: var(--color-corners);
   --color-cursor: var(--color-cursor);
+  --color-symbol: var(--color-symbol);
 
   --font-argon: var(--font-mona-argon);
   --font-krypton: var(--font-mona-krypton);
   --font-neon: var(--font-mona-neon);
+  --font-zi: var(--font-zi);
 
   --color-primary: hsl(356.74, 100%, 25.29%);
   --color-primary-content: hsl(40.75, 34.64%, 85%);
@@ -111,4 +155,20 @@ body {
 
 .theme-btn--green {
   background-color: hsl(135, 38.89%, 14.12%);
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

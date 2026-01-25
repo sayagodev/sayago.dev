@@ -1,16 +1,18 @@
-import { ConstructionIcon } from "@/components/icons/construction";
-import { FooterClock } from "@/components/ui/footer-clock";
-import { useTranslations } from "next-intl";
+import { ConstructionIcon } from "@/components/icons/construction"
+import { FooterClock } from "@/components/ui/footer-clock"
+import { useTranslations } from "next-intl"
 
 export default function WorkPage() {
-    const t = useTranslations("construction")
+  const t = useTranslations("construction")
 
-    return (
-        <main className="flex flex-col min-h-dvh items-center justify-center relative overflow-hidden">
-            <ConstructionIcon size={50} />
-            <h2 className="text-xl lg:text-2xl font-bold font-neon tracking-tight">{t("title")}</h2>
-            <p className="text-sm lg:text-xl lg:max-w-md font-neon text-center max-w-xs tracking-tighter mt-1">{t("description")}</p>
-            <FooterClock animate={false} />
-        </main>
-    )
+  return (
+    <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden">
+      <ConstructionIcon size={50} />
+      <h2 className="font-neon text-xl font-bold tracking-tight lg:text-2xl">{t("title")}</h2>
+      <p className="font-neon mt-1 max-w-xs text-center text-sm tracking-tighter lg:max-w-md lg:text-xl">
+        {t("description")}
+      </p>
+      <FooterClock animate={false} />
+    </main>
+  )
 }
