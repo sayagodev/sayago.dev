@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect } from "react"
+import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion"
 import Lenis from "lenis"
-import { usePrefersReducedMotion, useReducedMotion } from "@/hooks/use-reduced-motion"
+import { useEffect } from "react"
 
 export function SmoothScrollProvider() {
   const prefersReducedMotion = usePrefersReducedMotion()
