@@ -1,47 +1,47 @@
-import { create } from 'zustand'
+import { create } from "zustand"
 
 interface ReducedMotionState {
-    prefersReducedMotion: boolean
-    isInitialized: boolean
-    initialize: () => () => void
+  prefersReducedMotion: boolean
+  isInitialized: boolean
+  initialize: () => () => void
 }
 
 let cleanup: (() => void) | null = null
 
 export const useReducedMotion = create<ReducedMotionState>((set, get) => ({
-    prefersReducedMotion: false,
-    isInitialized: false,
-    initialize: () => {
-        if (typeof window === 'undefined') return () => { }
+  prefersReducedMotion: false,
+  isInitialized: false,
+  initialize: () => {
+    if (typeof window === "undefined") return () => {}
 
-        // If the hook has already been initialized, return the cleanup function
-        if (get().isInitialized) {
-            return cleanup || (() => { })
-        }
+    // If the hook has already been initialized, return the cleanup function
+    if (get().isInitialized) {
+      return cleanup || (() => {})
+    }
 
-        const getMatches = () => {
-            return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
-        }
+    const getMatches = () => {
+      return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false
+    }
 
-        set({ prefersReducedMotion: getMatches(), isInitialized: true })
+    set({ prefersReducedMotion: getMatches(), isInitialized: true })
 
-        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
 
-        const handleChange = (e: MediaQueryListEvent) => {
-            set({ prefersReducedMotion: e.matches })
-        }
+    const handleChange = (e: MediaQueryListEvent) => {
+      set({ prefersReducedMotion: e.matches })
+    }
 
-        mediaQuery.addEventListener('change', handleChange)
+    mediaQuery.addEventListener("change", handleChange)
 
-        const cleanupFn = () => {
-            mediaQuery.removeEventListener('change', handleChange)
-            set({ isInitialized: false })
-            cleanup = null
-        }
+    const cleanupFn = () => {
+      mediaQuery.removeEventListener("change", handleChange)
+      set({ isInitialized: false })
+      cleanup = null
+    }
 
-        cleanup = cleanupFn
-        return cleanupFn
-    },
+    cleanup = cleanupFn
+    return cleanupFn
+  },
 }))
 
 /**
@@ -49,5 +49,5 @@ export const useReducedMotion = create<ReducedMotionState>((set, get) => ({
  * @returns boolean - true if the user prefers reduced motion
  */
 export function usePrefersReducedMotion(): boolean {
-    return useReducedMotion((state) => state.prefersReducedMotion)
+  return useReducedMotion((state) => state.prefersReducedMotion)
 }

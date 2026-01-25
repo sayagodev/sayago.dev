@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useLocale } from "next-intl";
-import { usePathname, useRouter } from "@/utils/i18n-navigation";
-import { locales, type Locale } from "@/lib/i18n";
+import { useLocale } from "next-intl"
+import { usePathname, useRouter } from "@/utils/i18n-navigation"
+import { locales, type Locale } from "@/lib/i18n"
 
 export function LanguageSwitcher() {
-  const locale = useLocale() as Locale;
-  const router = useRouter();
-  const pathname = usePathname();
+  const locale = useLocale() as Locale
+  const router = useRouter()
+  const pathname = usePathname()
 
   function switchLocale(newLocale: Locale) {
-    router.replace(pathname, { locale: newLocale });
+    router.replace(pathname, { locale: newLocale })
   }
 
   return (
@@ -29,5 +29,5 @@ export function LanguageSwitcher() {
         </button>
       ))}
     </div>
-  );
+  )
 }

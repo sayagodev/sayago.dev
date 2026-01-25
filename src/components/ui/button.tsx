@@ -10,30 +10,44 @@ import { forwardRef } from "react"
 // Así, Button puede comportarse como un enlace o botón nativo, dependiendo de si recibe `href` o no.
 
 type ButtonProps = {
-    variant?: 'primary' | 'secondary' | "outline" | "link"
-    title?: string
-    transition?: boolean
+  variant?: "primary" | "secondary" | "outline" | "link"
+  title?: string
+  transition?: boolean
 } & (
-        | React.ComponentPropsWithoutRef<typeof Link>
-        | (React.ComponentPropsWithoutRef<typeof HeadlessButton> & { href?: undefined })
+  | React.ComponentPropsWithoutRef<typeof Link>
+  | (React.ComponentPropsWithoutRef<typeof HeadlessButton> & {
+      href?: undefined
+    })
+)
+
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  function Button({ variant: _variant = "primary", transition = true, className, ...props }, ref) {
+    className = cn(
+      "focus-visible:ring-2 focus-visible:ring-corners focus:outline-none cursor-pointer",
+      className
     )
 
-export const Button = forwardRef<
-    HTMLButtonElement | HTMLAnchorElement,
-    ButtonProps
->(function Button({ variant: _variant = "primary", transition = true, className, ...props }, ref) {
-    className = cn(
-        "focus-visible:ring-2 focus-visible:ring-corners focus:outline-none",
-        className)
-
     if (typeof props.href === "undefined") {
-        return <HeadlessButton {...props} ref={ref as React.Ref<HTMLButtonElement>} className={className} />
+      return (
+        <HeadlessButton
+          {...props}
+          ref={ref as React.Ref<HTMLButtonElement>}
+          className={className}
+        />
+      )
     }
 
     // Use TransitionLink for animated page transitions
     if (transition) {
-        return <TransitionLink {...props} ref={ref as React.Ref<HTMLAnchorElement>} className={className} />
+      return (
+        <TransitionLink
+          {...props}
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          className={className}
+        />
+      )
     }
 
     return <Link {...props} ref={ref as React.Ref<HTMLAnchorElement>} className={className} />
-})
+  }
+)
