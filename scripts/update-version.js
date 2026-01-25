@@ -20,9 +20,9 @@ fs.writeFileSync(versionFilePath, versionFile, "utf8")
 // Agregar el archivo al staging area para que se incluya en el commit del release
 try {
   execSync(`git add ${versionFilePath}`, { stdio: "ignore" })
-  console.error(`✅ Version ${version} updated in src/version.ts and staged`)
+  console.log(`✅ Version ${version} updated in src/version.ts and staged`)
 } catch (error) {
-  console.error(
+  console.warn(
     `⚠️ Version ${version} updated in src/version.ts (git add failed, but file is updated)`
   )
   process.exit(1)

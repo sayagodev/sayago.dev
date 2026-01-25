@@ -20,7 +20,7 @@ export default async function WorkPage() {
   ])
 
   return (
-    <main className="flex min-h-dvh flex-col space-y-40">
+    <main className="flex min-h-dvh flex-col space-y-100">
       <ShowVersion />
       <Container className="py-[60px]" fullWidth>
         <h1 className="font-krypton mb-8 text-center text-2xl font-bold md:text-4xl">

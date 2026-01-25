@@ -16,6 +16,10 @@ html::-webkit-scrollbar {
   display: none;
 }
 
+html.lenis {
+  height: auto;
+}
+
 body {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -151,4 +155,20 @@ body {
 
 .theme-btn--green {
   background-color: hsl(135, 38.89%, 14.12%);
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }

@@ -10,6 +10,7 @@ import { CustomCursor } from "@/components/ui/custom-cursor"
 import { CursorToggle } from "@/components/ui/cursor-toggle"
 import { PageTransition } from "@/components/layout/page-transition"
 import { ReducedMotionProvider } from "@/components/providers/reduced-motion-provider"
+import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider"
 // import { AnimatedTitleProvider } from "@/components/providers/animated-title-provider";
 
 const monaArgon = localFont({
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <ReducedMotionProvider />
+          <SmoothScrollProvider />
           {/* <EntryOverlay /> */}
           <Corners />
           <PageTransition />
