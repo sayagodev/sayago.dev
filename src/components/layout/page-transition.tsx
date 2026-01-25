@@ -187,19 +187,19 @@ export function PageTransition() {
         >
           {/* top */}
           <motion.div
-            className="bg-background fixed top-0 h-[25px] will-change-transform lg:h-[47px]"
+            className="bg-background fixed top-0 left-0 h-[25px] w-full will-change-transform lg:h-[47px]"
             animate={{ height: isClosing ? "50dvh" : "25px" }}
             transition={{ duration, ease }}
           />
           {/* left */}
           <motion.div
-            className="bg-background fixed left-0 h-full w-[25px] lg:w-[47px]"
+            className="bg-background fixed top-0 left-0 h-full w-[25px] lg:w-[47px]"
             animate={{ width: isClosing ? "50dvw" : "25px" }}
             transition={{ duration, ease }}
           />
           {/* bottom */}
           <motion.div
-            className="bg-background fixed bottom-0 h-[25px] w-full lg:h-[47px]"
+            className="bg-background lef-0 fixed bottom-0 h-[25px] w-full lg:h-[47px]"
             animate={{ height: isClosing ? "50dvh" : "25px" }}
             transition={{ duration, ease }}
           />

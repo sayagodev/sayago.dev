@@ -32,7 +32,7 @@ export function ShowVersion() {
   return (
     <>
       <motion.div
-        className="absolute top-1/2 left-5 hidden -translate-y-1/2 flex-col items-center justify-center lg:flex"
+        className="absolute top-1/2 left-7 hidden -translate-y-1/2 flex-col items-center justify-center lg:flex"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 0.3, ease: "easeOut" }}
