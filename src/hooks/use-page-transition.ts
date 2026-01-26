@@ -11,9 +11,9 @@ export type TransitionState =
 
 interface PageTransitionStore {
   state: TransitionState
-  targetHref: string | null
+  targetHref: string | { pathname: string; params?: Record<string, string> } | null
   setState: (state: TransitionState) => void
-  startTransition: (href: string) => void
+  startTransition: (href: string | { pathname: string; params?: Record<string, string> }) => void
   reset: () => void
 }
 
