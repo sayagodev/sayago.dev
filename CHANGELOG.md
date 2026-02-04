@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.1](https://github.com/sayagodev/sayago.dev/compare/v0.4.0...v0.4.1) (2026-02-04)
+
+### Bug Fixes
+
+- improve navigation logic in GoToButton component ([8bde284](https://github.com/sayagodev/sayago.dev/commit/8bde284a9262f0e9df0d7b6cb8501bb4f07cc8e5))
+
+### Refactoring
+
+- improve markdown file path resolution in loadMarkdownSectionArray function ([cfc1090](https://github.com/sayagodev/sayago.dev/commit/cfc1090f05d5ea01d482fd758967ec57868a2667))
+
 ## [0.4.0](https://github.com/sayagodev/sayago.dev/compare/v0.3.2...v0.4.0) (2026-02-04)
 
 ### Features
