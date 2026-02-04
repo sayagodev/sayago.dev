@@ -1,6 +1,6 @@
 "use client"
 
-import { useCursor } from "@/hooks/use-cursor"
+import { useCursor } from "@/components/layout/floating-menu/hooks/use-cursor"
 import { motion } from "motion/react"
 import { Button } from "./button"
 

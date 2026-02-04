@@ -1,16 +1,16 @@
 import { Locale, locales } from "@/lib/i18n"
+import "@/styles/globals.css"
 import type { Metadata } from "next"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import localFont from "next/font/local"
-import "@/styles/globals.css"
 // import { EntryOverlay } from "./entry-overlay";
 import { Corners } from "@/components/layout/corners"
-import { CustomCursor } from "@/components/ui/custom-cursor"
-import { CursorToggle } from "@/components/ui/cursor-toggle"
 import { PageTransition } from "@/components/layout/page-transition"
 import { ReducedMotionProvider } from "@/components/providers/reduced-motion-provider"
 import { SmoothScrollProvider } from "@/components/providers/smooth-scroll-provider"
+import { CustomCursor } from "@/components/ui/custom-cursor"
+import { FloatingMenu } from "@/components/layout/floating-menu"
 // import { AnimatedTitleProvider } from "@/components/providers/animated-title-provider";
 
 const monaArgon = localFont({
@@ -92,8 +92,8 @@ export default async function LocaleLayout({
           {/* <EntryOverlay /> */}
           <Corners />
           <PageTransition />
+          <FloatingMenu />
           <CustomCursor />
-          <CursorToggle />
           {children}
         </NextIntlClientProvider>
       </body>

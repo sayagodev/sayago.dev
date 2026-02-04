@@ -16,12 +16,14 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
           h1: ({ children }) => <h1 className="font-neon mb-4 text-2xl font-bold">{children}</h1>,
           h2: ({ children }) => <h2 className="font-neon mb-3 text-xl font-bold">{children}</h2>,
           p: ({ children }) => (
-            <p className="font-neon mb-4 text-sm leading-6 break-words md:text-lg lg:text-xl">
+            <p className="font-neon wrap-break-words mb-4 text-sm leading-relaxed md:text-lg lg:text-xl">
               {children}
             </p>
           ),
           ul: ({ children }) => (
-            <ul className="mb-4 list-inside list-disc space-y-2">{children}</ul>
+            <ul className="font-neon wrap-break-words mb-4 ml-2 list-inside list-disc space-y-2 text-sm leading-relaxed sm:ml-5 md:text-lg lg:text-xl">
+              {children}
+            </ul>
           ),
           a: ({ href, children }) => (
             <a

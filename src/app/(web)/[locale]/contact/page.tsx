@@ -1,5 +1,4 @@
 import { ConstructionIcon } from "@/components/icons/construction"
-import { FooterClock } from "@/components/ui/footer-clock"
 import { useTranslations } from "next-intl"
 
 export default function ContactPage() {
@@ -12,7 +11,6 @@ export default function ContactPage() {
       <p className="font-neon mt-1 max-w-xs text-center text-sm tracking-tighter lg:max-w-md lg:text-xl">
         {t("description")}
       </p>
-      <FooterClock animate={false} />
     </main>
   )
 }

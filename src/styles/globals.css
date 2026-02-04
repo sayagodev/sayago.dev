@@ -59,6 +59,10 @@ body::-webkit-scrollbar {
   --color-corners: hsl(40.75, 34.64%, 70%);
   --color-cursor: hsl(40.75, 34.64%, 70%);
   --color-symbol: hsl(45, 42.86%, 94.51%);
+  --color-badget: hsl(0, 1.96%, 10%);
+  --color-badget-content: hsl(40.75, 34.64%, 90%);
+  --color-avatar: hsl(210, 100%, 20%);
+  --color-avatar-content: hsl(45, 42.86%, 94.51%);
 }
 
 [data-theme="green"] {
@@ -67,6 +71,8 @@ body::-webkit-scrollbar {
   --color-corners: hsl(40.75, 34.64%, 70%);
   --color-cursor: hsl(40.75, 34.64%, 70%);
   --color-symbol: hsl(45, 42.86%, 94.51%);
+  --color-avatar: hsl(356.74, 100%, 25.29%);
+  --color-avatar-content: hsl(45, 42.86%, 94.51%);
 }
 
 [data-theme="beish"] {
@@ -75,6 +81,10 @@ body::-webkit-scrollbar {
   --color-corners: hsl(356.74, 100%, 25.29%);
   --color-cursor: hsl(356.74, 100%, 25.29%);
   --color-symbol: hsl(356.74, 100%, 25.29%);
+  --color-badget: hsl(210, 100%, 20%);
+  --color-badget-content: hsl(45, 42.86%, 94.51%);
+  --color-avatar: hsl(356.74, 100%, 25.29%);
+  --color-avatar-content: hsl(45, 42.86%, 94.51%);
 }
 
 @theme inline {
@@ -84,6 +94,10 @@ body::-webkit-scrollbar {
   --color-corners: var(--color-corners);
   --color-cursor: var(--color-cursor);
   --color-symbol: var(--color-symbol);
+  --color-badget: var(--color-badget);
+  --color-badget-content: var(--color-badget-content);
+  --color-avatar: var(--color-avatar);
+  --color-avatar-content: var(--color-avatar-content);
 
   --font-argon: var(--font-mona-argon);
   --font-krypton: var(--font-mona-krypton);
@@ -171,4 +185,48 @@ body {
 
 .lenis.lenis-scrolling iframe {
   pointer-events: none;
+}
+
+.section-divider {
+  @apply border-neutral/50 relative my-10 my-16 w-full border-t;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: "+";
+  @apply font-krypton text-neutral/50 absolute -top-[9px] text-[14px] leading-none;
+}
+
+.section-divider::before {
+  left: -8px;
+}
+
+.section-divider::after {
+  right: -8px;
+}
+
+.blueprint-marker {
+  @apply font-krypton text-primary/50 absolute top-0 -translate-y-full pb-1 text-[10px] md:text-sm;
+}
+
+.container {
+  @media (max-width: 26rem) {
+    width: 100%;
+  }
+}
+
+.wireframe-pattern {
+  background-image:
+    linear-gradient(to right, rgba(163, 29, 29, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(163, 29, 29, 0.08) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 5px 5px;
+}
+
+.architecture-grid {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 5px 5px;
 }
