@@ -59,8 +59,8 @@ body::-webkit-scrollbar {
   --color-corners: hsl(40.75, 34.64%, 70%);
   --color-cursor: hsl(40.75, 34.64%, 70%);
   --color-symbol: hsl(45, 42.86%, 94.51%);
-  --color-badget: hsl(0, 1.96%, 10%);
-  --color-badget-content: hsl(40.75, 34.64%, 90%);
+  --color-badge: hsl(0, 1.96%, 10%);
+  --color-badge-content: hsl(40.75, 34.64%, 90%);
   --color-avatar: hsl(210, 100%, 20%);
   --color-avatar-content: hsl(45, 42.86%, 94.51%);
 }
@@ -81,8 +81,8 @@ body::-webkit-scrollbar {
   --color-corners: hsl(356.74, 100%, 25.29%);
   --color-cursor: hsl(356.74, 100%, 25.29%);
   --color-symbol: hsl(356.74, 100%, 25.29%);
-  --color-badget: hsl(210, 100%, 20%);
-  --color-badget-content: hsl(45, 42.86%, 94.51%);
+  --color-badge: hsl(210, 100%, 20%);
+  --color-badge-content: hsl(45, 42.86%, 94.51%);
   --color-avatar: hsl(356.74, 100%, 25.29%);
   --color-avatar-content: hsl(45, 42.86%, 94.51%);
 }
@@ -94,8 +94,8 @@ body::-webkit-scrollbar {
   --color-corners: var(--color-corners);
   --color-cursor: var(--color-cursor);
   --color-symbol: var(--color-symbol);
-  --color-badget: var(--color-badget);
-  --color-badget-content: var(--color-badget-content);
+  --color-badge: var(--color-badge);
+  --color-badge-content: var(--color-badge-content);
   --color-avatar: var(--color-avatar);
   --color-avatar-content: var(--color-avatar-content);
 
