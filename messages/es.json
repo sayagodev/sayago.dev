@@ -13,6 +13,72 @@
       "title": "¿Poco tiempo/interes?",
       "altImg": "Centro de Guanajuato, GTO. (2025)"
     },
+    "work": {
+      "title": "Proyectos",
+      "projects": {
+        "zihuame": {
+          "avatar": "ZM",
+          "title": "Zihuame Mochilla",
+          "year": "2025",
+          "url": "https://zihuame.org.mx/",
+          "subtitle": "NGO.WEB.STABLE",
+          "features": [
+            "Sistema de donaciones con Stripe",
+            "Integración CMS con Sanity",
+            "Diseño responsive con animaciones"
+          ],
+          "tags": ["next.js", "typescript", "sanity cms", "stripe"]
+        },
+        "calendar": {
+          "avatar": "CD",
+          "title": "Calendar;dev",
+          "year": "2025",
+          "url": "https://calendar.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Gestión de eventos personalizados",
+            "Sistema de disponibilidad semanal",
+            "Sincronización con Google Calendar"
+          ],
+          "tags": ["next.js", "typescript", "clerk", "drizzle orm"]
+        },
+        "sayagolms": {
+          "avatar": "SL",
+          "title": "SáyagodevLMS",
+          "year": "2025",
+          "url": "https://lms.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Sistema de gestión de cursos",
+            "Procesamiento de pagos con Stripe",
+            "Dashboard de progreso estudiantil"
+          ],
+          "tags": ["next.js", "typescript", "prisma", "stripe"]
+        },
+        "chat": {
+          "avatar": "CH",
+          "title": ">chat_privado",
+          "year": "2025",
+          "url": "https://chat.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Chat privado en tiempo real",
+            "Salas auto-destructivas (10min)",
+            "Sistema de códigos de invitación"
+          ],
+          "tags": ["next.js", "typescript", "upstash redis", "elysia"]
+        }
+      },
+      "cta": {
+        "header1": "Estrategia que diseña.",
+        "header2": "Diseño que construye.",
+        "button": "Construyamos Juntos"
+      },
+      "goToButton": {
+        "previous": "Anterior",
+        "next": "Siguiente"
+      }
+    },
     "collapsible": {
       "viewMore": "Ver más",
       "viewLess": "Ver menos"
