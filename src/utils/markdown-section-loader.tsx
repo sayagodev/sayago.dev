@@ -1,6 +1,6 @@
 import { Locale } from "@/lib/i18n"
 import { readFile } from "fs/promises"
-import { join } from "path"
+import { join, resolve, sep } from "path"
 
 /**
  * Loads a markdown file and returns the sections of the file.
@@ -14,14 +14,13 @@ export async function loadMarkdownSectionArray<T extends Record<string, string>>
   locale: Locale
 ): Promise<Partial<T>> {
   try {
-    const filePath = join(
-      process.cwd(),
-      "messages",
-      "markdown",
-      "projects",
-      filename,
-      `${filename}.${locale}.md`
-    )
+    const baseDir = join(process.cwd(), "messages", "markdown", "projects")
+    const filePath = resolve(baseDir, filename, `${filename}.${locale}.md`)
+
+    if (!filePath.startsWith(baseDir + sep)) {
+      throw new Error(`Invalid markdown filename: ${filename}`)
+    }
+
     const content = await readFile(filePath, "utf-8")
 
     const lines = content.split("\n")
