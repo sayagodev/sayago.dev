@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useMotionValue, useSpring } from "motion/react"
-import { useCursor } from "@/hooks/use-cursor"
+import { useCursor } from "@/components/layout/floating-menu/hooks/use-cursor"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export function CustomCursor() {

@@ -18,12 +18,6 @@ interface WoResumeProps {
 
 type CurtainPhase = "down" | "hold" | "exit"
 
-const CURTAIN_POSITIONS: Record<CurtainPhase, string> = {
-  down: "0%",
-  hold: "0%",
-  exit: "100%",
-} as const
-
 export function WoResume({ mContent, mContentShort }: WoResumeProps) {
   const t = useTranslations("pages.wo")
   const [isShort, setIsShort] = useState(false)
@@ -110,7 +104,7 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
   return (
     <article className="w-full">
       <div className="mb-4 flex items-center gap-2 place-self-start">
-        <h2 className="text-[16px] md:text-xl">{t("title")}</h2>
+        <h1 className="text-[16px] md:text-xl">{t("title")}</h1>
         <ArrowRight className="size-3 font-bold md:size-4" />
         <Button
           className="flex items-center justify-center gap-2 text-[16px] font-semibold md:text-xl"

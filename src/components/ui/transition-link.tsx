@@ -24,9 +24,27 @@ export const TransitionLink = forwardRef<HTMLAnchorElement, TransitionLinkProps>
           return
         }
 
+        // Build target href string
+        let targetHref: string | { pathname: string; params?: Record<string, string> }
+        if (typeof href === "string") {
+          targetHref = href
+        } else {
+          const params =
+            "params" in href && href.params
+              ? Object.fromEntries(
+                  Object.entries(href.params).map(([key, value]) => [key, String(value)])
+                )
+              : undefined
+          //for dynamic routes, construct the URL with params
+          targetHref = {
+            pathname: href.pathname,
+            ...(params ? { params } : {}),
+          }
+        }
+
         // If same page, don't transition
-        const targetHref = typeof href === "string" ? href : href.pathname
-        if (targetHref === pathname) {
+        const currentPath = typeof href === "string" ? href : href.pathname
+        if (currentPath === pathname) {
           return
         }
 
@@ -37,7 +55,7 @@ export const TransitionLink = forwardRef<HTMLAnchorElement, TransitionLinkProps>
         onClick?.(e)
 
         // Start transition animation
-        startTransition(typeof href === "string" ? href : href.pathname || "/")
+        startTransition(targetHref)
       },
       [href, onClick, pathname, startTransition, state]
     )

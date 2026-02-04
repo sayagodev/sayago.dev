@@ -13,6 +13,72 @@
       "title": "Short on time/interest?",
       "altImg": "Downtown Guanajuato, GTO. (2025)"
     },
+    "work": {
+      "title": "Works",
+      "projects": {
+        "zihuame": {
+          "avatar": "ZM",
+          "title": "Zihuame Mochilla",
+          "year": "2025",
+          "url": "https://zihuame.org.mx/",
+          "subtitle": "NGO.WEB.STABLE",
+          "features": [
+            "Donation system with Stripe",
+            "CMS integration with Sanity",
+            "Responsive design with animations"
+          ],
+          "tags": ["next.js", "typescript", "sanity cms", "stripe"]
+        },
+        "calendar": {
+          "avatar": "CD",
+          "title": "Calendar;dev",
+          "year": "2025",
+          "url": "https://calendar.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Custom event management",
+            "Weekly availability system",
+            "Google Calendar sync"
+          ],
+          "tags": ["next.js", "typescript", "clerk", "drizzle orm"]
+        },
+        "sayagolms": {
+          "avatar": "SL",
+          "title": "SáyagodevLMS",
+          "year": "2025",
+          "url": "https://lms.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Course management system",
+            "Payment processing with Stripe",
+            "Student progress dashboard"
+          ],
+          "tags": ["next.js", "typescript", "prisma", "stripe"]
+        },
+        "chat": {
+          "avatar": "CH",
+          "title": ">chat_privado",
+          "year": "2025",
+          "url": "https://chat.sayago.dev/",
+          "subtitle": "LAB.APP.STABLE",
+          "features": [
+            "Real-time private chat",
+            "Auto-destruct rooms (10min)",
+            "Invitation code system"
+          ],
+          "tags": ["next.js", "typescript", "upstash redis", "elysia"]
+        }
+      },
+      "cta": {
+        "header1": "Strategy that designs.",
+        "header2": "Design that builds.",
+        "button": "Let's build it together"
+      },
+      "goToButton": {
+        "previous": "Previous",
+        "next": "Next"
+      }
+    },
     "collapsible": {
       "viewMore": "View more",
       "viewLess": "View less"

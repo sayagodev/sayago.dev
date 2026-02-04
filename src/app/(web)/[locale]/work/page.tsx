@@ -1,18 +1,36 @@
-import { ConstructionIcon } from "@/components/icons/construction"
-import { FooterClock } from "@/components/ui/footer-clock"
-import { useTranslations } from "next-intl"
+import { Container } from "@/components/layout/container"
+import { LogoTitle } from "@/components/layout/logo-title"
+import { getTranslations } from "next-intl/server"
+import { ShowVersion } from "../_components/show-version"
+import { CardProps } from "./_components/card"
+import { WorkContent } from "./_components/work-content"
+import { projects } from "./constants"
 
-export default function WorkPage() {
-  const t = useTranslations("construction")
+export default async function WorkPage() {
+  const t = await getTranslations("pages.work")
 
   return (
-    <main className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden">
-      <ConstructionIcon size={50} />
-      <h2 className="font-neon text-xl font-bold tracking-tight lg:text-2xl">{t("title")}</h2>
-      <p className="font-neon mt-1 max-w-xs text-center text-sm tracking-tighter lg:max-w-md lg:text-xl">
-        {t("description")}
-      </p>
-      <FooterClock animate={false} />
+    <main className="flex min-h-dvh flex-col items-center overflow-hidden">
+      <ShowVersion />
+      <Container className="container py-[60px] pb-30 sm:pb-0">
+        <LogoTitle />
+
+        <WorkContent
+          title={t("title")}
+          cards={projects.map((project) => {
+            const projectData = t.raw(`projects.${project}`) as CardProps
+
+            return {
+              avatar: projectData.avatar,
+              features: projectData.features,
+              subtitle: projectData.subtitle,
+              tags: projectData.tags,
+              title: projectData.title,
+              url: project,
+            }
+          })}
+        />
+      </Container>
     </main>
   )
 }

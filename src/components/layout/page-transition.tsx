@@ -59,31 +59,47 @@ export function PageTransition() {
   const padding = isMobile ? "10px" : "32px"
   const [loadingProgress, setLoadingProgress] = useState(0)
 
+  // Actualizar prevPathname cuando cambie el pathname
+  useEffect(() => {
+    if (pathname !== prevPathname.current) {
+      prevPathname.current = pathname
+    }
+  }, [pathname])
+
   useEffect(() => {
     if (prefersReducedMotion) return
 
     if (isTransitioning) {
-      scrollPositionRef.current = window.scrollY
+      // Guardar posición del scroll solo al inicio de la transición
+      if (state === "corners-out") {
+        scrollPositionRef.current = window.scrollY
+      }
 
-      // block scroll
+      // Hacer scroll al top cuando empiezan los corners-in (antes de que terminen)
+      if (state === "corners-in") {
+        scrollPositionRef.current = 0
+        // Forzar scroll al top inmediatamente
+        window.scrollTo(0, 0)
+        // Actualizar el top del body para reflejar la nueva posición
+        document.body.style.top = "0px"
+      }
+
+      // block scroll durante toda la transición
       document.body.style.overflow = "hidden"
       document.body.style.position = "fixed"
-      document.body.style.top = `-${scrollPositionRef.current}px`
+      if (state !== "corners-in") {
+        document.body.style.top = `-${scrollPositionRef.current}px`
+      }
       document.body.style.width = "100%"
     } else {
-      // Restore scroll
+      // Asegurar scroll al top antes de desbloquear
+      window.scrollTo(0, 0)
+
+      // Restore scroll después de asegurar posición
       document.body.style.overflow = ""
       document.body.style.position = ""
       document.body.style.top = ""
       document.body.style.width = ""
-
-      // Restaurar posición del scroll solo si estamos en la misma página
-      if (pathname === prevPathname.current) {
-        window.scrollTo(0, scrollPositionRef.current)
-      } else {
-        // Si cambió de página, scroll al inicio
-        window.scrollTo(0, 0)
-      }
     }
 
     return () => {
@@ -95,7 +111,7 @@ export function PageTransition() {
         document.body.style.width = ""
       }
     }
-  }, [isTransitioning, prefersReducedMotion, pathname])
+  }, [isTransitioning, prefersReducedMotion, state])
 
   useEffect(() => {
     if (prefersReducedMotion || state === "idle") return
@@ -104,22 +120,24 @@ export function PageTransition() {
       "corners-out": { wait: TIMING.cornersOut, to: "center-in" },
       "center-in": { wait: TIMING.centerIn, to: "colon-in" },
       "colon-in": { wait: TIMING.colonIn + TIMING.hold, to: "navigating" },
-      navigating: { wait: 0, to: "fade-out" },
+      navigating: { wait: 0.1, to: "fade-out" },
       "fade-out": { wait: TIMING.fadeOut, to: "corners-in" },
       "corners-in": { wait: TIMING.cornersIn, to: "idle" },
     }
 
-    if (state === "navigating") return
     const step = next[state]
     const timer = setTimeout(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (state === "colon-in" && targetHref) router.push(targetHref as any)
-      if (state === "corners-in") reset()
-      else setState(step.to)
+      if (state === "corners-in") {
+        reset()
+      } else {
+        setState(step.to)
+      }
     }, step.wait * 1000)
 
     return () => clearTimeout(timer)
-  }, [state, setState, targetHref, router, reset, prefersReducedMotion])
+  }, [state, setState, targetHref, router, reset, prefersReducedMotion, TIMING])
 
   useEffect(() => {
     if (!prefersReducedMotion || state === "idle") return

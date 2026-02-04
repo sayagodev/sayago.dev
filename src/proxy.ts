@@ -8,6 +8,10 @@ const pathnames = {
     en: "/work",
     es: "/proyectos",
   },
+  "/work/[name]": {
+    en: "/work/[name]",
+    es: "/proyectos/[name]",
+  },
   "/wo": {
     en: "/me",
     es: "/yo",

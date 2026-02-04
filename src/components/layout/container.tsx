@@ -1,4 +1,4 @@
-import clsx from "clsx"
+import { cn } from "@/utils/cn"
 
 export function Container({
   className,
@@ -10,8 +10,8 @@ export function Container({
   fullWidth?: boolean
 }) {
   return (
-    <div className={clsx(className, "px-[30px] lg:px-[160px]")}>
-      <div className={clsx(!fullWidth && "mx-auto max-w-2xl lg:max-w-7xl")}>{children}</div>
+    <div className={cn("px-[30px] lg:px-[160px]", fullWidth && "w-full", className)}>
+      <div className={cn(!fullWidth && "mx-auto max-w-2xl lg:max-w-7xl")}>{children}</div>
     </div>
   )
 }
