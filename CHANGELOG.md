@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [0.4.0](https://github.com/sayagodev/sayago.dev/compare/v0.3.2...v0.4.0) (2026-02-04)
+
+### Features
+
+- add markdown validation script and update package configuration ([1f26c95](https://github.com/sayagodev/sayago.dev/commit/1f26c951b71d6f9f692de479fa9c952553973546))
+- add new projects and enhance work section ([ab93c2f](https://github.com/sayagodev/sayago.dev/commit/ab93c2febee24b11c41277777a6b950d04f31aba))
+- enhance TransitionLink and use-page-transition to support dynamic route parameters ([faa8dc5](https://github.com/sayagodev/sayago.dev/commit/faa8dc574069ff84545c1e86521223cc99a90646))
+- introduce floating menu and enhance layout components ([c3cd8fe](https://github.com/sayagodev/sayago.dev/commit/c3cd8fe9e9c3c35570b2c8e6d91ab19a4368ff12))
+
+### Bug Fixes
+
+- update positioning of ShowVersion component to fixed for better layout ([951d0da](https://github.com/sayagodev/sayago.dev/commit/951d0dafaa2048285a66553ccbcb09f13b111ace))
+
 ## [0.3.2](https://github.com/sayagodev/sayago.dev/compare/v0.3.1...v0.3.2) (2026-01-25)
 
 ### Features
