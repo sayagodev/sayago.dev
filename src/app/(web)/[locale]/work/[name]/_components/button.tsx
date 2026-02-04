@@ -7,16 +7,17 @@ import { projects } from "../../constants"
 
 const getHref = (project: string, direction: string) => {
   const index = projects.indexOf(project)
+  if (index === -1) return "/work"
 
-  if (index === project.length - 1) {
-    return `/work/${projects.at(0)}`
-  }
+  const lastIndex = projects.length - 1
 
   if (direction === "previous") {
-    return `/work/${projects.at(index - 1)}`
-  } else {
-    return `/work/${projects.at(index + 1)}`
+    const prevIndex = index === 0 ? lastIndex : index - 1
+    return `/work/${projects[prevIndex]}`
   }
+
+  const nextIndex = index === lastIndex ? 0 : index + 1
+  return `/work/${projects[nextIndex]}`
 }
 
 export function GoToButton({
