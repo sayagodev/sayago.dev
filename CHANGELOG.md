@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.0](https://github.com/sayagodev/sayago.dev/compare/v0.4.1...v1.0.0) (2026-02-07)
+
+### Features
+
+- implement contact form and email functionality ([242989d](https://github.com/sayagodev/sayago.dev/commit/242989d3b12b9c623e2f79ddb76362268c538651))
+
 ## [0.4.1](https://github.com/sayagodev/sayago.dev/compare/v0.4.0...v0.4.1) (2026-02-04)
 
 ### Bug Fixes
