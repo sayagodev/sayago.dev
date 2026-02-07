@@ -2,16 +2,24 @@
 
 import resend from "@/lib/resend"
 import { EmailTemplate } from "./_components/email-template"
-import { ContactSchemaType } from "./schema"
+import { ContactSchema, ContactSchemaType } from "./schema"
 import { APIResponse } from "@/lib/types"
 
 export async function sendEmailAction(values: ContactSchemaType): Promise<APIResponse> {
   try {
+    const parsed = ContactSchema.safeParse(values)
+    if (!parsed.success) {
+      return {
+        status: "error",
+        message: "Invalid form data",
+      }
+    }
+
     const result = await resend.emails.send({
       from: "sayago.dev <no-reply@sayago.dev>",
       to: ["contacto@sayago.dev"],
       subject: "[sāyago.dev] Nueva Solicitud de Contacto",
-      react: <EmailTemplate {...values} />,
+      react: <EmailTemplate {...parsed.data} />,
     })
 
     if (result.error) {
