@@ -120,7 +120,7 @@ export function PageTransition() {
       "corners-out": { wait: TIMING.cornersOut, to: "center-in" },
       "center-in": { wait: TIMING.centerIn, to: "colon-in" },
       "colon-in": { wait: TIMING.colonIn + TIMING.hold, to: "navigating" },
-      navigating: { wait: 0.1, to: "fade-out" },
+      navigating: { wait: 0, to: "fade-out" },
       "fade-out": { wait: TIMING.fadeOut, to: "corners-in" },
       "corners-in": { wait: TIMING.cornersIn, to: "idle" },
     }

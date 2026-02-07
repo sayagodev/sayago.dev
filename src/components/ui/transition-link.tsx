@@ -61,7 +61,7 @@ export const TransitionLink = forwardRef<HTMLAnchorElement, TransitionLinkProps>
     )
 
     return (
-      <Link href={href} onClick={handleClick} ref={ref} {...props}>
+      <Link href={href} onClick={handleClick} ref={ref} {...props} prefetch={true}>
         {children}
       </Link>
     )

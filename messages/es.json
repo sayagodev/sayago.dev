@@ -98,5 +98,28 @@
   "construction": {
     "title": "En construcción",
     "description": "Esta parte está en construcción. Por favor, inténtelo más tarde."
+  },
+  "contact": {
+    "title1": "Aquí es donde tu idea",
+    "title2": "encuentra su",
+    "messages": ["forma definitiva", "interfaz mágica ✨", "base sólida", "próximo nivel"],
+    "name": "Mi nombre es",
+    "nameLabel": "nombre y apellido",
+    "service": "y estoy interesado en",
+    "serviceLabel": "nombre del servicio",
+    "budget": "Mi presupuesto es",
+    "email": "Por favor, contactame al",
+    "emailLabel": "email@correo.com",
+    "details": "Comparto más:",
+    "detailsLabel": "detalles de tu proyecto",
+    "submit": "Enviar mensaje",
+    "onSubmit": "Enviando..."
+  },
+  "success": {
+    "title": "¡Mensaje Enviado!",
+    "thanks": "Gracias,",
+    "received": "He recibido tu solicitud para",
+    "contact": "Te contactaré pronto a {email}",
+    "reset": "Enviar otro mensaje"
   }
 }
