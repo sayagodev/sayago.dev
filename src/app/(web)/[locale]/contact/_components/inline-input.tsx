@@ -57,11 +57,6 @@ export function InlineInput({
           placeholder={label}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          onInput={(e) => {
-            if (onChange) {
-              onChange(e as React.ChangeEvent<HTMLInputElement>)
-            }
-          }}
           onChange={onChange}
           data-state={hasError ? "error" : isSuccess ? "success" : "default"}
           className={cn(
