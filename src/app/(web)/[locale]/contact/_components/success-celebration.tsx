@@ -17,9 +17,9 @@ export function SuccessCelebration({ name, service, email, onReset }: SuccessCel
   const t = useTranslations("success")
 
   useEffect(() => {
-    // Fire confetti
     const duration = 3000
     const end = Date.now() + duration
+    let rafId: number
     const frame = () => {
       confetti({
         particleCount: 2,
@@ -40,10 +40,11 @@ export function SuccessCelebration({ name, service, email, onReset }: SuccessCel
         colors: ["#8B0000", "#D2B48C", "#1F2937"],
       })
       if (Date.now() < end) {
-        requestAnimationFrame(frame)
+        rafId = requestAnimationFrame(frame)
       }
     }
     frame()
+    return () => cancelAnimationFrame(rafId)
   }, [])
 
   return (
