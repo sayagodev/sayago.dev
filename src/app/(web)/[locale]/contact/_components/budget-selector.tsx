@@ -43,6 +43,7 @@ export function BudgetSelector({ options, selected, onSelect, hasError }: Budget
                 scale: 0.95,
               }}
               onClick={() => onSelect(option)}
+              aria-pressed={isSelected}
               className={cn(
                 "group relative overflow-hidden rounded-full border px-4 py-2 text-base font-medium transition-all duration-300 md:text-lg lg:text-xl",
                 isSelected
