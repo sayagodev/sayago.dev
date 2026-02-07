@@ -101,5 +101,28 @@
   "construction": {
     "title": "Under construction",
     "description": "This part is under construction. Please try again later."
+  },
+  "contact": {
+    "title1": "This is where your idea",
+    "title2": "finds its",
+    "messages": ["final form", "magical interface ✨", "solid foundation", "next level"],
+    "name": "My name is",
+    "nameLabel": "name and last name",
+    "service": "and I'm interested in",
+    "serviceLabel": "name of the service",
+    "budget": "My budget is",
+    "email": "Please contact me at",
+    "emailLabel": "email@example.com",
+    "details": "I share more:",
+    "detailsLabel": "project details",
+    "submit": "Send message",
+    "onSubmit": "Sending..."
+  },
+  "success": {
+    "title": "Message Sent!",
+    "thanks": "Thank you,",
+    "received": "I've received your request for",
+    "contact": "I'll contact you soon at {email}",
+    "reset": "Send another message"
   }
 }

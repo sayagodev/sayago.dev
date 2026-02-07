@@ -230,3 +230,100 @@ body {
   background-size: 40px 40px;
   background-position: 5px 5px;
 }
+
+/* Estilos para autofill - mantiene el fondo y texto según el estado del input */
+input.autofill-override:-webkit-autofill,
+input.autofill-override:-webkit-autofill:hover,
+input.autofill-override:-webkit-autofill:focus,
+input.autofill-override:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Estado por defecto - fondo transparente y texto neutral */
+input.autofill-override[data-state="default"]:-webkit-autofill,
+input.autofill-override[data-state="default"]:-webkit-autofill:hover,
+input.autofill-override[data-state="default"]:-webkit-autofill:focus,
+input.autofill-override[data-state="default"]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+  box-shadow: 0 0 0 1000px transparent inset !important;
+  -webkit-text-fill-color: hsl(0, 1.96%, 10%) !important;
+  color: hsl(0, 1.96%, 10%) !important;
+}
+
+/* Estado de error - fondo con color de error y texto neutral/60 */
+input.autofill-override[data-state="error"]:-webkit-autofill,
+input.autofill-override[data-state="error"]:-webkit-autofill:hover,
+input.autofill-override[data-state="error"]:-webkit-autofill:focus,
+input.autofill-override[data-state="error"]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px hsla(0, 67.92%, 41.57%, 0.2) inset !important;
+  box-shadow: 0 0 0 1000px hsla(0, 67.92%, 41.57%, 0.2) inset !important;
+  -webkit-text-fill-color: hsla(0, 1.96%, 10%, 0.6) !important;
+  color: hsla(0, 1.96%, 10%, 0.6) !important;
+}
+
+/* Estado de éxito - fondo con color de éxito y texto neutral/60 */
+input.autofill-override[data-state="success"]:-webkit-autofill,
+input.autofill-override[data-state="success"]:-webkit-autofill:hover,
+input.autofill-override[data-state="success"]:-webkit-autofill:focus,
+input.autofill-override[data-state="success"]:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px hsla(79.63, 60.45%, 34.71%, 0.2) inset !important;
+  box-shadow: 0 0 0 1000px hsla(79.63, 60.45%, 34.71%, 0.2) inset !important;
+  -webkit-text-fill-color: hsla(0, 1.96%, 10%, 0.6) !important;
+  color: hsla(0, 1.96%, 10%, 0.6) !important;
+}
+
+/* Scrollbar personalizado para textarea del modal */
+.modal-textarea {
+  overflow-y: auto !important;
+  scrollbar-width: thin;
+  /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  /* Firefox: thumb y track */
+  -ms-overflow-style: auto;
+  /* IE y Edge */
+}
+
+.modal-textarea::-webkit-scrollbar {
+  width: 8px;
+  /* Ancho del scrollbar */
+}
+
+.modal-textarea::-webkit-scrollbar-track {
+  background: transparent;
+  /* Fondo del track */
+}
+
+.modal-textarea::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  /* Color del thumb */
+  border-radius: 4px;
+  /* Bordes redondeados */
+  transition: background-color 0.2s ease;
+  /* Transición suave */
+}
+
+.modal-textarea::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Color más oscuro al hover */
+}
+
+/* Ocultar los botones de scroll (triángulos arriba y abajo) */
+.modal-textarea::-webkit-scrollbar-button {
+  display: none;
+  /* Oculta los botones de scroll */
+  height: 0;
+  width: 0;
+}
+
+/* En desktop, hacer el scrollbar más sutil */
+@media (min-width: 769px) {
+  .modal-textarea::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    /* Más sutil en desktop */
+  }
+
+  .modal-textarea::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    /* Más oscuro al hover en desktop */
+  }
+}

@@ -17,6 +17,15 @@ const eslintConfig = defineConfig([
     rules: {
       // Allow setState in useEffect for client/server hydration patterns
       "react-hooks/set-state-in-effect": "off",
+      // Allow component creation in useMemo when using motion.create (false positive)
+      "react-hooks/static-components": "warn",
+    },
+  },
+  {
+    files: ["**/text-rotate.tsx"],
+    rules: {
+      // Disable for text-rotate.tsx where motion.create is used safely with useMemo
+      "react-hooks/static-components": "off",
     },
   },
 ])
