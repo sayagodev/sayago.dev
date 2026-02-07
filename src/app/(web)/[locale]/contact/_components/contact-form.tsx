@@ -100,7 +100,7 @@ export function ContactForm({
     defaultValues: {
       name: "",
       service: "",
-      budget: "",
+      budget: undefined,
       email: "",
       details: "",
     },
@@ -180,10 +180,10 @@ export function ContactForm({
           >
             <span>{budget}</span>
             <BudgetSelector
-              options={BUDGET_OPTIONS}
+              options={Array.from(BUDGET_OPTIONS)}
               selected={watchedValues.budget || ""}
               onSelect={(value) => {
-                setValue("budget", value, {
+                setValue("budget", value as (typeof BUDGET_OPTIONS)[number], {
                   shouldValidate: true,
                   shouldDirty: true,
                 })

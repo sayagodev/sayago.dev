@@ -1,4 +1,4 @@
-import z from "zod"
+import { z } from "zod"
 import { BUDGET_OPTIONS } from "./constants"
 
 export const ContactSchema = z.object({
