@@ -19,6 +19,7 @@ export function InlineInput({
   containerClassName = "",
   onFocus,
   onBlur,
+  onChange,
   ...props
 }: InlineInputPremiumProps) {
   const [isFocused, setIsFocused] = useState(false)
@@ -56,6 +57,12 @@ export function InlineInput({
           placeholder={label}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onInput={(e) => {
+            if (onChange) {
+              onChange(e as React.ChangeEvent<HTMLInputElement>)
+            }
+          }}
+          onChange={onChange}
           data-state={hasError ? "error" : isSuccess ? "success" : "default"}
           className={cn(
             "relative z-10 rounded-t-sm px-4 py-1 transition-all duration-300 outline-none md:px-6 md:text-2xl lg:px-4 lg:text-3xl",
