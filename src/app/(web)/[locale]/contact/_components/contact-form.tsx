@@ -93,6 +93,7 @@ export function ContactForm({
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<ContactSchemaType>({
     resolver: zodResolver(ContactSchema),
@@ -133,10 +134,7 @@ export function ContactForm({
         email={watchedValues.email || ""}
         onReset={() => {
           setIsSuccess(false)
-          setValue("name", "")
-          setValue("service", "")
-          setValue("email", "")
-          setValue("details", "")
+          reset()
         }}
       />
     )
@@ -194,7 +192,7 @@ export function ContactForm({
             />
           </motion.div>
 
-          {/* Sentece 3: Email */}
+          {/* Sentence 3: Email */}
           <motion.div variants={itemVariants} className="flex flex-wrap items-baseline gap-y-4">
             <span>{email}</span>
             <InlineInput
