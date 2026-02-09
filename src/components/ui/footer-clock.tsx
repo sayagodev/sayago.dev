@@ -2,15 +2,14 @@
 
 import { useCurrentTime } from "@/hooks/use-current-time"
 import { useTranslations } from "next-intl"
-
-import { motion } from "motion/react"
+import VerticalCutReveal from "./vertical-cut-reveal"
 
 type Message = {
   message: string
   zhMessage: string
 }
 
-export function FooterClock({ animate = true }: { animate?: boolean }) {
+export function FooterClock() {
   const { time } = useCurrentTime()
   const messages = useTranslations("messages")
   const { message, zhMessage } = getMessage(time)
@@ -22,31 +21,66 @@ export function FooterClock({ animate = true }: { animate?: boolean }) {
     <>
       {/* Versión móvil */}
       <p className="flex items-center gap-2 lg:hidden">
-        <span className="text-md font-argon font-medium md:text-lg">{time}</span>
-        <span className="font-zi -translate-y-0.5 text-[21px] md:text-[26px]">{zhMessage}</span>
+        <VerticalCutReveal
+          containerClassName="text-md font-argon font-medium md:text-lg"
+          splitBy="lines"
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 1,
+          }}
+        >
+          {time}
+        </VerticalCutReveal>
+        <VerticalCutReveal
+          containerClassName="font-zi -translate-y-0.5 text-[21px] md:text-[26px]"
+          splitBy="lines"
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 1,
+          }}
+        >
+          {zhMessage}
+        </VerticalCutReveal>
       </p>
       {/* Versión desktop */}
       <p className="hidden items-center gap-2 lg:flex">
-        <span className="font-argon text-xl font-medium">{messages(message, { time })}</span>
-        <span className="font-zi -translate-y-0.5 text-[21px] md:text-[26px]">{zhMessage}</span>
+        <VerticalCutReveal
+          containerClassName="font-argon text-xl font-medium"
+          splitBy="lines"
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 1,
+          }}
+        >
+          {messages(message, { time })}
+        </VerticalCutReveal>
+        <VerticalCutReveal
+          containerClassName="font-zi -translate-y-0.5 text-[21px] md:text-[26px]"
+          splitBy="lines"
+          transition={{
+            type: "spring",
+            stiffness: 300,
+            damping: 20,
+            delay: 1,
+          }}
+        >
+          {zhMessage}
+        </VerticalCutReveal>
       </p>
     </>
   )
 
-  if (animate) {
-    return (
-      <motion.footer
-        className={footerClassName}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.3, ease: "easeOut" }}
-      >
-        {footerContent}
-      </motion.footer>
-    )
-  }
-
-  return <footer className={footerClassName}>{footerContent}</footer>
+  return (
+    <footer className={footerClassName} aria-hidden="true" role="presentation">
+      {footerContent}
+    </footer>
+  )
 }
 
 const getMessage = (time: string): Message => {
