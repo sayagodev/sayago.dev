@@ -9,6 +9,8 @@ import {
   useMemo,
   useRef,
   useState,
+  isValidElement,
+  Children,
 } from "react"
 
 import { cn } from "@/utils/cn"
@@ -67,8 +69,27 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
     ref
   ) => {
     const containerRef = useRef<HTMLSpanElement>(null)
-    const text = typeof children === "string" ? children : children?.toString() || ""
     const [isAnimating, setIsAnimating] = useState(false)
+
+    // Detectar si los children son elementos React o texto
+    const isReactElement = useMemo(() => {
+      if (typeof children === "string" || typeof children === "number") {
+        return false
+      }
+      if (Array.isArray(children)) {
+        return children.some((child) => isValidElement(child))
+      }
+      return isValidElement(children)
+    }, [children])
+
+    const text =
+      typeof children === "string"
+        ? children
+        : typeof children === "number"
+          ? String(children)
+          : isReactElement
+            ? ""
+            : children?.toString() || ""
 
     // Si from no se especifica, usar reverse para determinar la dirección vertical
     const direction = from || (reverse ? "top" : "bottom")
@@ -101,31 +122,33 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
 
     // Calculate stagger delays based on staggerFrom
     const getStaggerDelay = useCallback(
-      (index: number) => {
-        const total =
-          splitBy === "characters"
-            ? elements.reduce(
-                (acc, word) =>
-                  acc +
-                  (typeof word === "string"
-                    ? 1
-                    : word.characters.length + (word.needsSpace ? 1 : 0)),
-                0
-              )
-            : elements.length
+      (index: number, total?: number) => {
+        const totalCount =
+          total !== undefined
+            ? total
+            : splitBy === "characters"
+              ? elements.reduce(
+                  (acc, word) =>
+                    acc +
+                    (typeof word === "string"
+                      ? 1
+                      : word.characters.length + (word.needsSpace ? 1 : 0)),
+                  0
+                )
+              : elements.length
         if (staggerFrom === "first") return index * staggerDuration
-        if (staggerFrom === "last") return (total - 1 - index) * staggerDuration
+        if (staggerFrom === "last") return (totalCount - 1 - index) * staggerDuration
         if (staggerFrom === "center") {
-          const center = Math.floor(total / 2)
+          const center = Math.floor(totalCount / 2)
           return Math.abs(center - index) * staggerDuration
         }
         if (staggerFrom === "random") {
-          const randomIndex = Math.floor(Math.random() * total)
+          const randomIndex = Math.floor(Math.random() * totalCount)
           return Math.abs(randomIndex - index) * staggerDuration
         }
         return Math.abs(staggerFrom - index) * staggerDuration
       },
-      [elements.length, staggerFrom, staggerDuration]
+      [elements.length, staggerFrom, staggerDuration, splitBy]
     )
 
     const startAnimation = useCallback(() => {
@@ -163,6 +186,68 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
       }),
     }
 
+    // Si los children son elementos React, renderizarlos con animación
+    if (isReactElement) {
+      const childrenArray = Children.toArray(children)
+      const reactElements = childrenArray.filter((child) => isValidElement(child))
+      const totalElements = reactElements.length
+
+      return (
+        <span
+          className={cn(
+            containerClassName,
+            "inline-flex flex-wrap items-center",
+            splitBy === "lines" && "flex-col"
+          )}
+          onClick={onClick}
+          ref={containerRef}
+          {...props}
+        >
+          {reactElements.map((element, index) => {
+            return (
+              <span
+                key={index}
+                className={cn(elementLevelClassName, "relative inline-block overflow-hidden")}
+                style={{
+                  paddingTop: isVertical ? "0.1em" : 0,
+                  paddingBottom: isVertical ? "0.1em" : 0,
+                  paddingLeft: isHorizontal ? "0.05em" : 0,
+                  paddingRight: isHorizontal ? "0.05em" : 0,
+                }}
+              >
+                <motion.span
+                  custom={index}
+                  initial="hidden"
+                  animate={isAnimating ? "visible" : "hidden"}
+                  variants={{
+                    hidden: isHorizontal
+                      ? { x: direction === "left" ? "-100%" : "100%" }
+                      : { y: direction === "top" ? "-100%" : "100%" },
+                    visible: {
+                      x: isHorizontal ? 0 : undefined,
+                      y: isVertical ? 0 : undefined,
+                      transition: {
+                        ...transition,
+                        delay:
+                          ((transition?.delay as number) || 0) +
+                          getStaggerDelay(index, totalElements),
+                      },
+                    },
+                  }}
+                  onAnimationComplete={index === reactElements.length - 1 ? onComplete : undefined}
+                  className="inline-block"
+                  style={{ willChange: "transform" }}
+                >
+                  {element}
+                </motion.span>
+              </span>
+            )
+          })}
+        </span>
+      )
+    }
+
+    // Comportamiento original para texto
     return (
       <span
         className={cn(

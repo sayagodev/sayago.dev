@@ -8,7 +8,7 @@ import { MarkdownRenderer } from "@/utils/markdown-renderer"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { cubicBezier, motion } from "motion/react"
 import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
+import { Activity, useEffect, useRef, useState } from "react"
 
 interface CollapsibleMarkdownProps {
   content: string
@@ -81,11 +81,13 @@ export function CollapsibleMarkdown({
         <div className="from-background pointer-events-none absolute right-0 bottom-0 left-0 z-0 h-20 bg-linear-to-t to-transparent" />
       )}
 
-      {needsCollapse && (
+      <Activity mode={needsCollapse ? "visible" : "hidden"}>
         <div className="relative z-10 mt-4 flex items-center justify-center">
           <Button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex flex-col items-center text-sm font-medium"
+            aria-label={isExpanded ? t("viewLess") : t("viewMore")}
+            title={isExpanded ? t("viewLess") : t("viewMore")}
           >
             {isExpanded ? (
               <>
@@ -122,7 +124,7 @@ export function CollapsibleMarkdown({
             )}
           </Button>
         </div>
-      )}
+      </Activity>
     </div>
   )
 }

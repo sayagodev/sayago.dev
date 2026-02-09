@@ -28,9 +28,11 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
           a: ({ href, children }) => (
             <a
               href={href as string}
-              className="text-symbol hover:text-symbol/80 break-words underline"
+              className="text-symbol hover:text-symbol/80 focus-visible:ring-corners break-words underline focus:outline-none focus-visible:ring-2"
               target={href?.startsWith("http") ? "_blank" : undefined}
               rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+              aria-label={href}
+              title={href}
             >
               {children}
             </a>

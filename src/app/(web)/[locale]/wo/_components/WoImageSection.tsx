@@ -98,6 +98,7 @@ export function WoImageSection({ altText }: WoImageSectionProps) {
             y: y,
           }}
           className="bg-neutral text-info-content font-zi absolute -right-3 bottom-[36%] -rotate-10 cursor-pointer px-3 py-1 md:px-[3%]"
+          aria-hidden="true"
         >
           她很漂亮
         </motion.div>
