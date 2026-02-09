@@ -2,7 +2,6 @@ import createMiddleware from "next-intl/middleware"
 import { DEFAULT_LOCALE, locales } from "./lib/i18n"
 
 const pathnames = {
-  "#": {},
   "/": {},
   "/work": {
     en: "/work",

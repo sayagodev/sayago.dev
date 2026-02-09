@@ -1,14 +1,15 @@
 "use client"
 
 import { type Locale } from "@/lib/i18n"
-import { usePathname, useRouter } from "@/utils/i18n-navigation"
+import { DynamicPathname, usePathname, useRouter } from "@/utils/i18n-navigation"
 import { useLocale } from "next-intl"
-import { useParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
 
 export function useSwitchLanguage() {
   const router = useRouter()
   const pathname = usePathname()
   const params = useParams()
+  const searchParams = useSearchParams()
   const locale = useLocale() as Locale
 
   function switchLocale(newLocale: Locale) {
@@ -16,9 +17,10 @@ export function useSwitchLanguage() {
       newLocale = newLocale === "en" ? "es" : "en"
     }
 
-    // Check if pathname is a dynamic route (contains brackets)
+    const queryString = searchParams.toString()
+    const hasQueryParams = queryString.length > 0
+
     if (pathname.includes("[") || pathname.includes("]")) {
-      // Extract params from the current URL
       const routeParams: Record<string, string> = {}
       Object.entries(params).forEach(([key, value]) => {
         if (key !== "locale") {
@@ -26,18 +28,21 @@ export function useSwitchLanguage() {
         }
       })
 
-      router.replace(
-        {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          pathname: pathname as any,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          params: routeParams as any,
-        },
-        { locale: newLocale }
-      )
+      if (hasQueryParams) {
+        const fullPath = `${pathname}?${queryString}`
+        router.replace(fullPath, { locale: newLocale })
+      } else {
+        router.replace(
+          {
+            pathname: pathname as DynamicPathname,
+            params: routeParams,
+          },
+          { locale: newLocale }
+        )
+      }
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      router.replace(pathname as any, { locale: newLocale })
+      const urlWithQuery = hasQueryParams ? `${pathname}?${queryString}` : pathname
+      router.replace(urlWithQuery, { locale: newLocale })
     }
   }
 
