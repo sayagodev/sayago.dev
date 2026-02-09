@@ -2,7 +2,18 @@
   "home": {
     "work": "Projects",
     "talk": "Contact",
-    "version": "Version {version}"
+    "version": "Version {version}",
+    "aria": {
+      "mainNavigation": "Main navigation",
+      "home": "Go to home page",
+      "homeTitle": "Home",
+      "work": "Go to projects page",
+      "workTitle": "Projects",
+      "talk": "Go to contact page",
+      "talkTitle": "Contact",
+      "about": "Go to about me page",
+      "aboutTitle": "About me"
+    }
   },
   "about": {
     "title": "About me",

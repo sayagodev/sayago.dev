@@ -28,6 +28,14 @@ const eslintConfig = defineConfig([
       "react-hooks/static-components": "off",
     },
   },
+  {
+    files: ["**/vertical-cut-reveal.tsx"],
+    rules: {
+      // Disable React Compiler and exhaustive-deps warnings for vertical-cut-reveal.tsx
+      "react-hooks/exhaustive-deps": "off",
+      "react-hooks/preserve-manual-memoization": "off",
+    },
+  },
 ])
 
 export default eslintConfig
