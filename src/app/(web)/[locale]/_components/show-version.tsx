@@ -1,10 +1,13 @@
 "use client"
 
-import { VERSION } from "@/version"
-import { AnimatePresence, motion, useMotionValue, useSpring } from "motion/react"
-import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
+
+import { AnimatePresence, motion, useMotionValue, useSpring } from "motion/react"
+import { useTranslations } from "next-intl"
+
+import VerticalCutReveal from "@/components/ui/vertical-cut-reveal"
+import { VERSION } from "@/version"
 
 export function ShowVersion() {
   const t = useTranslations("home")
@@ -33,9 +36,8 @@ export function ShowVersion() {
     <>
       <motion.div
         className="fixed top-1/2 left-7 hidden -translate-y-1/2 flex-col items-center justify-center lg:flex"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1, duration: 0.3, ease: "easeOut" }}
+        aria-hidden="true"
+        role="presentation"
         onMouseEnter={(e) => {
           // Posiciona antes de montar el tooltip para evitar "salto" inicial
           x.set(e.clientX)
@@ -50,10 +52,46 @@ export function ShowVersion() {
         }}
       >
         <p className="font-zi flex flex-col text-xl">
-          <span>版</span>
-          <span>本</span>
+          <VerticalCutReveal
+            from="left"
+            splitBy="lines"
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              delay: 1,
+            }}
+          >
+            {"版"}
+          </VerticalCutReveal>
+
+          <VerticalCutReveal
+            from="left"
+            splitBy="characters"
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 30,
+              delay: 1,
+            }}
+          >
+            {"本"}
+          </VerticalCutReveal>
         </p>
-        <span className="font-zi text-xl">{VERSION}</span>
+        <span className="font-zi text-xl">
+          <VerticalCutReveal
+            splitBy="words"
+            from="left"
+            transition={{
+              type: "spring",
+              stiffness: 200,
+              damping: 30,
+              delay: 1,
+            }}
+          >
+            {VERSION}
+          </VerticalCutReveal>
+        </span>
       </motion.div>
 
       {portalTarget &&
@@ -62,6 +100,8 @@ export function ShowVersion() {
             {isHover && (
               <motion.div
                 className="pointer-events-none fixed z-50"
+                aria-hidden="true"
+                role="presentation"
                 style={{
                   left: xSpring,
                   top: ySpring,
