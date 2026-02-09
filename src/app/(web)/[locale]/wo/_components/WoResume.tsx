@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { ANIMATION_EASING, ANIMATION_TIMING } from "@/lib/animations"
 import colon from "@/public/images/colon.svg"
 import recCenter from "@/public/images/rec_center.svg"
+import { usePathname, useRouter } from "@/utils/i18n-navigation"
 import { MaskIcon } from "@/utils/mask-icon"
 import { ArrowRight, Zap, ZapOff } from "lucide-react"
 import { AnimatePresence, cubicBezier, motion } from "motion/react"
 import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { Activity, useEffect, useRef, useState } from "react"
 import { CollapsibleMarkdown } from "./CollapsibleMarkdown"
 
 interface WoResumeProps {
@@ -20,8 +22,12 @@ type CurtainPhase = "down" | "hold" | "exit"
 
 export function WoResume({ mContent, mContentShort }: WoResumeProps) {
   const t = useTranslations("pages.wo")
-  const [isShort, setIsShort] = useState(false)
-  const [isOn, setIsOn] = useState(false)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const isTldrActive = searchParams.get("tldr") === "true"
+
   const [isAnimating, setIsAnimating] = useState(false)
   const [curtainPhase, setCurtainPhase] = useState<CurtainPhase>("down")
   const [showColon, setShowColon] = useState(false)
@@ -38,6 +44,17 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
   const handleTLDR = async () => {
+    const newIsTldrActive = !isTldrActive
+    const params = new URLSearchParams(searchParams.toString())
+    if (newIsTldrActive) {
+      params.set("tldr", "true")
+    } else {
+      params.delete("tldr")
+    }
+    const newSearch = params.toString()
+    const newUrl = newSearch ? `${pathname}?${newSearch}` : pathname
+    router.replace(newUrl)
+
     // Cancelar animación anterior si existe
     isCancelledRef.current = true
     await delay(0) // Permitir que React procese el cambio
@@ -49,7 +66,6 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
 
     // Fase 1: Cortina baja desde arriba hasta cubrir todo
     await delay(durations.curtainDown * 1000)
-    setIsOn(!isOn)
     if (isCancelledRef.current) return
 
     setCurtainPhase("hold")
@@ -64,8 +80,7 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
     await delay(durations.colonFadeOut * 1000)
     if (isCancelledRef.current) return
 
-    // Fase 4: Cambiar contenido
-    setIsShort((prev) => !prev)
+    // Fase 4: Cambiar contenido y actualizar URL
     await delay(durations.contentChange)
     if (isCancelledRef.current) return
 
@@ -80,7 +95,7 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
     setShowColon(false)
   }
 
-  const currentContent = isShort ? mContentShort : mContent
+  const currentContent = isTldrActive ? mContentShort : mContent
 
   const getCurtainY = () => {
     if (curtainPhase === "down") return "0%"
@@ -105,16 +120,18 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
     <article className="w-full">
       <div className="mb-4 flex items-center gap-2 place-self-start">
         <h1 className="text-[16px] md:text-xl">{t("title")}</h1>
-        <ArrowRight className="size-3 font-bold md:size-4" />
+        <ArrowRight className="size-3 font-bold md:size-4" aria-hidden="true" />
         <Button
           className="flex items-center justify-center gap-2 text-[16px] font-semibold md:text-xl"
           onClick={handleTLDR}
           disabled={isAnimating}
+          aria-label={t(isTldrActive ? "aria.tldrOn" : "aria.tldrOff")}
+          title={t(isTldrActive ? "aria.tldrOn" : "aria.tldrOff")}
         >
           TL;DR
           <motion.span
             layout
-            animate={{ rotate: isOn ? 180 : 0, scale: isOn ? 1.2 : 1 }}
+            animate={{ rotate: isTldrActive ? 180 : 0, scale: isTldrActive ? 1.2 : 1 }}
             transition={{
               type: "spring",
               stiffness: 300,
@@ -122,7 +139,7 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
               duration: 0.4,
             }}
           >
-            {!isOn ? (
+            {!isTldrActive ? (
               <ZapOff className="text-warning size-4" />
             ) : (
               <Zap className="text-warning size-4" />
@@ -137,8 +154,8 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
         </div>
 
         {/* Curtain that drops down from above */}
-        <AnimatePresence>
-          {isAnimating && (
+        <Activity mode={isAnimating ? "visible" : "hidden"}>
+          <AnimatePresence>
             <motion.div
               className="bg-background absolute inset-0 z-10"
               initial={{ y: "-100%" }}
@@ -184,8 +201,8 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
                 </AnimatePresence>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+          </AnimatePresence>
+        </Activity>
       </div>
     </article>
   )
