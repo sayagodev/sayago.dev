@@ -29,8 +29,14 @@ export function useSwitchLanguage() {
       })
 
       if (hasQueryParams) {
-        const fullPath = `${pathname}?${queryString}`
-        router.replace(fullPath, { locale: newLocale })
+        router.replace(
+          {
+            pathname: pathname as DynamicPathname,
+            params: routeParams,
+            query: Object.fromEntries(searchParams.entries()),
+          },
+          { locale: newLocale }
+        )
       } else {
         router.replace(
           {
