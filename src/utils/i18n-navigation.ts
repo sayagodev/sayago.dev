@@ -42,8 +42,11 @@ export function useRouter() {
 
       if (query) {
         const queryString = new URLSearchParams(query).toString()
-        const fullPath = `${pathname}?${queryString}`
-        router.replace(fullPath as RouterHref, options)
+        const resolvedPath = Object.entries(params).reduce(
+          (path, [key, value]) => path.replace(`[${key}]`, encodeURIComponent(value)),
+          pathname as string
+        )
+        router.replace(`${resolvedPath}?${queryString}` as RouterHref, options)
       } else {
         router.replace({ pathname, params } as RouterHref, options)
       }
