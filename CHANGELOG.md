@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.1.0](https://github.com/sayagodev/sayago.dev/compare/v1.0.0...v1.1.0) (2026-02-09)
+
+### Features
+
+- add aria-pressed attribute to budget selector for accessibility ([3e28ba5](https://github.com/sayagodev/sayago.dev/commit/3e28ba591e7cbcc3a94e599ac34b7ca1661f5bdf))
+- add favicon for web application ([2c32904](https://github.com/sayagodev/sayago.dev/commit/2c329043b96b099b2c97d8c753881e55b279bc76))
+- add onChange handler to InlineInput component ([bc72a77](https://github.com/sayagodev/sayago.dev/commit/bc72a777bb77ffe03115d63c930e6d46ebba69f0))
+- enhance localization and accessibility in home and about sections ([a78dfe1](https://github.com/sayagodev/sayago.dev/commit/a78dfe1b44afd36ea76b4d98af38094560371c66))
+- enhance ShowVersion component with vertical cut reveal animations ([bb42cfd](https://github.com/sayagodev/sayago.dev/commit/bb42cfda1377d461ed4ae6fc6ee6c0ae8b35c0ba))
+
+### Bug Fixes
+
+- add validation to contact form submission ([6d6b9cf](https://github.com/sayagodev/sayago.dev/commit/6d6b9cfc8804ac4b7781e479b5862e04a3480c5e))
+- clean up InlineInput component code ([0baae8c](https://github.com/sayagodev/sayago.dev/commit/0baae8c66b83331ada76d7009523bb66fbcaa5a7))
+- simplify form reset logic in ContactForm component ([316a3a1](https://github.com/sayagodev/sayago.dev/commit/316a3a1d7a15b907634e3502b448b529305f0461))
+- update budget handling in contact form and constants ([96757a9](https://github.com/sayagodev/sayago.dev/commit/96757a9f317cfc10b4cfa30edf68985dfb812dbb))
+- update budget options format for consistency ([a55e210](https://github.com/sayagodev/sayago.dev/commit/a55e210d9d0bfefead99d655c7db5b6ce1e778c1))
+
+### Refactoring
+
+- simplify FooterClock component and enhance animations ([c5405d6](https://github.com/sayagodev/sayago.dev/commit/c5405d6782401f5ad07d05b03912292ba5ac16d3))
+
 ## [1.0.0](https://github.com/sayagodev/sayago.dev/compare/v0.4.1...v1.0.0) (2026-02-07)
 
 ### Features
