@@ -58,7 +58,7 @@ const zi = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "sāyago;dev - portafolío",
+  title: "sāyago;dev — Mí portafolio",
   description: "Ángel Sáyago Portafolio",
 }
 
