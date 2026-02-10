@@ -1,7 +1,6 @@
 "use client"
 
 import { cubicBezier, motion, Variants } from "motion/react"
-
 import { useAnimationTiming } from "@/hooks/use-animation-timing"
 import { ANIMATION_EASING } from "@/lib/animations"
 import { Card, CardProps } from "./card"

@@ -38,9 +38,7 @@
           "url": "https://zihuame.org.mx/",
           "subtitle": "NGO.WEB.STABLE",
           "features": [
-            "Sistema de donaciones con Stripe",
-            "Integración CMS con Sanity",
-            "Diseño responsive con animaciones"
+            "Plataforma institucional con donaciones únicas y suscripciones, CMS y enfoque en transparencia."
           ],
           "tags": ["next.js", "typescript", "sanity cms", "stripe"]
         },
@@ -51,9 +49,7 @@
           "url": "https://calendar.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
           "features": [
-            "Gestión de eventos personalizados",
-            "Sistema de disponibilidad semanal",
-            "Sincronización con Google Calendar"
+            "Sistema de reservas con disponibilidad semanal y sincronización con Google Calendar."
           ],
           "tags": ["next.js", "typescript", "clerk", "drizzle orm"]
         },
@@ -64,9 +60,7 @@
           "url": "https://lms.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
           "features": [
-            "Sistema de gestión de cursos",
-            "Procesamiento de pagos con Stripe",
-            "Dashboard de progreso estudiantil"
+            "LMS para crear, vender y gestionar cursos con seguimiento real de progreso."
           ],
           "tags": ["next.js", "typescript", "prisma", "stripe"]
         },
@@ -76,11 +70,7 @@
           "year": "2025",
           "url": "https://chat.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
-          "features": [
-            "Chat privado en tiempo real",
-            "Salas auto-destructivas (10min)",
-            "Sistema de códigos de invitación"
-          ],
+          "features": ["Chat privado en tiempo real con salas temporales y enfoque en privacidad."],
           "tags": ["next.js", "typescript", "upstash redis", "elysia"]
         }
       },
