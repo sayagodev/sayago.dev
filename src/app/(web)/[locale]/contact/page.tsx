@@ -28,7 +28,7 @@ export default async function ContactPage() {
   }
 
   return (
-    <main className="relative flex min-h-dvh flex-col items-center overflow-hidden">
+    <main className="relative flex min-h-dvh flex-col items-center">
       <ShowVersion />
       <Container className="py-[60px] pb-30 sm:pb-0" fullWidth>
         <LogoTitle />
