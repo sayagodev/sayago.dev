@@ -11,7 +11,7 @@ export function useFloatingMenu() {
   const [shouldShow, setShouldShow] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
-  const isHome = pathname === "/" || pathname === "#"
+  const isHome = pathname === "/"
 
   // Lógica de visibilidad
   useEffect(() => {

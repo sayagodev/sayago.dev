@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.2.0](https://github.com/sayagodev/sayago.dev/compare/v1.1.0...v1.2.0) (2026-02-09)
+
+### Features
+
+- add multiple favicon assets and web app manifest ([9afe620](https://github.com/sayagodev/sayago.dev/commit/9afe620379633ac6c9c28a7a8fc93bdf0ee57069))
+- enhance language switching functionality and improve routing ([dddd1e4](https://github.com/sayagodev/sayago.dev/commit/dddd1e4c85dac9354d58080b34c68e03fd751b9d))
+- enhance localization and improve content toggling in work section ([6bc30c6](https://github.com/sayagodev/sayago.dev/commit/6bc30c619c7491ea60428c7a293dc317571b143a))
+- enhance LogoTitle component with localization and animated text ([59a702a](https://github.com/sayagodev/sayago.dev/commit/59a702a105cb28afa9da2570531fe307f16f12da))
+- improve accessibility and enhance components with aria attributes ([d53913a](https://github.com/sayagodev/sayago.dev/commit/d53913a09e4472a5ab69f83d631c49b29145f355))
+
+### Bug Fixes
+
+- refactor useSwitchLanguage hook for improved routing with dynamic parameters ([07ebb9e](https://github.com/sayagodev/sayago.dev/commit/07ebb9e8dd68a2632429c639d9de00912c19cecf))
+
+### Refactoring
+
+- update useRouter function to support dynamic path resolution with query parameters ([4448d3c](https://github.com/sayagodev/sayago.dev/commit/4448d3c9ffae3ac8e0741c802562010c793087df))
+
 ## [1.1.0](https://github.com/sayagodev/sayago.dev/compare/v1.0.0...v1.1.0) (2026-02-09)
 
 ### Features

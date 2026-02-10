@@ -10,7 +10,6 @@ import { WoResume } from "./_components/WoResume"
 export default async function WorkPage() {
   const locale = await getLocale()
 
-  // Ejecutar todas las operaciones asíncronas en paralelo
   const [t, t2, markdownContent, markdownContentShort] = await Promise.all([
     getTranslations("pages.wo"),
     getTranslations("construction"),

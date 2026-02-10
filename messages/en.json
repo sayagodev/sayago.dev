@@ -22,7 +22,11 @@
   "pages": {
     "wo": {
       "title": "Short on time/interest?",
-      "altImg": "Downtown Guanajuato, GTO. (2025)"
+      "altImg": "Downtown Guanajuato, GTO. (2025)",
+      "aria": {
+        "tldrOff": "View short summary",
+        "tldrOn": "View long summary"
+      }
     },
     "work": {
       "title": "Works",
