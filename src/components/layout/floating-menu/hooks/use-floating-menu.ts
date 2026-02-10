@@ -20,6 +20,10 @@ export function useFloatingMenu() {
   useEffect(() => {
     if (isHome || state !== "idle") return
 
+    // Reset visibility state on navigation
+    setIsVisible(true)
+    lastScrollY.current = window.scrollY
+
     const handleScroll = () => {
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
