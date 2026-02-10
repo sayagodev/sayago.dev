@@ -161,6 +161,7 @@ export function ProjectDetailsModal({
                     className="border-neutral/30 focus:bg-background focus:border-primary focus:ring-primary text-foreground/90 placeholder:text-foreground/50 modal-textarea h-48 w-full resize-none overflow-y-auto rounded-xl border-2 border-dashed bg-transparent p-5 text-base transition-all outline-none focus:border-solid focus:ring-2"
                     autoFocus
                     maxLength={maxLength}
+                    data-lenis-prevent
                     {...props}
                   />
 

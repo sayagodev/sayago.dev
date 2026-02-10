@@ -2,13 +2,11 @@
 
 import { cn } from "@/utils/cn"
 import { Edit3 } from "lucide-react"
-import { motion, Variants } from "motion/react"
 import { useState } from "react"
 import { ProjectDetailsModal } from "./project-details-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface FormDetailsProps {
-  variants: Variants
   details: string
   detailsLabel: string
   detailsValue: string
@@ -16,7 +14,6 @@ interface FormDetailsProps {
 }
 
 export function FormDetails({
-  variants,
   details,
   detailsLabel,
   detailsValue,
@@ -28,7 +25,7 @@ export function FormDetails({
 
   return (
     <>
-      <motion.div variants={variants} className="flex flex-wrap items-baseline gap-x-2 gap-y-4">
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-4">
         {isMobile ? (
           <span className="text-neutral/50 text-xl">Opc -</span>
         ) : (
@@ -54,7 +51,7 @@ export function FormDetails({
           <Edit3 className="h-5 w-5 opacity-60 transition-all group-hover:scale-110 group-hover:opacity-100" />
           <div className="bg-neutral/40 absolute bottom-0 left-0 z-0 h-0.5 w-full"></div>
         </button>
-      </motion.div>
+      </div>
 
       {/* Details Modal */}
       <ProjectDetailsModal

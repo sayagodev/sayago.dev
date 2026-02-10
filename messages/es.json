@@ -106,8 +106,13 @@
   },
   "contact": {
     "title1": "Aquí es donde tu idea",
-    "title2": "encuentra su",
-    "messages": ["forma definitiva", "interfaz mágica ✨", "base sólida", "próximo nivel"],
+    "title2": "se vuelve...",
+    "messages": [
+      "una visión definida",
+      "un producto sólido",
+      "un sistema robusto",
+      "una realidad funcional ✨"
+    ],
     "name": "Mi nombre es",
     "nameLabel": "nombre y apellido",
     "service": "y estoy interesado en",

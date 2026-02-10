@@ -7,7 +7,7 @@ import {
   MotionProps,
   Transition,
 } from "motion/react"
-import React, {
+import {
   ElementType,
   forwardRef,
   useCallback,

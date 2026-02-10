@@ -12,7 +12,7 @@ export function ContactTitle({ messages, title1, title2 }: ContactTitleProps) {
   return (
     <div className="font-argon text-2xl font-bold md:text-3xl lg:text-5xl">
       <LayoutGroup>
-        <p className="text-center lg:text-start">{title1}</p>
+        <p className="text-center md:mb-1.5 lg:mb-2 lg:text-start">{title1}</p>
         <motion.p
           className="flex flex-col items-center justify-center whitespace-pre md:flex-row lg:justify-start"
           layout
