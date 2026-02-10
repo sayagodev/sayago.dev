@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.0](https://github.com/sayagodev/sayago.dev/compare/v1.2.0...v1.3.0) (2026-02-10)
+
+### Features
+
+- add ServiceInputWithSuggestions component for enhanced service selection ([6cdaa60](https://github.com/sayagodev/sayago.dev/commit/6cdaa60e91b85700c34b1e7c4e660b84fd811b20))
+- enhance floating menu visibility logic based on scroll direction ([d31ea45](https://github.com/sayagodev/sayago.dev/commit/d31ea454203feeb848bb0439d069b1f90375d80f))
+
+### Bug Fixes
+
+- correct portfolio title and description for better localization ([5e48c3d](https://github.com/sayagodev/sayago.dev/commit/5e48c3d78e8d88d52c440f2bf39a2ff1dcf80847))
+- update portfolio title for improved clarity and localization ([8b3d11b](https://github.com/sayagodev/sayago.dev/commit/8b3d11b36e3f4557bcdebd54986b6df689bd681a))
+
+### Refactoring
+
+- simplify component by removing unused motion animations and enhancing structure ([f7f5f70](https://github.com/sayagodev/sayago.dev/commit/f7f5f7048161faa813a9299a2f64770386c00ba9))
+- update project descriptions and features in localization files ([e129553](https://github.com/sayagodev/sayago.dev/commit/e1295535ebe6305b5b8475f43331466224816770))
+
 ## [1.2.0](https://github.com/sayagodev/sayago.dev/compare/v1.1.0...v1.2.0) (2026-02-09)
 
 ### Features
