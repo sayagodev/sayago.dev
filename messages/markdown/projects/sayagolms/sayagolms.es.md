@@ -1,6 +1,6 @@
 ## Description
 
-Learning Management System (LMS) que permite crear, editar y eliminar cursos con estructura jerárquica de capítulos y lecciones. Incluye un sistema de inscripciones con pagos mediante [Stripe](https://stripe.com/), panel de administración para gestión de contenido educativo, dashboard para estudiantes con seguimiento de progreso, sistema de autenticación con múltiples proveedores, y almacenamiento de archivos multimedia (imágenes y videos) en AWS S3. El sistema permite a los administradores gestionar cursos completos con descripciones enriquecidas, mientras que los estudiantes pueden inscribirse, acceder al contenido y rastrear su progreso de aprendizaje.
+Sistema LMS que desarrollé para crear y vender cursos online. Permite estructurar el contenido por capítulos y lecciones, gestionar inscripciones con pagos vía Stripe y dar seguimiento real al progreso del estudiante. Incluye panel de administración para manejar cursos sin fricción, autenticación con múltiples proveedores y almacenamiento seguro de archivos en AWS S3. Todo pensado para que el flujo de enseñanza-aprendizaje sea simple, claro y funcional.
 
 ## Roles
 
@@ -12,12 +12,6 @@ Next.js, React, TypeScript, TailwindCSS, Prisma, PostgreSQL, Stripe, Better Auth
 
 ## Objectives
 
-- Desarrollar un sistema completo de gestión de aprendizaje (LMS) con funcionalidades de creación, edición y eliminación de cursos.
-- Implementar una estructura jerárquica de contenido con capítulos y lecciones dentro de cada curso.
-- Integrar un sistema de pagos con Stripe para procesar inscripciones a cursos, incluyendo webhooks para actualización automática de estados de inscripción.
-- Crear un panel de administración completo que permita gestionar cursos, capítulos y lecciones sin necesidad de conocimientos técnicos avanzados.
-- Desarrollar un dashboard para estudiantes con visualización de cursos inscritos y seguimiento de progreso por lección.
-- Implementar un sistema de autenticación robusto con múltiples proveedores (email OTP y OAuth con GitHub) usando Better Auth.
-- Integrar almacenamiento de archivos multimedia (imágenes de portada, thumbnails y videos de lecciones) en AWS S3 con presigned URLs para uploads seguros.
-- Implementar un editor de texto enriquecido (TipTap) para descripciones de cursos y lecciones.
-- Aplicar medidas de seguridad avanzadas incluyendo rate limiting, protección contra bots, validación en múltiples capas y type safety end-to-end con TypeScript, Arcject y Zod.
+- Diseñar y construir un LMS completo que permita crear, editar y gestionar cursos de forma sencilla, con contenido estructurado en capítulos y lecciones, integrando pagos con [Stripe](https://stripe.com/) y automatización de inscripciones para mantener un flujo continuo entre compra, acceso y aprendizaje.
+- Desarrollar una experiencia sólida para administradores y estudiantes, incluyendo panel de gestión de contenido, dashboard con seguimiento real de progreso, autenticación segura con múltiples proveedores y manejo eficiente de archivos multimedia mediante AWS S3.
+- Mantener una base técnica robusta incorporando editor enriquecido, validaciones en múltiples capas, protección contra abusos y type-safety end-to-end, priorizando seguridad, estabilidad y escalabilidad del sistema.

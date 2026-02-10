@@ -1,6 +1,6 @@
 ## Description
 
-Permite crear eventos personalizados, configurar disponibilidad horaria semanal y compartir enlaces de reserva. Los clientes pueden elegir su zona horaria, seleccionar fecha y hora disponibles, y agregar comentarios. Incluye sincronización automática con Google Calendar: al reservar una cita, se crea un evento en el calendario del organizador con los detalles del invitado.
+Aplicación de gestión de eventos y reservas que permite definir disponibilidad semanal, crear eventos personalizados y compartir enlaces de booking. Los usuarios pueden elegir su zona horaria, seleccionar horarios disponibles y agregar comentarios. Incluye sincronización automática con Google Calendar para crear eventos con los datos del invitado al momento de confirmar una reserva.
 
 ## Roles
 
@@ -12,6 +12,6 @@ Next.js, React.js, TypeScript, Tailwind, React Hook Form, Zod, Clerk, Drizzle OR
 
 ## Objectives
 
-- Implementar un sistema de gestión de eventos donde los usuarios pueden crear, editar y eliminar eventos personalizados con duración configurable.
-- Desarrollar un sistema de disponibilidad horaria semanal que permite configurar múltiples rangos de tiempo por día de la semana.
-- Integrar soporte multi-zona horaria para que los clientes puedan reservar citas en su zona horaria local.
+- Diseñar y desarrollar un sistema flexible de gestión de eventos que permita crear, editar y eliminar eventos con duración configurable, junto con un esquema de disponibilidad semanal con múltiples rangos por día para controlar cuándo se pueden agendar citas.
+- Implementar un flujo de reservas simple mediante enlaces compartibles, permitiendo a los clientes elegir fecha y hora disponibles, agregar comentarios y reservar sin fricción desde cualquier lugar.
+- Integrar soporte completo de multi-zona horaria y sincronización con Google Calendar para crear automáticamente eventos con la información del invitado, manteniendo consistencia entre agenda, disponibilidad y reservas.

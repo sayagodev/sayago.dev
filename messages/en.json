@@ -38,9 +38,7 @@
           "url": "https://zihuame.org.mx/",
           "subtitle": "NGO.WEB.STABLE",
           "features": [
-            "Donation system with Stripe",
-            "CMS integration with Sanity",
-            "Responsive design with animations"
+            "Institutional platform with one-time and recurring donations, CMS, and transparency-focused structure."
           ],
           "tags": ["next.js", "typescript", "sanity cms", "stripe"]
         },
@@ -50,11 +48,7 @@
           "year": "2025",
           "url": "https://calendar.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
-          "features": [
-            "Custom event management",
-            "Weekly availability system",
-            "Google Calendar sync"
-          ],
+          "features": ["Scheduling system with weekly availability and Google Calendar sync."],
           "tags": ["next.js", "typescript", "clerk", "drizzle orm"]
         },
         "sayagolms": {
@@ -63,11 +57,7 @@
           "year": "2025",
           "url": "https://lms.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
-          "features": [
-            "Course management system",
-            "Payment processing with Stripe",
-            "Student progress dashboard"
-          ],
+          "features": ["LMS to create, sell, and manage courses with real progress tracking."],
           "tags": ["next.js", "typescript", "prisma", "stripe"]
         },
         "chat": {
@@ -76,11 +66,7 @@
           "year": "2025",
           "url": "https://chat.sayago.dev/",
           "subtitle": "LAB.APP.STABLE",
-          "features": [
-            "Real-time private chat",
-            "Auto-destruct rooms (10min)",
-            "Invitation code system"
-          ],
+          "features": ["Real-time private chat with self-destruct rooms and privacy-first design."],
           "tags": ["next.js", "typescript", "upstash redis", "elysia"]
         }
       },

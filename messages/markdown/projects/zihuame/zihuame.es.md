@@ -4,8 +4,7 @@ Sitio web institucional para Zihuame Mochilla, A.C. que trabaja con comunidades 
 
 ## Roles
 
-- UI/UX
-- Desarrollo
+Full Stack Development, UI/UX
 
 ## Technologies
 

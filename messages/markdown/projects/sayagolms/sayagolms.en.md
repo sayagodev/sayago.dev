@@ -1,6 +1,6 @@
 ## Description
 
-Learning Management System (LMS) that allows you to create, edit, and delete courses with a hierarchical structure of chapters and lessons. It includes an enrollment system with payment processing via [Stripe](https://stripe.com/), an admin panel for managing educational content, a student dashboard with progress tracking, authentication with multiple providers, and media file storage (images and videos) on AWS S3. The system enables administrators to manage complete courses with rich descriptions, while students can enroll, access content, and track their learning progress.
+A Learning Management System I built to create and sell online courses. It supports a structured flow with chapters and lessons, paid enrollments through Stripe, and real progress tracking for students. It includes a clean admin panel to manage courses easily, multi-provider authentication, and secure media storage on AWS S3. Designed to keep the teaching-learning experience simple, clear, and practical.
 
 ## Roles
 
@@ -12,12 +12,6 @@ Next.js, React, TypeScript, TailwindCSS, Prisma, PostgreSQL, Stripe, Better Auth
 
 ## Objectives
 
-- Develop a comprehensive Learning Management System (LMS) with functionality to create, edit, and delete courses.
-- Implement a hierarchical content structure with chapters and lessons within each course.
-- Integrate a payment system using Stripe for course enrollments, including webhooks for automatic enrollment status updates.
-- Create a complete admin panel that allows managing courses, chapters, and lessons without requiring advanced technical knowledge.
-- Develop a student dashboard showing enrolled courses and tracking lesson progress.
-- Implement robust authentication using multiple providers (email OTP and OAuth with GitHub) via Better Auth.
-- Integrate media file storage (cover images, thumbnails, and lesson videos) on AWS S3 using presigned URLs for secure uploads.
-- Implement a rich text editor (TipTap) for course and lesson descriptions.
-- Apply advanced security measures including rate limiting, bot protection, multi-layer validation, and end-to-end type safety with TypeScript, Arcjet, and Zod.
+- Design and build a complete LMS that enables easy course creation and management with structured chapters and lessons, integrating payments through [Stripe](https://stripe.com/) and automated enrollments to keep the flow between purchase, access, and learning seamless.
+- Deliver a solid experience for both admins and students, including a content management panel, real progress tracking dashboard, secure multi-provider authentication, and efficient media handling using AWS S3.
+- Maintain a strong technical foundation with a rich text editor, layered validation, abuse protection, and end-to-end type safety, prioritizing security, reliability, and scalability of the platform.

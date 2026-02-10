@@ -34,7 +34,7 @@ export function Card({ avatar, features, url, subtitle, tags, title }: CardProps
         <div className="text-[11px] leading-relaxed uppercase opacity-85 md:text-xs lg:text-sm">
           <ul className="space-y-1">
             {features.map((feature, i) => (
-              <li key={i}>• {feature}</li>
+              <li key={i}>{feature}</li>
             ))}
           </ul>
         </div>

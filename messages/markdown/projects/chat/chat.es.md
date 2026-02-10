@@ -1,6 +1,6 @@
 ## Description
 
-\>chat_privado es una aplicación web de chat en tiempo real diseñada para conversaciones privadas one-to-one con características de seguridad y privacidad. La aplicación permite crear salas de chat temporales que se autodestruyen automáticamente después de 10 minutos, garantizando que las conversaciones no persistan indefinidamente. Los usuarios pueden crear salas, generar códigos de invitación únicos para invitar a otra persona, y gestionar múltiples salas activas simultáneamente (hasta 3 por usuario).
+Aplicación web de chat en tiempo real enfocada en conversaciones privadas one-to-one. Permite crear salas temporales que se autodestruyen automáticamente, generar códigos únicos de invitación y mantener múltiples salas activas al mismo tiempo. Diseñada con énfasis en privacidad, simplicidad y control total sobre la duración de las conversaciones.
 
 ## Roles
 
@@ -12,10 +12,6 @@ Next.js, React, TypeScript, TailwindCSS, Elysia, Upstash Redis, Upstash Realtime
 
 ## Objectives
 
-- Implementar sistema de creación de salas de chat privadas con autenticación basada en tokens HTTP-only cookies
-- Integrar [Upstash Redis](https://upstash.com/) para almacenamiento persistente de mensajes, metadatos de salas y códigos de invitación con TTL automático
-- Implementar autodestrucción automática de salas después de 10 minutos usando TTL de Redis
-- Desarrollar sistema de invitación con códigos únicos para invitar a otra persona con TTL de 3 minutos
-- Desarrollar sistema de gestión de salas activas con almacenamiento en localStorage
-- Integrar notificaciones de sonido para eventos de mensajes recibidos, errores, éxito y destrucción de sala
-- Desarrollar API RESTful con Elysia framework usando TypeScript end-to-end type safety con Elysia
+- Diseñar y desarrollar un sistema de chat privado con autenticación basada en tokens mediante HTTP-only cookies, permitiendo crear salas seguras con control de acceso y comunicación en tiempo real entre dos usuarios.
+- Implementar persistencia ligera usando [Upstash Redis](https://upstash.com/) para mensajes, metadatos y códigos de invitación, aprovechando TTL para autodestruir salas automáticamente y garantizar que las conversaciones no permanezcan más tiempo del necesario.
+- Construir una experiencia simple y funcional con gestión de múltiples salas activas, invitaciones temporales, notificaciones de eventos y una API RESTful con [Elysia](https://elysiajs.com/) y type-safety end-to-end para mantener consistencia, seguridad y rendimiento.

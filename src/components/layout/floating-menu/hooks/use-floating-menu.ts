@@ -9,9 +9,55 @@ export function useFloatingMenu() {
   const { state } = usePageTransition()
   const [isOpen, setIsOpen] = useState(false)
   const [shouldShow, setShouldShow] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
   const menuRef = useRef<HTMLDivElement>(null)
+  const lastScrollY = useRef(0)
+  const ticking = useRef(false)
 
   const isHome = pathname === "/"
+
+  // Detectar dirección del scroll
+  useEffect(() => {
+    if (isHome || state !== "idle") return
+
+    // Reset visibility state on navigation
+    setIsVisible(true)
+    lastScrollY.current = window.scrollY
+
+    const handleScroll = () => {
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY
+          const windowHeight = window.innerHeight
+          const documentHeight = document.documentElement.scrollHeight
+
+          // Detectar si está cerca del final de la página (100px antes del final)
+          const isNearBottom = windowHeight + currentScrollY >= documentHeight - 100
+
+          // Si está cerca del final, siempre mostrar el menú
+          if (isNearBottom) {
+            setIsVisible(true)
+          }
+          // Si el scroll es hacia abajo, ocultar el menú
+          else if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+            setIsVisible(false)
+            setIsOpen(false) // Cerrar el dropdown también
+          }
+          // Si el scroll es hacia arriba, mostrar el menú
+          else if (currentScrollY < lastScrollY.current) {
+            setIsVisible(true)
+          }
+
+          lastScrollY.current = currentScrollY
+          ticking.current = false
+        })
+        ticking.current = true
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isHome, state])
 
   // Lógica de visibilidad
   useEffect(() => {
@@ -54,7 +100,7 @@ export function useFloatingMenu() {
     isHome,
     isOpen,
     setIsOpen,
-    shouldShow,
+    shouldShow: shouldShow && isVisible,
     isActive,
     menuRef,
   }

@@ -1,6 +1,6 @@
 ## Description
 
-Allows users to create custom events, set up weekly availability, and share booking links. Clients can choose their time zone, select available dates and times, and add comments. Includes automatic synchronization with Google Calendar: when an appointment is booked, an event is created in the organizer's calendar with the guest's details.
+An event scheduling and booking app that allows setting weekly availability, creating custom events, and sharing booking links. Users can select their time zone, pick available slots, and add comments. Includes automatic Google Calendar sync to create events with guest details when a booking is confirmed.
 
 ## Roles
 
@@ -12,6 +12,6 @@ Next.js, React.js, TypeScript, Tailwind, React Hook Form, Zod, Clerk, Drizzle OR
 
 ## Objectives
 
-- Implement an event management system where users can create, edit, and delete custom events with configurable durations.
-- Develop a weekly availability system that enables configuration of multiple time ranges per day of the week.
-- Integrate multi-time zone support so clients can book appointments in their local time zone.
+- Design and build a flexible event management system that supports creating, editing, and deleting events with configurable duration, along with a weekly availability model with multiple time ranges per day to control when bookings are allowed.
+- Implement a simple booking flow through shareable links, allowing clients to select available date and time, add comments, and schedule without friction from anywhere.
+- Integrate full multi-time-zone support and Google Calendar synchronization to automatically create events with guest information, keeping schedule, availability, and bookings consistent.
