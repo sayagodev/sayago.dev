@@ -12,13 +12,16 @@ export function ContactTitle({ messages, title1, title2 }: ContactTitleProps) {
   return (
     <div className="font-argon text-2xl font-bold md:text-3xl lg:text-5xl">
       <LayoutGroup>
-        <p className="text-center md:mb-1.5 lg:mb-2 lg:text-start">{title1}</p>
+        <p className="text-center md:mb-1.5 lg:mb-2 lg:text-start">
+          {title1}
+          <span className="xs:hidden"> {title2}</span>
+        </p>
         <motion.p
-          className="flex flex-col items-center justify-center whitespace-pre md:flex-row lg:justify-start"
+          className="flex flex-row flex-wrap items-center justify-center gap-x-2 lg:justify-start"
           layout
         >
           <motion.span layout transition={{ type: "spring", damping: 30, stiffness: 400 }}>
-            {title2}{" "}
+            <span className="xs:inline hidden">{title2} </span>
           </motion.span>
           <TextRotate
             as="span"

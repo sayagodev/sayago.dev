@@ -128,6 +128,7 @@ body::-webkit-scrollbar {
   --border: 1px;
   --depth: 0;
   --noise: 1;
+  --breakpoint-xs: 480px;
 }
 
 body {

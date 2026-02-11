@@ -107,12 +107,7 @@
   "contact": {
     "title1": "Aquí es donde tu idea",
     "title2": "se vuelve...",
-    "messages": [
-      "una visión definida",
-      "un producto sólido",
-      "un sistema robusto",
-      "una realidad funcional ✨"
-    ],
+    "messages": ["una visión definida", "un producto sólido", "un sistema robusto", "realidad ✨"],
     "name": "Mi nombre es",
     "nameLabel": "nombre y apellido",
     "service": "y estoy interesado en",
