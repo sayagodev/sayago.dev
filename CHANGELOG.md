@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.3.1](https://github.com/sayagodev/sayago.dev/compare/v1.3.0...v1.3.1) (2026-02-11)
+
+### Refactoring
+
+- improve formatting and structure in localization files and contact title component ([ae00be3](https://github.com/sayagodev/sayago.dev/commit/ae00be3b9f284e98b2eb578b93d744d27f2c3e40))
+
 ## [1.3.0](https://github.com/sayagodev/sayago.dev/compare/v1.2.0...v1.3.0) (2026-02-10)
 
 ### Features
