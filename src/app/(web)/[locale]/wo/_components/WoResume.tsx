@@ -53,7 +53,7 @@ export function WoResume({ mContent, mContentShort }: WoResumeProps) {
     }
     const newSearch = params.toString()
     const newUrl = newSearch ? `${pathname}?${newSearch}` : pathname
-    router.replace(newUrl)
+    router.replace(newUrl, { scroll: false })
 
     // Cancelar animación anterior si existe
     isCancelledRef.current = true
