@@ -10,7 +10,7 @@ interface ContactTitleProps {
 
 export function ContactTitle({ messages, title1, title2 }: ContactTitleProps) {
   return (
-    <div className="font-argon text-2xl font-bold md:text-3xl lg:text-5xl">
+    <div className="font-argon text-2xl font-bold md:text-3xl lg:mt-[80px] lg:text-5xl">
       <LayoutGroup>
         <p className="text-center md:mb-1.5 lg:mb-2 lg:text-start">
           {title1}
