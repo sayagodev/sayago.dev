@@ -1,6 +1,6 @@
 "use client"
 
-import woImage from "@/public/images/wo.png"
+import woImage from "@/public/images/wo.jpeg"
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react"
 import Image from "next/image"
 import { useEffect, useRef } from "react"
@@ -89,19 +89,19 @@ export function WoImageSection({ altText }: WoImageSectionProps) {
           priority
           className="h-auto w-full"
         />
-        <motion.div
-          ref={ref}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            x: springX,
-            y: y,
-          }}
-          className="bg-neutral text-info-content font-zi absolute -right-3 bottom-[36%] -rotate-10 cursor-pointer px-3 py-1 md:px-[3%]"
-          aria-hidden="true"
-        >
-          她很漂亮
-        </motion.div>
+        {/* <motion.div */}
+        {/*   ref={ref} */}
+        {/*   onMouseMove={handleMouseMove} */}
+        {/*   onMouseLeave={handleMouseLeave} */}
+        {/*   style={{ */}
+        {/*     x: springX, */}
+        {/*     y: y, */}
+        {/*   }} */}
+        {/*   className="bg-neutral text-info-content font-zi absolute -right-3 bottom-[36%] -rotate-10 cursor-pointer px-3 py-1 md:px-[3%]" */}
+        {/*   aria-hidden="true" */}
+        {/* > */}
+        {/*   她很漂亮 */}
+        {/* </motion.div> */}
       </div>
       <p className="text-[14px] font-medium md:text-sm">{altText}</p>
     </div>
