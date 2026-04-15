@@ -1,0 +1,50 @@
+{
+  "name": "sayago.dev",
+  "version": "1.5.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "prepare": "husky",
+    "release": "commit-and-tag-version -a",
+    "release:patch": "commit-and-tag-version --release-as patch -a",
+    "release:minor": "commit-and-tag-version --release-as minor -a",
+    "release:major": "commit-and-tag-version --release-as major -a",
+    "release:first": "commit-and-tag-version --first-release -a"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,scss,md,mdx,html,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "bash -c 'pnpm tsc --noEmit'"
+    ]
+  },
+  "dependencies": {
+    "next": "16.2.3",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "babel-plugin-react-compiler": "1.0.0",
+    "commit-and-tag-version": "^12.7.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.3",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}
