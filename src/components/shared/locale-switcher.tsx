@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import type { FC } from "react"
-import { Locales, getHTMLTextDir, getLocaleName, getLocalizedUrl } from "intlayer"
-import { useLocale } from "next-intlayer"
-import Link from "next/link"
+import type { FC } from 'react'
+import { Locales, getHTMLTextDir, getLocaleName, getLocalizedUrl } from 'intlayer'
+import { useLocale } from 'next-intlayer'
+import Link from 'next/link'
 
 export const LocaleSwitcher: FC = () => {
   const { locale, pathWithoutLocale, availableLocales, setLocale } = useLocale()
@@ -17,7 +17,7 @@ export const LocaleSwitcher: FC = () => {
             href={getLocalizedUrl(pathWithoutLocale, localeItem)}
             hrefLang={localeItem}
             key={localeItem}
-            aria-current={locale === localeItem ? "page" : undefined}
+            aria-current={locale === localeItem ? 'page' : undefined}
             onClick={() => setLocale(localeItem)}
           >
             <span>

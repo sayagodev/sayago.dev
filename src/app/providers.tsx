@@ -1,5 +1,5 @@
-import { ThemeProvider } from "@/components/theme-provider"
-import { IntlayerClientProvider } from "next-intlayer"
+import { ThemeProvider } from '@/components/shared/theme-provider'
+import { IntlayerClientProvider } from 'next-intlayer'
 
 export async function Providers({
   children,

@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-import fs from "fs"
-import path from "path"
-import { execSync } from "child_process"
-import { fileURLToPath } from "url"
+import fs from 'fs'
+import path from 'path'
+import { execSync } from 'child_process'
+import { fileURLToPath } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const packageJsonPath = path.join(__dirname, "../package.json")
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"))
+const packageJsonPath = path.join(__dirname, '../package.json')
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
 const version = packageJson.version
 
 const versionFile = `// This file is generated automatically. Do not edit manually.
@@ -19,12 +19,12 @@ export const VERSION = '${version}';
 export default VERSION;
 `
 
-const versionFilePath = path.join(__dirname, "../src/version.ts")
-fs.writeFileSync(versionFilePath, versionFile, "utf8")
+const versionFilePath = path.join(__dirname, '../src/version.ts')
+fs.writeFileSync(versionFilePath, versionFile, 'utf8')
 
 // Agregar el archivo al staging area para que se incluya en el commit del release
 try {
-  execSync(`git add ${versionFilePath}`, { stdio: "ignore" })
+  execSync(`git add ${versionFilePath}`, { stdio: 'ignore' })
   console.log(`✅ Version ${version} updated in src/version.ts and staged`)
 } catch (error) {
   console.warn(
