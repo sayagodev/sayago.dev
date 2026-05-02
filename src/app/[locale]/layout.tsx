@@ -33,7 +33,7 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
       suppressHydrationWarning
     >
       <body>
-        <Providers>{children}</Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   )
