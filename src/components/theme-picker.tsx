@@ -9,8 +9,10 @@ import {
 } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
 import { Moon, Sun } from "lucide-react"
+import { useIntlayer } from "next-intlayer"
 
 export function ThemePicker() {
+  const content = useIntlayer("theme-picker")
   const { setTheme } = useTheme()
 
   return (
@@ -23,10 +25,10 @@ export function ThemePicker() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>Claro</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>Oscuro</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("prueba")}>Prueba</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>Sistema</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("light")}>{content.light}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>{content.dark}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("prueba")}>{content.test}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>{content.system}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
