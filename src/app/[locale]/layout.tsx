@@ -3,6 +3,9 @@ import { cn } from '@/lib/utils'
 import localFont from 'next/font/local'
 import { Providers } from '@/app/providers'
 import { NextLayoutIntlayer } from 'next-intlayer'
+import { ShowVersion } from '@/components/layout/show-version'
+import { FooterClock } from '@/components/layout/footer-clock'
+import { Background } from '@/components/visual/background'
 
 export { generateStaticParams } from 'next-intlayer'
 
@@ -71,7 +74,9 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
       suppressHydrationWarning
     >
       <body>
+        <ShowVersion />
         <Providers locale={locale}>{children}</Providers>
+        <FooterClock />
       </body>
     </html>
   )

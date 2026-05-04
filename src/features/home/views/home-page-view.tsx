@@ -1,5 +1,6 @@
 import { Background } from '@/components/visual/background'
 import { HomeNavigation } from '../components/home-navigation'
+import { ThemePicker } from '@/components/shared/theme-picker'
 
 export function HomePageView() {
   return (
@@ -7,6 +8,8 @@ export function HomePageView() {
       <Background />
 
       <HomeNavigation />
+
+      <ThemePicker />
     </main>
   )
 }

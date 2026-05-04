@@ -15,9 +15,10 @@ export function Background() {
     GRAINIENT_COLORS[(resolvedTheme as keyof typeof GRAINIENT_COLORS) || 'light']
 
   return (
-    <div className="min-w-screen min-h-screen absolute -z-10">
+    <div className="min-w-dvw min-h-dvh absolute -z-999">
       <Grainient
         {...currentColors}
+        className="min-h-dvh min-w-dvw"
         timeSpeed={0.25}
         colorBalance={0}
         warpStrength={1}
