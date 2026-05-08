@@ -1,7 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
-import { GRAINIENT_COLORS } from '@/constants'
+import { GRAINIENT_COLORS } from '@/lib/constants'
 import dynamic from 'next/dynamic'
 
 const Grainient = dynamic(() => import('./Grainient'), {
@@ -15,10 +15,10 @@ export function Background() {
     GRAINIENT_COLORS[(resolvedTheme as keyof typeof GRAINIENT_COLORS) || 'light']
 
   return (
-    <div className="min-w-dvw min-h-dvh absolute -z-999">
+    <div className="fixed inset-0 -z-999">
       <Grainient
         {...currentColors}
-        className="min-h-dvh min-w-dvw"
+        className="h-full w-full"
         timeSpeed={0.25}
         colorBalance={0}
         warpStrength={1}

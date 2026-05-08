@@ -19,16 +19,16 @@ export const VERSION = '${version}';
 export default VERSION;
 `
 
-const versionFilePath = path.join(__dirname, '../src/version.ts')
+const versionFilePath = path.join(__dirname, '../src/lib/version.ts')
 fs.writeFileSync(versionFilePath, versionFile, 'utf8')
 
 // Agregar el archivo al staging area para que se incluya en el commit del release
 try {
   execSync(`git add ${versionFilePath}`, { stdio: 'ignore' })
-  console.log(`✅ Version ${version} updated in src/version.ts and staged`)
+  console.log(`✅ Version ${version} updated in src/lib/version.ts and staged`)
 } catch (error) {
   console.warn(
-    `⚠️ Version ${version} updated in src/version.ts (git add failed, but file is updated)`
+    `⚠️ Version ${version} updated in src/lib/version.ts (git add failed, but file is updated)`
   )
   process.exit(1)
 }

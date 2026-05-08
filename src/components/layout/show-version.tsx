@@ -1,4 +1,4 @@
-import VERSION from '@/version'
+import VERSION from '@/lib/version'
 
 export function ShowVersion() {
   return (
