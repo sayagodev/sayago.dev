@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@/components/shared/theme-provider'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { IntlayerClientProvider } from 'next-intlayer'
 
 export async function Providers({
@@ -10,7 +11,9 @@ export async function Providers({
 }) {
   return (
     <IntlayerClientProvider locale={locale}>
-      <ThemeProvider>{children}</ThemeProvider>
+      <NuqsAdapter>
+        <ThemeProvider>{children}</ThemeProvider>
+      </NuqsAdapter>
     </IntlayerClientProvider>
   )
 }

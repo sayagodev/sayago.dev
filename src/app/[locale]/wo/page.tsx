@@ -1,4 +1,3 @@
-import { FooterClock } from '@/components/layout/footer-clock'
 import { ShowVersion } from '@/components/layout/show-version'
 import { WoPageView } from '@/features/wo/views/wo-page-view'
 import { NextPageIntlayer } from 'next-intlayer'
