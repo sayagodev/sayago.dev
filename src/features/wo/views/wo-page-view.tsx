@@ -8,10 +8,10 @@ export function WoPageView() {
   return (
     <main className="relative flex flex-col min-h-dvh">
       <Background />
-      <Container fullWidth>
+      <Container fullWidth className="py-15!">
         <Logo />
 
-        <div className="grid grid-cols-1 place-items-center gap-6 lg:mt-20! lg:grid-cols-[auto_auto]">
+        <div className="grid grid-cols-1 place-items-center gap-6 lg:mt-20! lg:grid-cols-[auto_auto] lg:place-items-start">
           <WoImage />
           <WoResume />
         </div>

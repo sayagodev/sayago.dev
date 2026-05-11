@@ -35,21 +35,6 @@ const config: IntlayerConfig = {
      */
     applicationURL: 'http://localhost:3000',
   },
-  ai: {
-    /**
-     * AI provider to use.
-     * Options: 'openai', 'anthropic', 'mistral', 'deepseek', 'gemini', 'ollama', 'openrouter', 'alibaba', 'fireworks', 'groq', 'huggingface', 'bedrock', 'googlevertex', 'togetherai'
-     */
-    provider: 'openai',
-    model: 'gpt-5-mini',
-    apiKey: process.env.OPENAI_API_KEY,
-    /**
-     * Additional context for the translations
-     *
-     * Can be use in addition of the dictionary `description` field
-     */
-    applicationContext: [''].join('\n'),
-  },
   compiler: {
     enabled: true,
 

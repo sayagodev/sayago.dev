@@ -21,7 +21,7 @@ importers:
         version: 2.1.1
       intlayer:
         specifier: ^8.7.12
-        version: 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+        version: 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       lucide-react:
         specifier: ^1.8.0
         version: 1.8.0(react@19.2.4)
@@ -30,7 +30,7 @@ importers:
         version: 16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       next-intlayer:
         specifier: ^8.7.12
-        version: 8.7.12(next@16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.3.6)
+        version: 8.7.12(next@16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.4.3)
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -71,6 +71,9 @@ importers:
       '@commitlint/config-conventional':
         specifier: ^20.5.0
         version: 20.5.0
+      '@intlayer/swc':
+        specifier: ^8.9.4
+        version: 8.9.4
       '@types/node':
         specifier: ^20
         version: 20.19.39
@@ -1484,6 +1487,13 @@ packages:
     resolution:
       {
         integrity: sha512-aX0JQ/e4Cy/kPnDReaxeotI9tPl5UxpxljCLsk9av8qICNLwhJyTxT2VlggEhApijCH8jzZmok2SwiCZMkb1qg==,
+      }
+    engines: { node: '>=14.18' }
+
+  '@intlayer/swc@8.9.4':
+    resolution:
+      {
+        integrity: sha512-FRl6ZP93yS2AAChByXh+05jaBwMl18i1ZXX9094+dwalcyC0XVrbuIe+vj0CK3Bh2h64uBDT8yJ/yisbBRFAig==,
       }
     engines: { node: '>=14.18' }
 
@@ -9381,6 +9391,12 @@ packages:
         integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==,
       }
 
+  zod@4.4.3:
+    resolution:
+      {
+        integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==,
+      }
+
 snapshots:
   '@alloc/quick-lru@5.2.0': {}
 
@@ -10109,7 +10125,7 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  '@intlayer/babel@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)':
+  '@intlayer/babel@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/generator': 7.29.1
@@ -10117,7 +10133,7 @@ snapshots:
       '@babel/plugin-syntax-jsx': 7.28.6(@babel/core@7.29.0)
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
-      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       '@intlayer/config': 8.7.12(react@19.2.4)
       '@intlayer/core': 8.7.12(react@19.2.4)
       '@intlayer/dictionaries-entry': 8.7.12(react@19.2.4)
@@ -10132,7 +10148,7 @@ snapshots:
       - typescript
       - zod
 
-  '@intlayer/chokidar@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)':
+  '@intlayer/chokidar@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)':
     dependencies:
       '@intlayer/api': 8.7.12(react@19.2.4)
       '@intlayer/config': 8.7.12(react@19.2.4)
@@ -10146,19 +10162,19 @@ snapshots:
       fast-glob: 3.3.3
       recast: 0.23.11
       simple-git: 3.36.0
-      zod-to-ts: 2.0.0(typescript@5.9.3)(zod@4.3.6)
+      zod-to-ts: 2.0.0(typescript@5.9.3)(zod@4.4.3)
     transitivePeerDependencies:
       - react
       - supports-color
       - typescript
       - zod
 
-  '@intlayer/cli@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)':
+  '@intlayer/cli@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)':
     dependencies:
       '@clack/prompts': 0.11.0
       '@intlayer/api': 8.7.12(react@19.2.4)
-      '@intlayer/babel': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
-      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+      '@intlayer/babel': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
+      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       '@intlayer/config': 8.7.12(react@19.2.4)
       '@intlayer/core': 8.7.12(react@19.2.4)
       '@intlayer/dictionaries-entry': 8.7.12(react@19.2.4)
@@ -10230,6 +10246,8 @@ snapshots:
     transitivePeerDependencies:
       - react
 
+  '@intlayer/swc@8.9.4': {}
+
   '@intlayer/types@8.7.12': {}
 
   '@intlayer/unmerged-dictionaries-entry@8.7.12(react@19.2.4)':
@@ -10238,9 +10256,9 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  '@intlayer/webpack@8.7.12(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.3.6)':
+  '@intlayer/webpack@8.7.12(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.4.3)':
     dependencies:
-      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       '@intlayer/config': 8.7.12(react@19.2.4)
       '@intlayer/dictionaries-entry': 8.7.12(react@19.2.4)
       '@intlayer/types': 8.7.12
@@ -13477,9 +13495,9 @@ snapshots:
       hasown: 2.0.2
       side-channel: 1.1.0
 
-  intlayer@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6):
+  intlayer@8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3):
     dependencies:
-      '@intlayer/cli': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+      '@intlayer/cli': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       '@intlayer/config': 8.7.12(react@19.2.4)
       '@intlayer/core': 8.7.12(react@19.2.4)
       '@intlayer/types': 8.7.12
@@ -14035,14 +14053,14 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next-intlayer@8.7.12(next@16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.3.6):
+  next-intlayer@8.7.12(next@16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.4.3):
     dependencies:
-      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.3.6)
+      '@intlayer/chokidar': 8.7.12(react@19.2.4)(typescript@5.9.3)(zod@4.4.3)
       '@intlayer/config': 8.7.12(react@19.2.4)
       '@intlayer/core': 8.7.12(react@19.2.4)
       '@intlayer/dictionaries-entry': 8.7.12(react@19.2.4)
       '@intlayer/types': 8.7.12
-      '@intlayer/webpack': 8.7.12(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.3.6)
+      '@intlayer/webpack': 8.7.12(react@19.2.4)(tslib@2.8.1)(typescript@5.9.3)(webpack@5.106.2)(zod@4.4.3)
       defu: 6.1.7
       next: 16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       node-loader: 2.1.0(webpack@5.106.2)
@@ -15640,10 +15658,10 @@ snapshots:
     dependencies:
       zod: 3.25.76
 
-  zod-to-ts@2.0.0(typescript@5.9.3)(zod@4.3.6):
+  zod-to-ts@2.0.0(typescript@5.9.3)(zod@4.4.3):
     dependencies:
       typescript: 5.9.3
-      zod: 4.3.6
+      zod: 4.4.3
 
   zod-validation-error@4.0.2(zod@4.3.6):
     dependencies:
@@ -15652,3 +15670,5 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.3.6: {}
+
+  zod@4.4.3: {}
