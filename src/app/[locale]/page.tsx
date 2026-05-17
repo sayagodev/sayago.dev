@@ -11,7 +11,7 @@ export const generateMetadata = async ({ params }: LocalPromiseParams): Promise<
   const content = getIntlayer('theme-picker', locale)
 
   return {
-    title: content.system,
+    // title: content.system,
   }
 }
 
