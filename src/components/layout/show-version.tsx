@@ -1,17 +1,18 @@
 import VERSION from '@/lib/version'
+import '@/styles/show-version.css'
 
 export function ShowVersion() {
   return (
     <div
-      className="fixed top-1/2 left-7.5 hidden -translate-y-1/2 flex-col items-center justify-center lg:flex z-10"
+      className="version-badge"
       aria-hidden="true"
       role="presentation"
     >
-      <p className="font-zi flex flex-col text-xl">
+      <p className="version-badge__text">
         <span>版</span>
         <span>本</span>
       </p>
-      <span className="font-zi text-xl">{VERSION}</span>
+      <span className="version-badge__number">{VERSION}</span>
     </div>
   )
 }

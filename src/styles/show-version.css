@@ -1,0 +1,32 @@
+@layer components {
+  .version-badge {
+    position: fixed;
+    inset-block-start: 50%;
+    inset-inline-start: 1.875rem;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    display: none;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: 1024px) {
+      display: flex;
+    }
+
+    & .version-badge__text {
+      margin-block-end: 0;
+      font-family: var(--font-zi);
+      display: flex;
+      flex-direction: column;
+      font-size: var(--text-xl)
+    }
+
+    & .version-badge__number {
+      font-family: var(--font-zi);
+      font-size: var(--text-xl);
+    }
+  }
+}

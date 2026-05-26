@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { Link } from '@/components/i18n/Link'
 import { useIntlayer } from 'next-intlayer/server'
 
@@ -11,7 +10,7 @@ interface NavItemProps {
 
 function NavItem({ children, href, className, isTitle = false }: NavItemProps) {
   return (
-    <Button variant={'link'} asChild>
+    <button>
       <Link href={href}>
         {isTitle ? (
           <h1 className={className}>{children}</h1>
@@ -19,7 +18,7 @@ function NavItem({ children, href, className, isTitle = false }: NavItemProps) {
           <span className={className}>{children}</span>
         )}
       </Link>
-    </Button>
+    </button >
   )
 }
 

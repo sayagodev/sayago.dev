@@ -1,10 +1,10 @@
-import type { Metadata } from 'next'
-import { cn } from '@/lib/utils'
 import localFont from 'next/font/local'
-import { Providers } from '@/app/providers'
-import { NextLayoutIntlayer } from 'next-intlayer'
-
+import Script from 'next/script'
+import type { Metadata } from 'next'
 export { generateStaticParams } from 'next-intlayer'
+import { NextLayoutIntlayer } from 'next-intlayer'
+import { Providers } from '@/app/providers'
+import { cn } from '@/lib/utils'
 
 const monaArgon = localFont({
   src: [
@@ -66,12 +66,12 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
         monaKrypton.variable,
         monaNeon.variable,
         zi.variable,
-        'font-neon relative antialiased'
       )}
       suppressHydrationWarning
     >
       <body>
         <Providers locale={locale}>{children}</Providers>
+        <Script src='/oat.min.js' strategy='afterInteractive' />
       </body>
     </html>
   )
