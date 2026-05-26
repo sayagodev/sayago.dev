@@ -1,4 +1,4 @@
-import { ShowVersion } from '@/components/layout/show-version'
+import { ShowVersion } from '@/components/widgets/show-version'
 import { WoPageView } from '@/features/wo/views/wo-page-view'
 import { NextPageIntlayer } from 'next-intlayer'
 import { IntlayerServerProvider } from 'next-intlayer/server'

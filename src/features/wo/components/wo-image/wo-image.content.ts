@@ -1,7 +1,7 @@
 import { t, type Dictionary } from 'intlayer'
 
-const WoPageContent = {
-  key: 'wo-page',
+const WoImageContent = {
+  key: 'wo-image',
   content: {
     image: {
       altImage: t({
@@ -16,4 +16,4 @@ const WoPageContent = {
   },
 } satisfies Dictionary
 
-export default WoPageContent
+export default WoImageContent

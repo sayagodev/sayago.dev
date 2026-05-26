@@ -4,7 +4,7 @@ import woImage from '@/public/images/wo.jpeg'
 import { useIntlayer } from 'next-intlayer/server'
 
 export function WoImage() {
-  const { image } = useIntlayer('wo-page')
+  const { image } = useIntlayer('wo-image')
   const altText = image.altImage
 
   return (

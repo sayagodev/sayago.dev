@@ -1,5 +1,5 @@
-import { Link } from '@/components/i18n/Link'
-import { Button } from '../ui/button'
+import { Link } from '@/components/localized-link'
+import { Button } from '@/components/ui/button'
 import { useIntlayer } from 'next-intlayer/server'
 
 export function Logo() {

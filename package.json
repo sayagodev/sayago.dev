@@ -30,7 +30,6 @@
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
     "@knadh/oat": "^0.6.1",
-    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "intlayer": "^8.7.12",
     "lucide-react": "^1.8.0",
@@ -40,7 +39,6 @@
     "next-themes": "^0.4.6",
     "nuqs": "^2.8.9",
     "ogl": "^1.0.11",
-    "postcss": "^8.5.10",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import { GRAINIENT_COLORS } from '@/lib/constants'
 import dynamic from 'next/dynamic'
 
-const Grainient = dynamic(() => import('./Grainient'), {
+const Grainient = dynamic(() => import('../grainient'), {
   ssr: false,
 })
 

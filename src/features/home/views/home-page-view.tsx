@@ -1,6 +1,6 @@
-import { Background } from '@/components/visual/background'
+import { Background } from '@/components/effects/background'
 import { HomeNavigation } from '../components/home-navigation'
-import { ThemePicker } from '@/components/shared/theme-picker'
+import { ThemePicker } from '@/components/widgets/theme-picker'
 import { themes } from '@/lib/constants'
 
 export function HomePageView() {

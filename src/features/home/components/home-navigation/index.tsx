@@ -1,4 +1,4 @@
-import { Link } from '@/components/i18n/Link'
+import { Link } from '@/components/localized-link'
 import { useIntlayer } from 'next-intlayer/server'
 
 interface NavItemProps {

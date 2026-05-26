@@ -1,5 +1,5 @@
 import VERSION from '@/lib/version'
-import '@/styles/show-version.css'
+import './show-version.css'
 
 export function ShowVersion() {
   return (

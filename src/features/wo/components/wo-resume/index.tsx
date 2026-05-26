@@ -1,5 +1,5 @@
 import { useIntlayer } from 'next-intlayer/server'
-import { TLDRButton } from './tldr-button'
+import { TLDRButton } from '../tldr-button'
 import { MarkdownRenderer } from 'next-intlayer/markdown'
 
 export function WoResume() {
