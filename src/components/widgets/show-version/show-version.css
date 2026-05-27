@@ -21,12 +21,12 @@
       font-family: var(--font-zi);
       display: flex;
       flex-direction: column;
-      font-size: var(--text-xl)
+      font-size: var(--text-4)
     }
 
     & .version-badge__number {
       font-family: var(--font-zi);
-      font-size: var(--text-xl);
+      font-size: var(--text-4);
     }
   }
 }

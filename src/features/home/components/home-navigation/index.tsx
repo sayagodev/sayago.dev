@@ -1,5 +1,6 @@
 import { Link } from '@/components/localized-link'
 import { useIntlayer } from 'next-intlayer/server'
+import './home-navigation.css'
 
 interface NavItemProps {
   children: React.ReactNode
@@ -26,22 +27,22 @@ export function HomeNavigation() {
   const content = useIntlayer('home')
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-24 text-center">
-      <NavItem isTitle href="/" className="font-krypton text-4xl font-bold md:text-5xl">
+    <div className="home-nav">
+      <NavItem isTitle href="/" className="home-nav__title">
         sāyago;dev
       </NavItem>
 
-      <nav className="font-argon flex flex-col gap-5 *:font-semibold md:flex-row md:gap-16 lg:gap-44">
-        <NavItem href="/work" className="text-2xl md:text-3xl">
+      <nav className="home-nav__menu">
+        <NavItem href="/work" className="home-nav__link">
           {content.nav.work}
         </NavItem>
         <NavItem
           href="/wo"
-          className="font-zi inline-block mx-auto w-fit -translate-y-0.5 text-[32px] md:-translate-y-2 lg:-translate-x-1 lg:text-[40px]"
+          className="home-nav__special"
         >
           我
         </NavItem>
-        <NavItem href="/contact" className="text-2xl md:text-3xl">
+        <NavItem href="/contact" className="home-nav__link">
           {content.nav.contact}
         </NavItem>
       </nav>

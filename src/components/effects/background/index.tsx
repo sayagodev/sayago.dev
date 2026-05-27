@@ -3,6 +3,7 @@
 import { useTheme } from 'next-themes'
 import { GRAINIENT_COLORS } from '@/lib/constants'
 import dynamic from 'next/dynamic'
+import './background.css'
 
 const Grainient = dynamic(() => import('../grainient'), {
   ssr: false,
@@ -15,10 +16,10 @@ export function Background() {
     GRAINIENT_COLORS[(resolvedTheme as keyof typeof GRAINIENT_COLORS) || 'light']
 
   return (
-    <div className="fixed inset-0 -z-999">
+    <div className="background-wrapper">
       <Grainient
         {...currentColors}
-        className="h-full w-full"
+        className="background-grainient"
         timeSpeed={0.25}
         colorBalance={0}
         warpStrength={1}

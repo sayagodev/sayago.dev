@@ -26,6 +26,12 @@
     --ring: #574747;
 
     /* ==================== */
+    --sm: 40rem;
+    --md: 48rem;
+    --lg: 64rem;
+    --xl: 80rem;
+    --2xl: 96rem;
+
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;

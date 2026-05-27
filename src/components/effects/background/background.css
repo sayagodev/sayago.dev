@@ -1,0 +1,12 @@
+@layer components {
+  .background-wrapper {
+    position: fixed;
+    inset: 0;
+    z-index: -999;
+
+    & .background-grainient {
+      inline-size: 100%;
+      block-size: 100%;
+    }
+  }
+}
