@@ -95,6 +95,14 @@
   }
 }
 
+@layer base {
+  a {
+    color: var(--foreground);
+    text-decoration: none;
+    text-underline-offset: 0;
+  }
+}
+
 html {
   height: 100%;
 }

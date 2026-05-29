@@ -1,0 +1,45 @@
+@layer components {
+  .footer-block {
+    position: absolute;
+    inset-block-end: if(media(width >=1024px): 1rem; else: 0.5rem);
+    inset-inline-start: 0;
+    inline-size: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & .clock-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &[data-device="mobile"] {
+        display: if(media(width >=1024px): none; else: flex);
+      }
+
+      &[data-device="desktop"] {
+        display: if(media(width >=1024px): flex; else: none);
+      }
+    }
+
+    & .clock-text {
+      font-family: var(--font-argon);
+      font-weight: 500;
+
+      &[data-version="mobile"] {
+        font-size: if(media(width >=768px): 1.125rem; else: 1rem);
+      }
+
+      &[data-version="desktop"] {
+        font-size: 1.25rem;
+      }
+    }
+
+    & .clock-zh {
+      font-family: var(--font-zi);
+      translate: 0 -0.125rem;
+      font-size: if(media(width >=768px): 26px; else: 21px);
+    }
+  }
+}

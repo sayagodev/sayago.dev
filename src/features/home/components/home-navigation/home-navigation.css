@@ -12,6 +12,7 @@
       font-family: var(--font-krypton);
       font-weight: 700;
       font-size: if(media(width >=48rem): 3rem; else: 2.25rem);
+      margin: 0;
     }
 
     & .home-nav__menu {

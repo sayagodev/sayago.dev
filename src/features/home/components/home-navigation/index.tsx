@@ -1,5 +1,5 @@
-import { Link } from '@/components/localized-link'
 import { useIntlayer } from 'next-intlayer/server'
+import { Button } from '@/components/ui/button'
 import './home-navigation.css'
 
 interface NavItemProps {
@@ -11,15 +11,13 @@ interface NavItemProps {
 
 function NavItem({ children, href, className, isTitle = false }: NavItemProps) {
   return (
-    <button>
-      <Link href={href}>
-        {isTitle ? (
-          <h1 className={className}>{children}</h1>
-        ) : (
-          <span className={className}>{children}</span>
-        )}
-      </Link>
-    </button >
+    <Button href={href} variant="link">
+      {isTitle ? (
+        <h1 className={className}>{children}</h1>
+      ) : (
+        <span className={className}>{children}</span>
+      )}
+    </Button>
   )
 }
 

@@ -1,0 +1,23 @@
+@layer components {
+  :is(button, a)[data-variant="link"] {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+
+    font-family: inherit;
+
+    transition: color var(--transition-fast);
+
+    &:hover:not(:disabled) {
+      color: color-mix(in srgb, var(--foreground), transparent 30%);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  }
+}
