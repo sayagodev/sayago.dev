@@ -1,0 +1,16 @@
+@layer components {
+  .wo-view {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+  }
+
+  .wo-grid {
+    display: grid;
+    grid-template-columns: if(media(width >=64rem): auto auto; else: 1fr);
+    place-items: if(media(width >=64rem): start; else: center);
+    gap: var(--space-6);
+    margin-top: if(media(width >=64rem): 5rem; else: 0);
+  }
+}

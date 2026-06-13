@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils'
+import './container.css'
 
 export function Container({
   className,
@@ -10,8 +11,8 @@ export function Container({
   fullWidth?: boolean
 }) {
   return (
-    <div className={cn('px-7.5! lg:px-40!', fullWidth && 'w-full', className)}>
-      <div className={cn(!fullWidth && 'mx-auto max-w-2xl lg:max-w-7xl')}>{children}</div>
+    <div className={cn('container-outer', className)} data-full-width={fullWidth || undefined}>
+      <div className="container-inner">{children}</div>
     </div>
   )
 }

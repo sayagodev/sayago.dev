@@ -1,0 +1,37 @@
+@layer components {
+  .tldr-button {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    place-self: start;
+  }
+
+  .tldr-button__title {
+    font-size: if(media(width >=48rem): 1.25rem; else: 16px);
+    margin-bottom: 0;
+  }
+
+  .tldr-button__arrow {
+    width: if(media(width >=48rem): 1rem; else: 0.75rem);
+    height: if(media(width >=48rem): 1rem; else: 0.75rem);
+    font-weight: var(--font-bold);
+  }
+
+  .tldr-button__trigger {
+    display: flex;
+    align-items: center;
+    color: var(--foreground);
+    justify-content: center;
+    gap: var(--space-2);
+    font-size: if(media(width >=48rem): 1.25rem; else: 1rem);
+    font-weight: var(--font-semibold);
+  }
+
+  .tldr-button__zap {
+    transform: translateY(-4px);
+    color: var(--foreground);
+    width: 1rem;
+    height: 1rem;
+  }
+}

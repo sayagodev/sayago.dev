@@ -1,5 +1,5 @@
 @layer components {
-  :is(button, a)[data-variant="link"] {
+  :is(button, a)[data-variant='link'] {
     display: inline-flex;
     align-items: center;
     background: transparent;

@@ -1,21 +1,21 @@
 import { Link } from '@/components/localized-link'
 import { Button } from '@/components/ui/button'
 import { useIntlayer } from 'next-intlayer/server'
+import './logo.css'
 
 export function Logo() {
   const content = useIntlayer('logo')
 
   return (
-    <div className="flex justify-center mb-8!">
+    <div className="logo-container">
       <Button
         variant={'link'}
         aria-label={content.aria.label}
         title={content.aria.title}
-        className="w-fit"
-        asChild
+        className="logo-button"
       >
         <Link href={'/'}>
-          <h2 className="font-krypton text-center text-2xl font-bold md:text-4xl">sāyago;dev</h2>
+          <h2 className="logo-title">sāyago;dev</h2>
         </Link>
       </Button>
     </div>

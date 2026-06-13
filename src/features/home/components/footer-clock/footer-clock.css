@@ -14,11 +14,11 @@
       align-items: center;
       gap: 0.5rem;
 
-      &[data-device="mobile"] {
+      &[data-device='mobile'] {
         display: if(media(width >=1024px): none; else: flex);
       }
 
-      &[data-device="desktop"] {
+      &[data-device='desktop'] {
         display: if(media(width >=1024px): flex; else: none);
       }
     }
@@ -27,11 +27,11 @@
       font-family: var(--font-argon);
       font-weight: 500;
 
-      &[data-version="mobile"] {
+      &[data-version='mobile'] {
         font-size: if(media(width >=768px): 1.125rem; else: 1rem);
       }
 
-      &[data-version="desktop"] {
+      &[data-version='desktop'] {
         font-size: 1.25rem;
       }
     }

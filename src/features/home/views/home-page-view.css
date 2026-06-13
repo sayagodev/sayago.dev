@@ -6,20 +6,4 @@
     min-block-size: 100dvh;
     overflow: hidden;
   }
-
-  & .theme-picker-desktop {
-    position: fixed;
-    inset-inline-end: 1.5rem;
-    inset-block-start: 50%;
-    translate: 0 -50%;
-    display: if(media(width >=768px): block; else: none);
-  }
-
-  & .theme-picker-mobile {
-    position: fixed;
-    inset-block-start: 1.5rem;
-    inset-inline-start: 50%;
-    translate: -50% 0;
-    display: if(media(width >=768px): none; else: block);
-  }
 }

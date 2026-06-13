@@ -1,10 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { AnimatePresence, motion, type Variants } from 'motion/react'
-import { useIntlayer } from 'next-intlayer'
+import { useState, useRef } from 'react'
+import { useGSAP } from '@gsap/react'
+import gsap from 'gsap'
 import { useTheme } from 'next-themes'
 import './theme-picker.css'
+
+gsap.registerPlugin(useGSAP)
+
+const BORDER_RADIUS = 14
+const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
 
 interface Theme {
   id: string
@@ -22,12 +27,10 @@ interface ThemePickerProps {
 export function ThemePicker({ themes, orientation = 'vertical', onSelect }: ThemePickerProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState(0)
-  const { aria } = useIntlayer('theme-picker')
   const { setTheme } = useTheme()
 
-  const changeTheme = (themeName: string) => {
-    setTheme(themeName.toLowerCase())
-  }
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
+  const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
 
   const getCircularIndex = (index: number) => {
     const len = themes.length
@@ -40,13 +43,16 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     getCircularIndex(currentIndex + 1),
   ]
 
+  const isVertical = orientation === 'vertical'
+  const offset = isVertical ? 44 : 52
+
   const navigate = (dir: number) => {
     setDirection(dir)
     setCurrentIndex((prev) => getCircularIndex(prev + dir))
     const newIndex = getCircularIndex(currentIndex + dir)
     const selectedTheme = themes[newIndex]
     onSelect?.(selectedTheme)
-    changeTheme(selectedTheme.name)
+    setTheme(selectedTheme.name.toLowerCase())
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -59,51 +65,54 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     }
   }
 
-  const isVertical = orientation === 'vertical'
-  const activeTheme = themes[visibleIndices[1]]
+  useGSAP(
+    () => {
+      const items = itemRefs.current.filter(Boolean) as HTMLDivElement[]
 
-  const getItemVariants = (position: number) => {
-    const isCenter = position === 1
-    const offset = isVertical ? 44 : 52
+      items.forEach((item) => gsap.killTweensOf(item))
+      items.forEach((item, position) => {
+        const basePosition = (position - 1) * offset
 
-    const basePosition = (position - 1) * offset
-    const enterOffset = direction * offset
+        gsap.set(item, {
+          x: isVertical ? 0 : basePosition + direction * offset,
+          y: isVertical ? basePosition + direction * offset : 0,
+          opacity: 0,
+        })
 
-    const variants: Variants = {
-      initial: {
-        x: isVertical ? 0 : basePosition + enterOffset,
-        y: isVertical ? basePosition + enterOffset : 0,
-        scale: isCenter ? 0.6 : 0.5,
-        opacity: 0,
-      },
-      animate: {
-        x: isVertical ? 0 : basePosition,
-        y: isVertical ? basePosition : 0,
-        scale: isCenter ? 1 : 0.7,
-        opacity: isCenter ? 1 : 0.3,
-        filter: isCenter ? 'blur(0px)' : 'blur(1px)',
-        transition: {
-          type: 'spring',
-          stiffness: 300,
-          damping: 28,
-          mass: 0.8,
-        },
-      },
-      exit: {
-        x: isVertical ? 0 : basePosition - direction * offset,
-        y: isVertical ? basePosition - direction * offset : 0,
-        scale: 0.4,
-        opacity: 0,
-        transition: {
-          type: 'spring',
-          stiffness: 400,
-          damping: 35,
-        },
-      },
-    }
+        gsap.to(item, {
+          x: isVertical ? 0 : basePosition,
+          y: isVertical ? basePosition : 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'back.out(1.7)',
+        })
+      })
+    },
+    { dependencies: [currentIndex, direction, isVertical, offset], revertOnUpdate: true }
+  )
 
-    return variants
-  }
+  useGSAP(
+    () => {
+      const borderCircle = borderRefs.current[1]
+      if (!borderCircle) return
+      gsap.killTweensOf(borderCircle)
+
+      const tl = gsap.timeline()
+      tl.to(borderCircle, {
+        strokeDashoffset: BORDER_CIRCUMFERENCE,
+        duration: 0.25,
+        ease: 'power2.in',
+      })
+      tl.to(borderCircle, {
+        strokeDashoffset: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+      })
+
+      return () => gsap.killTweensOf(borderCircle)
+    },
+    { dependencies: [currentIndex], revertOnUpdate: false }
+  )
 
   return (
     <div
@@ -112,93 +121,54 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
       onKeyDown={handleKeyDown}
       className="theme-picker"
       data-orientation={orientation}
-      aria-label={aria.label}
     >
-      <div className="theme-picker__label">
-        {activeTheme?.tone === 'light' ? '明' : '暗'}
-      </div>
-
       <div className="theme-picker__circles">
-        <AnimatePresence mode="popLayout" initial={false}>
-          {visibleIndices.map((themeIndex, position) => {
-            const theme = themes[themeIndex]
-            const isCenter = position === 1
-            const [color1, color2, color3] = theme.gradient
+        {visibleIndices.map((themeIndex, position) => {
+          const theme = themes[themeIndex]
+          const [color1, color2, color3] = theme.gradient
 
-            return (
-              <motion.div
-                key={`${theme.id}-${position}`}
-                role="option"
-                aria-selected={isCenter}
-                onClick={() => {
-                  if (position === 0) navigate(-1)
-                  if (position === 2) navigate(1)
-                }}
-                className="theme-option"
-                data-active={isCenter}
+          return (
+            <div
+              key={position}
+              ref={(el) => {
+                itemRefs.current[position] = el
+              }}
+              role="option"
+              aria-selected={position === 1}
+              onClick={() => {
+                if (position === 0) navigate(-1)
+                if (position === 2) navigate(1)
+              }}
+              className="theme-option"
+            >
+              <div
+                className="theme-option__circle"
                 style={{
-                  '--th-c1': color1,
-                  '--th-c2': color2,
-                  '--th-c3': color3,
-                } as React.CSSProperties}
-                variants={getItemVariants(position)}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-              >
-                {isCenter && (
-                  <motion.div
-                    className="theme-option__glow"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1.8, opacity: 0.4 }}
-                    transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-                  />
-                )}
-
-                {isCenter && (
-                  <motion.div
-                    className="theme-option__pulse"
-                    animate={{
-                      scale: [1, 1.3, 1],
-                      opacity: [0.6, 0, 0.6],
+                  background: `linear-gradient(135deg, ${color1} 0%, ${color2} 50%, ${color3} 100%)`,
+                }}
+              />
+              {position === 1 && (
+                <svg className="theme-option__border" viewBox="0 0 32 32">
+                  <circle
+                    ref={(el) => {
+                      borderRefs.current[1] = el
                     }}
-                    transition={{
-                      duration: 2.5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    }}
+                    cx="16"
+                    cy="16"
+                    r={BORDER_RADIUS}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeDasharray={BORDER_CIRCUMFERENCE}
+                    style={{ strokeDashoffset: BORDER_CIRCUMFERENCE }}
+                    transform="rotate(-90 16 16)"
                   />
-                )}
-
-                <motion.div
-                  className="theme-option__circle"
-                  style={{
-                    background: `linear-gradient(135deg, var(--th-c1) 0%, var(--th-c2) 50%, var(--th-c3) 100%)`,
-                  }}
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                  <div className="theme-option__shine" />
-                </motion.div>
-              </motion.div>
-            )
-          })}
-        </AnimatePresence>
+                </svg>
+              )}
+            </div>
+          )
+        })}
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTheme?.id + '-name'}
-          initial={{ opacity: 0, y: isVertical ? 8 : 0, x: isVertical ? 0 : 8 }}
-          animate={{ opacity: 1, y: 0, x: 0 }}
-          exit={{ opacity: 0, y: isVertical ? -8 : 0, x: isVertical ? 0 : -8 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-          className="theme-picker__name"
-        >
-          {activeTheme?.name}
-        </motion.div>
-      </AnimatePresence>
     </div>
   )
 }

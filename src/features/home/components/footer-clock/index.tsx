@@ -12,7 +12,9 @@ export function FooterClock() {
     <footer className="footer-block" aria-hidden="true" role="presentation">
       {/* Mobile Version */}
       <p className="clock-container" data-device="mobile">
-        <span className="clock-text" data-version="mobile">{time}</span>
+        <span className="clock-text" data-version="mobile">
+          {time}
+        </span>
         <span className="clock-zh">{content[periodKey].zh}</span>
       </p>
 

@@ -19,11 +19,9 @@
       font-family: var(--font-argon);
       display: flex;
       flex-direction: if(media(width >=48rem): row; else: column);
-      gap: if(media(width >=64rem): 11rem;
-          media(width >=48rem): 4rem;
-          else: 1.25rem);
+      gap: if(media(width >=64rem): 11rem; media(width >=48rem): 4rem; else: 1.25rem);
 
-      &>* {
+      & > * {
         font-weight: 600;
       }
     }
@@ -38,9 +36,9 @@
       margin-inline: auto;
       inline-size: fit-content;
       font-size: if(media(width >=64rem): 40px; else: 32px);
-      translate: if(media(width >=64rem): -0.25rem -0.5rem;
-          media(width >=48rem): 0 -0.5rem;
-          else: 0 -0.125rem);
+      translate: if(
+        media(width >=64rem): -0.25rem -0.5rem; media(width >=48rem): 0 -0.5rem; else: 0 -0.125rem
+      );
     }
   }
 }

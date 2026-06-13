@@ -3,6 +3,8 @@ import Script from 'next/script'
 import type { Metadata } from 'next'
 export { generateStaticParams } from 'next-intlayer'
 import { NextLayoutIntlayer } from 'next-intlayer'
+import { ThemePicker } from '@/components/widgets/theme-picker'
+import { themes } from '@/lib/constants'
 import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
 
@@ -61,17 +63,25 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
   return (
     <html
       lang={locale}
-      className={cn(
-        monaArgon.variable,
-        monaKrypton.variable,
-        monaNeon.variable,
-        zi.variable,
-      )}
+      className={cn(monaArgon.variable, monaKrypton.variable, monaNeon.variable, zi.variable)}
       suppressHydrationWarning
     >
-      <body>
-        <Providers locale={locale}>{children}</Providers>
-        <Script src='/oat.min.js' strategy='afterInteractive' />
+      <body data-ko-ctx="root">
+        <Providers locale={locale}>
+          {children}
+          <div>
+            {/* Theme Picker - RIGHT side on desktop (vertical) */}
+            <div className="theme-picker-desktop">
+              <ThemePicker themes={themes} orientation="vertical" />
+            </div>
+
+            {/* Theme Picker - TOP on mobile (horizontal) */}
+            <div className="theme-picker-mobile">
+              <ThemePicker themes={themes} orientation="horizontal" />
+            </div>
+          </div>
+        </Providers>
+        <Script src="/oat.min.js" strategy="afterInteractive" />
       </body>
     </html>
   )

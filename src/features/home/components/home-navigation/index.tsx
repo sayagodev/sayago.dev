@@ -34,10 +34,7 @@ export function HomeNavigation() {
         <NavItem href="/work" className="home-nav__link">
           {content.nav.work}
         </NavItem>
-        <NavItem
-          href="/wo"
-          className="home-nav__special"
-        >
+        <NavItem href="/wo" className="home-nav__special">
           我
         </NavItem>
         <NavItem href="/contact" className="home-nav__link">

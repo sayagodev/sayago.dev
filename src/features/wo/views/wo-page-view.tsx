@@ -3,15 +3,17 @@ import { Background } from '@/components/effects/background'
 import { WoImage } from '../components/wo-image'
 import { WoResume } from '../components/wo-resume'
 import { Container } from '@/components/layout/container'
+import './wo-page-view.css'
 
 export function WoPageView() {
   return (
-    <main className="relative flex flex-col min-h-dvh">
+    <main className="wo-view">
       <Background />
-      <Container fullWidth className="py-15!">
+
+      <Container fullWidth>
         <Logo />
 
-        <div className="grid grid-cols-1 place-items-center gap-6 lg:mt-20! lg:grid-cols-[auto_auto] lg:place-items-start">
+        <div className="wo-grid">
           <WoImage />
           <WoResume />
         </div>

@@ -2,24 +2,25 @@ import Image from 'next/image'
 
 import woImage from '@/public/images/wo.jpeg'
 import { useIntlayer } from 'next-intlayer/server'
+import './wo-image.css'
 
 export function WoImage() {
   const { image } = useIntlayer('wo-image')
   const altText = image.altImage
 
   return (
-    <div className="mb-8 w-fit space-y-2! lg:sticky lg:top-6">
-      <div className="relative mx-auto w-full max-w-125">
+    <div className="wo-image">
+      <div className="wo-image__wrapper">
         <Image
           src={woImage}
           alt={altText}
           width={500}
           height={400}
           priority
-          className="h-auto w-full"
+          className="wo-image__img"
         />
       </div>
-      <p className="text-[14px] font-medium md:text-sm">{altText}</p>
+      <p className="wo-image__caption">{altText}</p>
     </div>
   )
 }

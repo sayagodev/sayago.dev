@@ -1,0 +1,28 @@
+@layer components {
+  .wo-image {
+    margin-bottom: var(--space-8);
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    position: if(media(width >=64rem): sticky; else: static);
+    top: 1.5rem;
+  }
+
+  .wo-image__wrapper {
+    position: relative;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 31.25rem;
+  }
+
+  .wo-image__img {
+    height: auto;
+    width: 100%;
+  }
+
+  .wo-image__caption {
+    font-size: if(media(width >=48rem): 0.875rem; else: 14px);
+    font-weight: var(--font-medium);
+  }
+}

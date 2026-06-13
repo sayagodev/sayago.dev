@@ -1,0 +1,19 @@
+@layer components {
+  .container-outer {
+    padding-inline: if(media(width >=64rem): 10rem; else: 1.875rem);
+
+    &[data-full-width] {
+      width: 100%;
+    }
+
+    &[data-full-width] .container-inner {
+      margin-inline: initial;
+      max-width: none;
+    }
+  }
+
+  .container-inner {
+    margin-inline: auto;
+    max-width: if(media(width >=64rem): 80rem; else: 42rem);
+  }
+}
