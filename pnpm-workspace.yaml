@@ -1,4 +1,5 @@
 allowBuilds:
+  '@parcel/watcher': true
   esbuild: true
   sharp: true
   unrs-resolver: true
@@ -7,3 +8,5 @@ ignoredBuiltDependencies:
   - unrs-resolver
 minimumReleaseAgeExclude:
   - '@sayagodev/beidou@1.0.0'
+  - '@sayagodev/beidou@1.1.0'
+  - '@sayagodev/beidou@1.1.1'

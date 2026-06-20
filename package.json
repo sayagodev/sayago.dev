@@ -31,7 +31,7 @@
     "@gsap/react": "^2.1.2",
     "@js-temporal/polyfill": "^0.5.1",
     "@knadh/oat": "^0.6.1",
-    "@sayagodev/beidou": "^1.0.0",
+    "@sayagodev/beidou": "^1.1.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
     "intlayer": "^8.7.12",

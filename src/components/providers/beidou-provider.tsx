@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Beidou from '@sayagodev/beidou'
+import Beidou from '@sayagodev/beidou/min'
 
 export default function BeidouProvider() {
   const nav = useRef<Beidou | null>(null)
