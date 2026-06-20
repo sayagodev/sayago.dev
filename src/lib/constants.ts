@@ -11,6 +11,12 @@ export const GRAINIENT_COLORS = {
     color2: '#4F1C51',
     color3: '#A55B4B',
   },
+  ligt2: {
+    tone: 'light',
+    color1: '#FF97D0',
+    color2: '#B331F1',
+    color3: '#FBF5A7',
+  },
 } as const
 
 export const themes: Array<{

@@ -12,10 +12,10 @@ gsap.registerPlugin(useGSAP)
 const BORDER_RADIUS = 14
 const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
 const SELECTED_BORDER_COLOR = '#FFE5BF'
-const BORDER_DELAY = 1.2
+const BORDER_DELAY = 1.6
 const BORDER_DURATION = 0.6
 const STAGGER_DELAY = 0.05
-const VT_DELAY_AFTER_SLIDE = 400
+const VT_DELAY_AFTER_SLIDE = 800
 
 const BOX_SHADOW = {
   idle: '0 2px 6px rgb(from #000 r g b / 0.15)',

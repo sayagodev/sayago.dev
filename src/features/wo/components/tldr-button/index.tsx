@@ -7,7 +7,7 @@ import { useQueryState } from 'nuqs'
 import './tldr-button.css'
 
 export function TLDRButton() {
-  const content = useIntlayer('wo-page')
+  const content = useIntlayer('wo-image')
   const [tldr, setTldr] = useQueryState('tldr')
 
   return (
