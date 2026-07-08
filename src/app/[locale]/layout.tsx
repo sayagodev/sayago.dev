@@ -7,6 +7,7 @@ import { ThemePicker } from '@/components/widgets/theme-picker'
 import { themes } from '@/lib/constants'
 import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
+import PageReveal from '@/components/effects/page-reveal'
 
 const monaArgon = localFont({
   src: [
@@ -69,17 +70,19 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
       <body data-ko-ctx="root">
         <Providers locale={locale}>
           {children}
-          <div>
-            {/* Theme Picker - RIGHT side on desktop (vertical) */}
-            <div className="theme-picker-desktop">
-              <ThemePicker themes={themes} orientation="vertical" />
-            </div>
+          <PageReveal>
+            <div>
+              {/* Theme Picker - RIGHT side on desktop (vertical) */}
+              <div className="theme-picker-desktop">
+                <ThemePicker themes={themes} orientation="vertical" />
+              </div>
 
-            {/* Theme Picker - TOP on mobile (horizontal) */}
-            <div className="theme-picker-mobile">
-              <ThemePicker themes={themes} orientation="horizontal" />
+              {/* Theme Picker - TOP on mobile (horizontal) */}
+              <div className="theme-picker-mobile">
+                <ThemePicker themes={themes} orientation="horizontal" />
+              </div>
             </div>
-          </div>
+          </PageReveal>
         </Providers>
         <Script src="/oat.min.js" strategy="afterInteractive" />
       </body>

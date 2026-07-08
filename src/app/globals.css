@@ -24,6 +24,7 @@
     --border: #d4d4d8;
     --input: #d4d4d8;
     --ring: #574747;
+    --corner: #d32f2f;
 
     /* ==================== */
 
@@ -90,7 +91,9 @@
   }
 
   html[data-theme='dark'],
-  :root[data-theme='dark'] {
+  :root[data-theme='dark'],
+  html[data-theme='dark2'],
+  :root[data-theme='dark2'] {
     --background: #09090b;
     --foreground: #fff;
   }

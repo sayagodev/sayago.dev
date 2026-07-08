@@ -8,8 +8,6 @@ import './wo-page-view.css'
 export function WoPageView() {
   return (
     <main className="wo-view">
-      <Background />
-
       <Container fullWidth>
         <Logo />
 
