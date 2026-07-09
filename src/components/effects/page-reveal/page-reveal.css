@@ -1,6 +1,15 @@
+/* ============================================================
+   Layer 1: Semicolon preloader overlay
+   ============================================================ */
+
 .preloader-overlay {
-  position: relative;
-  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .semicolon {
@@ -17,12 +26,10 @@
 
   & .frame-top-r {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 50.5% 100%, 50.5% 49%, 0% 49%);
-    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%, 50% 50%, 0% 50%); */
   }
 
   & .frame-bottom-l {
     clip-path: polygon(0 0, 49.5% 0, 49.5% 51%, 100% 51%, 100% 100%, 0 100%);
-    /* clip-path: polygon(0 0, 50% 0, 50% 50%, 100% 50%, 100% 100%, 0 100%); */
   }
 
   & .square {
@@ -98,14 +105,42 @@
   }
 }
 
-.background {
+/* ============================================================
+   Layer 2: Cards overlay (white background + gradient cards)
+   ============================================================ */
+
+.cards-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  z-index: 9998;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0; /* hidden initially, GSAP fades it in */
+}
+
+.cards-overlay__bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100svh;
-  overflow: hidden;
-  z-index: -999;
+  height: 100%;
+  background-color: var(--background);
+  z-index: 1;
+}
+
+.cards-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
 }
 
 .intro-img {
@@ -118,6 +153,27 @@
   transform-origin: center center;
   will-change: transform;
 }
+
+/* ============================================================
+   Layer 3: Page content (hidden during animation)
+   ============================================================ */
+
+.page-content {
+  opacity: 0;
+  visibility: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.page-content.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease;
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
 
 .line {
   position: relative;

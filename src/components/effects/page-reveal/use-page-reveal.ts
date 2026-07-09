@@ -116,17 +116,20 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       })
 
       // --- Text split ---
-      SplitText.create('nav a, .hero-header h1, .hero-social p, .hero-social a', {
-        type: 'lines',
-        linesClass: 'line',
-        mask: 'lines',
-      })
-
-      gsap.set('.line', { y: LINE_INITIAL_Y })
+      // Make sure we only split text that actually exists.
+      const textsToSplit = container.querySelectorAll('nav a, .hero-header h1, .hero-social p, .hero-social a')
+      if (textsToSplit.length > 0) {
+        SplitText.create(textsToSplit, {
+          type: 'lines',
+          linesClass: 'line',
+          mask: 'lines',
+        })
+        gsap.set('.line', { y: LINE_INITIAL_Y })
+      }
 
       const tl = gsap.timeline({ delay: OVERLAY_DELAY })
 
-      // --- Overlay ---
+      // --- Phase 1: Semicolon ---
       tl.to('.colon', {
         opacity: 0,
         y: '70%',
@@ -229,7 +232,18 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         window.addEventListener('resize', snap)
       })
 
-      // --- Image slide to center ---
+      // --- Phase 2: Show white overlay + cards ---
+      tl.to(
+        '.cards-overlay',
+        {
+          opacity: 1,
+          duration: 0.3,
+          ease: 'power2.inOut',
+        },
+        '>'
+      )
+      
+      // --- Phase 3: Image slide to center ---
       tl.to(
         introImages,
         {
@@ -241,7 +255,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         IMG_CENTER_OFFSET
       )
 
-      // --- Side images spread, hero expands ---
+      // --- Phase 4: Side images spread, hero expands ---
       tl.to('.intro-img:nth-child(1), .intro-img:nth-child(2)', {
         x: '-100vw',
         duration: IMG_SPREAD_DURATION,
@@ -258,11 +272,13 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         '<'
       )
 
+      // Expand the hero card to cover the screen
       tl.to(
         '.hero-img',
         {
           scale: 1,
           x: 0,
+          y: 0,
           rotation: 0,
           borderRadius: 0,
           duration: HERO_EXPAND_DURATION,
@@ -270,40 +286,58 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         },
         '<'
       )
+      
+      // Hide the white background behind the hero image just in case
+      tl.set('.cards-overlay__bg', { opacity: 0 }, '<0.5')
 
-      // --- Text reveal ---
-      tl.to(
-        'nav .line',
-        {
-          y: '0%',
-          duration: NAV_TEXT_DURATION,
-          stagger: NAV_TEXT_STAGGER,
-          ease: NAV_TEXT_EASE,
-        },
-        NAV_TEXT_OFFSET
-      )
+      // --- Phase 5: Reveal Content ---
+      tl.call(() => {
+        const content = document.querySelector('.page-content')
+        if (content) {
+          content.classList.add('visible')
+        }
+      })
 
-      tl.to(
-        '.hero-header .line',
-        {
-          y: '0%',
-          duration: HEADER_TEXT_DURATION,
-          stagger: HEADER_TEXT_STAGGER,
-          ease: HEADER_TEXT_EASE,
-        },
-        HEADER_TEXT_OFFSET
-      )
+      // Push cards overlay behind content so it stays as the page background
+      tl.set('.cards-overlay', {
+        zIndex: 0
+      })
+      
+      // --- Phase 6: Text reveal ---
+      if (textsToSplit.length > 0) {
+        tl.to(
+          'nav .line',
+          {
+            y: '0%',
+            duration: NAV_TEXT_DURATION,
+            stagger: NAV_TEXT_STAGGER,
+            ease: NAV_TEXT_EASE,
+          },
+          NAV_TEXT_OFFSET
+        )
 
-      tl.to(
-        '.hero-social .line',
-        {
-          y: '0%',
-          duration: SOCIAL_TEXT_DURATION,
-          stagger: SOCIAL_TEXT_STAGGER,
-          ease: SOCIAL_TEXT_EASE,
-        },
-        SOCIAL_TEXT_OFFSET
-      )
+        tl.to(
+          '.hero-header .line',
+          {
+            y: '0%',
+            duration: HEADER_TEXT_DURATION,
+            stagger: HEADER_TEXT_STAGGER,
+            ease: HEADER_TEXT_EASE,
+          },
+          HEADER_TEXT_OFFSET
+        )
+
+        tl.to(
+          '.hero-social .line',
+          {
+            y: '0%',
+            duration: SOCIAL_TEXT_DURATION,
+            stagger: SOCIAL_TEXT_STAGGER,
+            ease: SOCIAL_TEXT_EASE,
+          },
+          SOCIAL_TEXT_OFFSET
+        )
+      }
 
       return () => {
         if (resize) window.removeEventListener('resize', resize)

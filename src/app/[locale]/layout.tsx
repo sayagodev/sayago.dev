@@ -69,8 +69,8 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
     >
       <body data-ko-ctx="root">
         <Providers locale={locale}>
-          {children}
           <PageReveal>
+            {children}
             <div>
               {/* Theme Picker - RIGHT side on desktop (vertical) */}
               <div className="theme-picker-desktop">
