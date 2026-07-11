@@ -1,6 +1,6 @@
 @layer components {
   .container-outer {
-    padding-inline: if(media(width >=64rem): 10rem; else: 1.875rem);
+    padding-inline: 1.875rem;
 
     &[data-full-width] {
       width: 100%;
@@ -14,6 +14,16 @@
 
   .container-inner {
     margin-inline: auto;
-    max-width: if(media(width >=64rem): 80rem; else: 42rem);
+    max-width: 42rem;
+  }
+
+  @media (width >= 64rem) {
+    .container-outer {
+      padding-inline: 10rem;
+    }
+
+    .container-inner {
+      max-width: 80rem;
+    }
   }
 }

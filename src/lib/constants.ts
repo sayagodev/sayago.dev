@@ -11,7 +11,7 @@ export const GRAINIENT_COLORS = {
     color2: '#4F1C51',
     color3: '#A55B4B',
   },
-  ligt2: {
+  light2: {
     tone: 'light',
     color1: '#FF97D0',
     color2: '#B331F1',
@@ -23,7 +23,7 @@ export const GRAINIENT_COLORS = {
     color2: '#8ECA3C',
     color3: '#276F27',
   },
-  ligt3: {
+  light3: {
     tone: 'light',
     color1: '#00E0BA',
     color2: '#FFCF00',

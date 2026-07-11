@@ -5,8 +5,14 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    position: if(media(width >=64rem): sticky; else: static);
+    position: static;
     top: 1.5rem;
+  }
+
+  @media (width >= 64rem) {
+    .wo-image {
+      position: sticky;
+    }
   }
 
   .wo-image__wrapper {
@@ -22,7 +28,13 @@
   }
 
   .wo-image__caption {
-    font-size: if(media(width >=48rem): 0.875rem; else: 14px);
+    font-size: 14px;
     font-weight: var(--font-medium);
+  }
+
+  @media (width >= 48rem) {
+    .wo-image__caption {
+      font-size: 0.875rem;
+    }
   }
 }

@@ -8,9 +8,17 @@
 
   .wo-grid {
     display: grid;
-    grid-template-columns: if(media(width >=64rem): auto auto; else: 1fr);
-    place-items: if(media(width >=64rem): start; else: center);
+    grid-template-columns: 1fr;
+    place-items: center;
     gap: var(--space-6);
-    margin-top: if(media(width >=64rem): 5rem; else: 0);
+    margin-top: 0;
+  }
+
+  @media (width >= 64rem) {
+    .wo-grid {
+      grid-template-columns: auto auto;
+      place-items: start;
+      margin-top: 5rem;
+    }
   }
 }

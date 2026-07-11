@@ -10,22 +10,26 @@ const STORAGE_KEY = 'sayagodev-colortheme'
 
 const DEFAULT_THEME_NAME = 'light'
 
+function fallbackIndex() {
+  const idx = themes.findIndex((t) => t.name === DEFAULT_THEME_NAME)
+  return idx >= 0 ? idx : 2
+}
+
 function getHeroIndex(): number {
+  if (typeof window === 'undefined') return fallbackIndex()
   const stored = localStorage.getItem(STORAGE_KEY)
-  if (!stored) {
-    const idx = themes.findIndex((t) => t.name === DEFAULT_THEME_NAME)
-    return idx >= 0 ? idx : 2
-  }
+  if (!stored) return fallbackIndex()
   const clean = stored.replace(/^"|"$/g, '')
   const idx = themes.findIndex((t) => t.name === clean)
-  return idx >= 0 ? idx : themes.findIndex((t) => t.name === DEFAULT_THEME_NAME)
+  return idx >= 0 ? idx : fallbackIndex()
 }
 
 function sortGradientsForHero(heroIdx: number): typeof gradients {
-  if (heroIdx === 2) return gradients
-  const result = [...gradients]
-  ;[result[2], result[heroIdx]] = [result[heroIdx], result[2]]
-  return result
+  const len = gradients.length
+  return Array.from({ length: 5 }, (_, offset) => {
+    const idx = (((heroIdx + offset - 2) % len) + len) % len
+    return gradients[idx]
+  })
 }
 
 export default function PageReveal({ children }: { children: React.ReactNode }) {
