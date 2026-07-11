@@ -289,6 +289,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       
       // Hide the white background behind the hero image just in case
       tl.set('.cards-overlay__bg', { opacity: 0 }, '<0.5')
+      tl.set('.preloader-overlay', { visibility: 'hidden' }, '<0.5')
 
       // --- Phase 5: Reveal Content ---
       tl.call(() => {
