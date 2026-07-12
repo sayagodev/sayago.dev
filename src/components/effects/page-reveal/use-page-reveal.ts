@@ -34,7 +34,7 @@ const INTRO_IMG_BORDER_RADIUS = '2.5rem'
 const INTRO_IMG_OFFSCREEN_MULTIPLIER = 1.3
 
 // --- Images (slide to center) ---
-const IMG_CENTER_OFFSET = '>0.1'
+const IMG_CENTER_OFFSET = '<0.025'
 const IMG_CENTER_DURATION = 1.5
 const IMG_CENTER_STAGGER = 0.025
 const IMG_CENTER_EASE = 'glide'
@@ -46,7 +46,7 @@ const HERO_EXPAND_DURATION = 1.5
 const HERO_EXPAND_EASE = 'glide'
 
 // --- Text reveal ---
-const NAV_TEXT_OFFSET = '<1'
+const NAV_TEXT_OFFSET = '<'
 const NAV_TEXT_DURATION = 1
 const NAV_TEXT_STAGGER = 0.1
 const NAV_TEXT_EASE = 'power3.out'
@@ -117,7 +117,9 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
 
       // --- Text split ---
       // Make sure we only split text that actually exists.
-      const textsToSplit = container.querySelectorAll('nav a, .hero-header h1, .hero-social p, .hero-social a')
+      const textsToSplit = container.querySelectorAll(
+        'nav a, .hero-header h1, .hero-social p, .hero-social a'
+      )
       if (textsToSplit.length > 0) {
         SplitText.create(textsToSplit, {
           type: 'lines',
@@ -205,33 +207,6 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         '<'
       )
 
-      let resize: (() => void) | null = null
-
-      // Snap corners to viewport edges after frames clear
-      tl.call(() => {
-        const snap = () => {
-          const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
-          const set = (sel: string, l: number, t: number) => {
-            container.querySelectorAll<HTMLElement>(sel).forEach((el) => {
-              el.style.transform = 'none'
-              el.style.left = l + 'px'
-              el.style.top = t + 'px'
-            })
-          }
-          set('.corner-top-r', window.innerWidth - gap - CORNER_SIZE, gap)
-          set('.corner-top-l', gap, gap)
-          set('.corner-bottom-l', gap, window.innerHeight - gap - CORNER_SIZE)
-          set(
-            '.corner-bottom-r',
-            window.innerWidth - gap - CORNER_SIZE,
-            window.innerHeight - gap - CORNER_SIZE
-          )
-        }
-        snap()
-        resize = snap
-        window.addEventListener('resize', snap)
-      })
-
       // --- Phase 2: Show white overlay + cards ---
       tl.to(
         '.cards-overlay',
@@ -240,9 +215,9 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
           duration: 0.3,
           ease: 'power2.inOut',
         },
-        '>'
+        '-=0.6'
       )
-      
+
       // --- Phase 3: Image slide to center ---
       tl.to(
         introImages,
@@ -286,7 +261,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         },
         '<'
       )
-      
+
       // Hide the white background behind the hero image just in case
       tl.set('.cards-overlay__bg', { opacity: 0 }, '<0.5')
       tl.set('.preloader-overlay', { visibility: 'hidden' }, '<0.5')
@@ -301,9 +276,9 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
 
       // Push cards overlay behind content so it stays as the page background
       tl.set('.cards-overlay', {
-        zIndex: 0
+        zIndex: 0,
       })
-      
+
       // --- Phase 6: Text reveal ---
       if (textsToSplit.length > 0) {
         tl.to(
@@ -339,6 +314,33 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
           SOCIAL_TEXT_OFFSET
         )
       }
+
+      let resize: (() => void) | null = null
+
+      // Snap corners to viewport edges after frames clear
+      tl.call(() => {
+        const snap = () => {
+          const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
+          const set = (sel: string, l: number, t: number) => {
+            container.querySelectorAll<HTMLElement>(sel).forEach((el) => {
+              el.style.transform = 'none'
+              el.style.left = l + 'px'
+              el.style.top = t + 'px'
+            })
+          }
+          set('.corner-top-r', window.innerWidth - gap - CORNER_SIZE, gap)
+          set('.corner-top-l', gap, gap)
+          set('.corner-bottom-l', gap, window.innerHeight - gap - CORNER_SIZE)
+          set(
+            '.corner-bottom-r',
+            window.innerWidth - gap - CORNER_SIZE,
+            window.innerHeight - gap - CORNER_SIZE
+          )
+        }
+        snap()
+        resize = snap
+        window.addEventListener('resize', snap)
+      })
 
       return () => {
         if (resize) window.removeEventListener('resize', resize)
