@@ -56,11 +56,6 @@ const HEADER_TEXT_DURATION = 1
 const HEADER_TEXT_STAGGER = 0.1
 const HEADER_TEXT_EASE = 'power3.out'
 
-const SOCIAL_TEXT_OFFSET = '<0.25'
-const SOCIAL_TEXT_DURATION = 1
-const SOCIAL_TEXT_STAGGER = 0.1
-const SOCIAL_TEXT_EASE = 'power3.out'
-
 // --- Corner snap ---
 const CORNER_SIZE = 60
 const CORNER_GAP_MOBILE = 15
@@ -117,9 +112,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
 
       // --- Text split ---
       // Make sure we only split text that actually exists.
-      const textsToSplit = container.querySelectorAll(
-        'nav a, .hero-header h1, .hero-social p, .hero-social a'
-      )
+      const textsToSplit = container.querySelectorAll('.home-nav, .footer-block')
       if (textsToSplit.length > 0) {
         SplitText.create(textsToSplit, {
           type: 'lines',
@@ -275,14 +268,42 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       })
 
       // Push cards overlay behind content so it stays as the page background
-      tl.set('.cards-overlay', {
-        zIndex: 0,
-      })
+      tl.set(
+        '.cards-overlay',
+        {
+          zIndex: 0,
+        },
+        '<'
+      )
+
+      // Slide in version badge from left
+      tl.from(
+        '.version-badge',
+        {
+          xPercent: -100,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
+        },
+        '<'
+      )
+
+      // Slide in theme picker from right
+      tl.from(
+        '.theme-picker-desktop',
+        {
+          xPercent: 100,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
+        },
+        '<'
+      )
 
       // --- Phase 6: Text reveal ---
       if (textsToSplit.length > 0) {
         tl.to(
-          'nav .line',
+          '.home-nav .line',
           {
             y: '0%',
             duration: NAV_TEXT_DURATION,
@@ -293,7 +314,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         )
 
         tl.to(
-          '.hero-header .line',
+          '.footer-block .line',
           {
             y: '0%',
             duration: HEADER_TEXT_DURATION,
@@ -301,17 +322,6 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
             ease: HEADER_TEXT_EASE,
           },
           HEADER_TEXT_OFFSET
-        )
-
-        tl.to(
-          '.hero-social .line',
-          {
-            y: '0%',
-            duration: SOCIAL_TEXT_DURATION,
-            stagger: SOCIAL_TEXT_STAGGER,
-            ease: SOCIAL_TEXT_EASE,
-          },
-          SOCIAL_TEXT_OFFSET
         )
       }
 
