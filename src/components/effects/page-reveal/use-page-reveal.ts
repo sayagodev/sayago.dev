@@ -2,7 +2,9 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { CustomEase } from 'gsap/CustomEase'
 import { SplitText } from 'gsap/SplitText'
-import { type RefObject } from 'react'
+import { OverlayScrollbars } from 'overlayscrollbars'
+import { useRef, useEffect, type RefObject } from 'react'
+import { usePathname } from 'next/navigation'
 
 gsap.registerPlugin(useGSAP, SplitText, CustomEase)
 
@@ -67,6 +69,10 @@ const LINE_INITIAL_Y = '125%'
 // ============================================================
 
 export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
+  const snapRef = useRef<(() => void) | null>(null)
+  const osRef = useRef<OverlayScrollbars | null>(null)
+  const pathname = usePathname()
+
   useGSAP(
     () => {
       const container = containerRef.current
@@ -326,36 +332,206 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       }
 
       let resize: (() => void) | null = null
+      let prevNeedsScroll = false
+      let scrollbarShown = false
+      let osInstance: OverlayScrollbars | null = null
 
-      // Snap corners to viewport edges after frames clear
+      const initScrollbar = () => {
+        if (!osInstance) {
+          osInstance = OverlayScrollbars(document.body, {
+            overflow: { x: 'hidden', y: 'scroll' },
+            scrollbars: {
+              theme: 'os-theme-sayago',
+              visibility: 'auto',
+              autoHide: 'never',
+              autoHideSuspend: true,
+            },
+          })
+          osRef.current = osInstance
+        }
+      }
+
+      const showScrollbar = () => {
+        initScrollbar()
+        if (!scrollbarShown) {
+          scrollbarShown = true
+          gsap.fromTo(
+            '.os-scrollbar-handle',
+            { opacity: 0 },
+            {
+              opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+              onComplete: () => {
+                gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
+              },
+            }
+          )
+        } else {
+          gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
+        }
+      }
+
+      // Snap corners to correct edges after frames clear
       tl.call(() => {
         const snap = () => {
           const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
-          const set = (sel: string, l: number, t: number) => {
-            container.querySelectorAll<HTMLElement>(sel).forEach((el) => {
-              el.style.transform = 'none'
-              el.style.left = l + 'px'
-              el.style.top = t + 'px'
+          const vw = window.innerWidth
+          const vh = window.innerHeight
+          const osState = osInstance && !osInstance.state().destroyed ? osInstance.state() : null
+          const scrollExtent = osState
+            ? osState.scrollCoordinates.end.y
+            : document.documentElement.scrollHeight - vh
+          const needsScroll = scrollExtent > 0
+          const shouldAnimate = needsScroll && !prevNeedsScroll
+          prevNeedsScroll = needsScroll
+
+          container.style.position = 'relative'
+
+          const pin = (el: HTMLElement, pos: string, props: Record<string, string>) => {
+            el.style.position = pos
+            el.style.transform = 'none'
+            el.style.zIndex = '100'
+            el.style.visibility = 'visible'
+            el.style.width = CORNER_SIZE + 'px'
+            el.style.height = CORNER_SIZE + 'px'
+            el.style.backgroundColor = 'var(--corner)'
+            Object.entries(props).forEach(([k, v]) => {
+              el.style.setProperty(k, v)
             })
           }
-          set('.corner-top-r', window.innerWidth - gap - CORNER_SIZE, gap)
-          set('.corner-top-l', gap, gap)
-          set('.corner-bottom-l', gap, window.innerHeight - gap - CORNER_SIZE)
-          set(
-            '.corner-bottom-r',
-            window.innerWidth - gap - CORNER_SIZE,
-            window.innerHeight - gap - CORNER_SIZE
-          )
+
+          const setup = (el: HTMLElement, clip: string) => {
+            if (el.parentElement !== container) container.appendChild(el)
+            el.style.clipPath = clip
+          }
+
+          // Top corners: always fixed at viewport top
+          container.querySelectorAll<HTMLElement>('.corner-top-r').forEach((el) => {
+            pin(el, 'fixed', {
+              left: vw - gap - CORNER_SIZE + 'px',
+              top: gap + 'px',
+              bottom: 'auto',
+              right: 'auto',
+            })
+          })
+          container.querySelectorAll<HTMLElement>('.corner-top-l').forEach((el) => {
+            pin(el, 'fixed', { left: gap + 'px', top: gap + 'px', bottom: 'auto', right: 'auto' })
+          })
+
+          // Bottom corners
+          if (needsScroll && shouldAnimate) {
+            // Step 1: fixed at viewport bottom
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'fixed', {
+                left: gap + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'fixed', {
+                left: vw - gap - CORNER_SIZE + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+
+            showScrollbar()
+
+            // Step 2: slide down, then switch to absolute
+            gsap.to('.corner-bottom-l, .corner-bottom-r', {
+              y: scrollExtent,
+              duration: 0.5,
+              ease: 'power2.out',
+              onComplete: () => {
+                container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+                  pin(el, 'absolute', {
+                    left: gap + 'px',
+                    bottom: gap + 'px',
+                    right: 'auto',
+                    top: 'auto',
+                  })
+                  el.style.clipPath = 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)'
+                })
+                container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+                  pin(el, 'absolute', {
+                    right: gap + 'px',
+                    bottom: gap + 'px',
+                    left: 'auto',
+                    top: 'auto',
+                  })
+                  el.style.clipPath = 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)'
+                })
+              },
+            })
+          } else if (needsScroll) {
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'absolute', {
+                left: gap + 'px',
+                bottom: gap + 'px',
+                right: 'auto',
+                top: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'absolute', {
+                right: gap + 'px',
+                bottom: gap + 'px',
+                left: 'auto',
+                top: 'auto',
+              })
+            })
+            showScrollbar()
+          } else {
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'fixed', {
+                left: gap + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'fixed', {
+                left: vw - gap - CORNER_SIZE + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            showScrollbar()
+          }
         }
         snap()
+        snapRef.current = snap
         resize = snap
         window.addEventListener('resize', snap)
       })
 
       return () => {
+        if (osInstance) {
+          osInstance.destroy()
+          osInstance = null
+        }
         if (resize) window.removeEventListener('resize', resize)
       }
     },
     { scope: containerRef }
   )
+
+  // Re-run corner positioning on route change
+  useEffect(() => {
+    const os = osRef.current
+    if (os && !os.state().destroyed) os.update(true)
+    snapRef.current?.()
+  }, [pathname])
 }

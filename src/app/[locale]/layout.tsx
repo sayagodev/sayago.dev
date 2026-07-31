@@ -54,7 +54,7 @@ const zi = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'sāyago;dev - portafolío',
+  title: 'sāyago;dev | Portafolío',
   description: 'Mi portafolio',
 }
 
@@ -65,9 +65,10 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
     <html
       lang={locale}
       className={cn(monaArgon.variable, monaKrypton.variable, monaNeon.variable, zi.variable)}
+      data-overlayscrollbars-initialize
       suppressHydrationWarning
     >
-      <body data-ko-ctx="root">
+      <body data-ko-ctx="root" data-overlayscrollbars-initialize>
         <Providers locale={locale}>
           <PageReveal>
             {children}
