@@ -8,14 +8,25 @@
   }
 
   .tldr-button__title {
-    font-size: if(media(width >=48rem): 1.25rem; else: 16px);
+    font-size: 16px;
     margin-bottom: 0;
   }
 
   .tldr-button__arrow {
-    width: if(media(width >=48rem): 1rem; else: 0.75rem);
-    height: if(media(width >=48rem): 1rem; else: 0.75rem);
+    width: 0.75rem;
+    height: 0.75rem;
     font-weight: var(--font-bold);
+  }
+
+  @media (width >= 48rem) {
+    .tldr-button__title {
+      font-size: 1.25rem;
+    }
+
+    .tldr-button__arrow {
+      width: 1rem;
+      height: 1rem;
+    }
   }
 
   .tldr-button__trigger {
@@ -24,7 +35,7 @@
     color: var(--foreground);
     justify-content: center;
     gap: var(--space-2);
-    font-size: if(media(width >=48rem): 1.25rem; else: 1rem);
+    font-size: 1rem;
     font-weight: var(--font-semibold);
   }
 
@@ -33,5 +44,11 @@
     color: var(--foreground);
     width: 1rem;
     height: 1rem;
+  }
+
+  @media (width >= 48rem) {
+    .tldr-button__trigger {
+      font-size: 1.25rem;
+    }
   }
 }

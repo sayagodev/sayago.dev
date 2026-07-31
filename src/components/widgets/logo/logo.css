@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     margin-bottom: var(--space-8);
+    margin-block-start: 1rem;
   }
 
   .logo-button {
@@ -13,8 +14,16 @@
     font-family: var(--font-krypton);
     text-align: center;
     font-size: 1.6rem;
-    font-size: if(media(width >=48rem): 2.25rem; else: 1.6rem);
     font-weight: var(--font-bold);
     margin-bottom: 0;
+  }
+
+  @media (width >= 48rem) {
+    .logo-containter {
+      margin-block-start: 0;
+    }
+    .logo-title {
+      font-size: 2.25rem;
+    }
   }
 }

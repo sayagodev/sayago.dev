@@ -1,7 +1,7 @@
 @layer components {
   .footer-block {
     position: absolute;
-    inset-block-end: if(media(width >=1024px): 1rem; else: 0.5rem);
+    inset-block-end: 0.5rem;
     inset-inline-start: 0;
     inline-size: 100%;
 
@@ -15,11 +15,11 @@
       gap: 0.5rem;
 
       &[data-device='mobile'] {
-        display: if(media(width >=1024px): none; else: flex);
+        display: flex;
       }
 
       &[data-device='desktop'] {
-        display: if(media(width >=1024px): flex; else: none);
+        display: none;
       }
     }
 
@@ -28,18 +28,46 @@
       font-weight: 500;
 
       &[data-version='mobile'] {
-        font-size: if(media(width >=768px): 1.125rem; else: 1rem);
+        font-size: 1rem;
       }
 
       &[data-version='desktop'] {
         font-size: 1.25rem;
+      }
+
+      @media (width >= 768px) {
+        &[data-version='mobile'] {
+          font-size: 1.125rem;
+        }
       }
     }
 
     & .clock-zh {
       font-family: var(--font-zi);
       translate: 0 -0.125rem;
-      font-size: if(media(width >=768px): 26px; else: 21px);
+      font-size: 21px;
+    }
+
+    @media (width >= 768px) {
+      & .clock-zh {
+        font-size: 26px;
+      }
+    }
+
+    @media (width >= 1024px) {
+      &.footer-block {
+        inset-block-end: 1rem;
+      }
+
+      & .clock-container {
+        &[data-device='mobile'] {
+          display: none;
+        }
+
+        &[data-device='desktop'] {
+          display: flex;
+        }
+      }
     }
   }
 }

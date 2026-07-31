@@ -3,7 +3,7 @@
     position: fixed;
     inset-block-start: 50%;
     inset-inline-start: 1.875rem;
-    transform: translateY(-50%);
+    translate: 0 -50%;
     z-index: 10;
 
     display: none;
@@ -21,7 +21,7 @@
       font-family: var(--font-zi);
       display: flex;
       flex-direction: column;
-      font-size: var(--text-4)
+      font-size: var(--text-4);
     }
 
     & .version-badge__number {

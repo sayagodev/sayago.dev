@@ -9,14 +9,13 @@ export function Logo() {
   return (
     <div className="logo-container">
       <Button
+        href="/"
         variant={'link'}
         aria-label={content.aria.label}
         title={content.aria.title}
         className="logo-button"
       >
-        <Link href={'/'}>
-          <h2 className="logo-title">sāyago;dev</h2>
-        </Link>
+        <h2 className="logo-title">sāyago;dev</h2>
       </Button>
     </div>
   )
