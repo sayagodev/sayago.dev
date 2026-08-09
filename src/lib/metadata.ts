@@ -1,23 +1,17 @@
 import type { Metadata } from 'next'
-import { getIntlayer, type LocalesValues } from 'intlayer'
-
-type DictionaryKey = Parameters<typeof getIntlayer>[0]
 
 /**
- * Metadata de página localizada: título/descripción del diccionario + OG
- * completo (el openGraph de página reemplaza al del layout en Next).
+ * Metadata de página localizada: recibe el contenido ya resuelto por
+ * getIntlayer (key literal en la página para que el compilador lo resuelva)
+ * y arma el OG completo (el openGraph de página reemplaza al del layout).
  */
 export function getPageMetadata(
-  key: DictionaryKey,
-  locale: LocalesValues | undefined,
+  content: { metadata: { title: string; description: string } },
+  site: { title: string; url: string },
+  locale: string,
   path: string
 ): Metadata {
-  const resolvedLocale = locale ?? 'es'
-  const content = getIntlayer(key, resolvedLocale) as unknown as {
-    metadata: { title: string; description: string }
-  }
-  const site = getIntlayer('site', resolvedLocale) as unknown as { title: string; url: string }
-
+  const resolvedLocale = locale || 'es'
   const localePath = resolvedLocale === 'es' ? '' : `/${resolvedLocale}`
   const pagePath = path === '/' ? '' : path
   const url = `${site.url}${localePath}${pagePath}`
