@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, useSyncExternalStore } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useTheme } from 'next-themes'
+import { useIntlayer } from 'next-intlayer'
 import { flushSync } from 'react-dom'
 import './theme-picker.css'
 
@@ -52,6 +53,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   const [mounted, setMounted] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const { setTheme } = useTheme()
+  const content = useIntlayer('theme-picker')
 
   const itemRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
   const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
@@ -264,6 +266,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     <div
       role="listbox"
       tabIndex={0}
+      aria-label={content.aria.label}
       onKeyDown={handleKeyDown}
       className="theme-picker"
       data-orientation={orientation}
@@ -278,8 +281,12 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
               key={position}
               ref={(el) => {
                 itemRefs.current[position] = el
+                // Beidou detecta interactivos vía [onclick] en el DOM; React no
+                // emite el atributo, así que lo marcamos nativamente
+                el?.setAttribute('onclick', 'void(0)')
               }}
               role="option"
+              aria-label={content.aria.options[theme.name as keyof typeof content.aria.options]}
               aria-selected={position === 1}
               onClick={() => {
                 if (position === 0) navigate(-1)
@@ -291,13 +298,14 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
             >
               <div
                 className="theme-option__circle"
+                aria-hidden="true"
                 style={{
                   background: `linear-gradient(135deg, ${color1} 0%, ${color2} 50%, ${color3} 100%)`,
                   boxShadow: getBoxShadow(position),
                 }}
               />
               {position === 1 && (
-                <svg className="theme-option__border" viewBox="0 0 32 32">
+                <svg className="theme-option__border" viewBox="0 0 32 32" aria-hidden="true">
                   <circle
                     ref={(el) => {
                       borderRefs.current[1] = el

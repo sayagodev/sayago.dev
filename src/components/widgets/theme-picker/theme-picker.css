@@ -38,6 +38,9 @@
     position: absolute;
     cursor: pointer;
     z-index: 1;
+    /* El outline del ring de Beidou sigue el border-radius del elemento:
+       sin esto el ring se dibuja cuadrado alrededor del círculo */
+    border-radius: var(--radius-full);
   }
 
   .theme-option__circle {

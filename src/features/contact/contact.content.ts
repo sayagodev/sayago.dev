@@ -38,6 +38,10 @@ const ContactContent = {
         es: 'nombre y apellido',
         en: 'full name',
       }),
+      nameFieldLabel: t({
+        es: 'Tu nombre',
+        en: 'Your name',
+      }),
       nameMiddle: t({
         es: 'y estoy interesado en',
         en: "and I'm interested in",
@@ -45,6 +49,10 @@ const ContactContent = {
       projectPlaceholder: t({
         es: 'nombre del proyecto',
         en: 'project name',
+      }),
+      projectFieldLabel: t({
+        es: 'El nombre del proyecto',
+        en: 'Project name',
       }),
       budgetLabel: t({
         es: 'Mi presupuesto es',
@@ -61,6 +69,10 @@ const ContactContent = {
       emailPlaceholder: t({
         es: 'email@correo.com',
         en: 'email@you.com',
+      }),
+      emailFieldLabel: t({
+        es: 'Tu correo electrónico',
+        en: 'Your email',
       }),
       optionalLabel: t({
         es: 'opcional — comparto más:',
@@ -107,6 +119,16 @@ const ContactContent = {
       emailValue: 'hola@sayago.dev',
       githubValue: 'github.com/sayagodev',
       locationValue: 'SMA, MX — UTC-6',
+    },
+    metadata: {
+      title: t({
+        es: 'Contacto',
+        en: 'Contact',
+      }),
+      description: t({
+        es: 'Cuéntame qué quieres construir — respondo en ~24h, sin bots de por medio.',
+        en: 'Tell me what you want to build — I reply within ~24h, no bots in between.',
+      }),
     },
   },
 } satisfies Dictionary

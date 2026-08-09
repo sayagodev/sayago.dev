@@ -112,6 +112,7 @@ export function ContactForm() {
             required
             ref={nameRef}
             name="name"
+            aria-label={content.form.nameFieldLabel}
             aria-invalid={errors.name || undefined}
             onChange={() => clearError('name')}
             placeholder={content.form.namePlaceholder}
@@ -122,6 +123,7 @@ export function ContactForm() {
             required
             ref={projectRef}
             name="project"
+            aria-label={content.form.projectFieldLabel}
             aria-invalid={errors.project || undefined}
             onChange={() => clearError('project')}
             placeholder={content.form.projectPlaceholder}
@@ -132,7 +134,11 @@ export function ContactForm() {
 
         <p className="contact-form__sentence">
           <span className="contact-form__label">{content.form.budgetLabel}</span>
-          <span className="contact-form__budgets">
+          <span
+            role="group"
+            aria-label={content.form.budgetLabel}
+            className="contact-form__budgets"
+          >
             {content.form.budgets.map((b) => (
               <button
                 type="button"
@@ -154,6 +160,7 @@ export function ContactForm() {
             ref={emailRef}
             type="email"
             name="email"
+            aria-label={content.form.emailFieldLabel}
             aria-invalid={errors.email || undefined}
             onChange={() => clearError('email')}
             placeholder={content.form.emailPlaceholder}
@@ -166,6 +173,7 @@ export function ContactForm() {
           <span className="contact-form__optional-label">{content.form.optionalLabel}</span>
           <textarea
             rows={4}
+            aria-label={content.form.optionalLabel}
             placeholder={content.form.optionalPlaceholder}
             className="contact-form__textarea"
           />

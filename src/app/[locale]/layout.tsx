@@ -1,6 +1,8 @@
 import localFont from 'next/font/local'
 import Script from 'next/script'
 import type { Metadata } from 'next'
+import { getIntlayer } from 'intlayer'
+import { LocalPromiseParams } from 'next-intlayer'
 export { generateStaticParams } from 'next-intlayer'
 import { NextLayoutIntlayer } from 'next-intlayer'
 import { ThemePicker } from '@/components/widgets/theme-picker'
@@ -9,6 +11,7 @@ import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
 import PageReveal from '@/components/effects/page-reveal'
 import { TransitionProvider } from '@/components/providers/transition-provider'
+import { ThemeFavicon } from '@/components/widgets/theme-favicon'
 
 const monaArgon = localFont({
   src: [
@@ -19,6 +22,9 @@ const monaArgon = localFont({
     },
   ],
   variable: '--font-mona-argon',
+  // Solo se usa en la home (nav + footer-clock): no pre-cargarlo en
+  // las demás páginas ahorra ~280KB de transferencia por visita
+  preload: false,
 })
 
 const monaKrypton = localFont({
@@ -54,9 +60,50 @@ const zi = localFont({
   variable: '--font-zi',
 })
 
-export const metadata: Metadata = {
-  title: 'sāyago;dev | Portafolío',
-  description: 'Mi portafolio',
+export async function generateMetadata({ params }: LocalPromiseParams): Promise<Metadata> {
+  const { locale } = await params
+  const content = getIntlayer('site', locale)
+  const canonicalUrl = `${content.url}${locale === 'es' ? '' : `/${locale}`}`
+
+  return {
+    metadataBase: new URL(content.url),
+    title: {
+      default: content.title,
+      template: `%s | ${content.title}`,
+    },
+    description: content.description,
+    keywords: content.keywords,
+    authors: [{ name: content.author, url: content.url }],
+    creator: content.author,
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      siteName: content.title,
+      title: content.title,
+      description: content.description,
+      locale: locale === 'es' ? 'es_ES' : 'en_US',
+    },
+    twitter: {
+      card: 'summary',
+      title: content.title,
+      description: content.description,
+    },
+    icons: {
+      icon: '/favicon.svg',
+      apple: '/favicon.png',
+    },
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        es: 'https://sayago.dev/',
+        en: 'https://sayago.dev/en',
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  }
 }
 
 const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
@@ -70,6 +117,7 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
       suppressHydrationWarning
     >
       <body data-ko-ctx="root" data-overlayscrollbars-initialize>
+        <ThemeFavicon />
         <Providers locale={locale}>
           <TransitionProvider>
             <PageReveal>

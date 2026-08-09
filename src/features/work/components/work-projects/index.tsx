@@ -136,6 +136,7 @@ export function WorkProjects() {
           <button
             key={f.value}
             onClick={() => setFilter(f.value)}
+            aria-pressed={filter === f.value}
             className={`work-projects__filter${filter === f.value ? ' work-projects__filter--active' : ''}`}
           >
             {f.label}
@@ -184,6 +185,8 @@ function ProjectRow({
         onClick={onToggle}
         onMouseEnter={onRowEnter}
         onMouseLeave={onRowLeave}
+        aria-expanded={open}
+        aria-controls={`proj-accordion-${project.id}`}
         className="work-projects__item"
       >
         <span className="work-projects__idx">{project.idx}</span>
@@ -220,6 +223,7 @@ function ProjectRow({
       </Button>
 
       <div
+        id={`proj-accordion-${project.id}`}
         className="work-projects__accordion md-hidden"
         style={{ gridTemplateRows: open ? '1fr' : '0fr' }}
       >
