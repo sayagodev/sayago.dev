@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useSyncExternalStore } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useTheme } from 'next-themes'
@@ -11,7 +11,6 @@ gsap.registerPlugin(useGSAP)
 
 const BORDER_RADIUS = 14
 const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
-const SELECTED_BORDER_COLOR = '#FFE5BF'
 const BORDER_DELAY = 1.6
 const BORDER_DURATION = 0.6
 const STAGGER_DELAY = 0.05
@@ -20,12 +19,13 @@ const VT_DELAY_AFTER_SLIDE = 800
 const BOX_SHADOW = {
   idle: '0 2px 6px rgb(from #000 r g b / 0.15)',
   hover: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-  selected: `0 0 20px 0 rgba(255, 229, 191, 0.9)`,
+  selected: '0 0 20px 0 color-mix(in srgb, var(--corner) 90%, transparent)',
 }
 
 const STORAGE_KEY = 'sayagodev-colortheme'
 
 const getStoredThemeIndex = (themes: Theme[]): number => {
+  if (typeof window === 'undefined') return 0
   const stored = localStorage.getItem(STORAGE_KEY)
   if (!stored) return 0
   const clean = stored.replace(/^"|"$/g, '')
@@ -47,7 +47,7 @@ interface ThemePickerProps {
 }
 
 export function ThemePicker({ themes, orientation = 'vertical', onSelect }: ThemePickerProps) {
-  const [currentIndex, setCurrentIndex] = useState(() => getStoredThemeIndex(themes))
+  const [userIndex, setUserIndex] = useState<number | null>(null)
   const [direction, setDirection] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
@@ -57,6 +57,17 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
   const currentIndexRef = useRef(0)
   const vtTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const storedIndex = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener('storage', onStoreChange)
+      return () => window.removeEventListener('storage', onStoreChange)
+    },
+    () => getStoredThemeIndex(themes),
+    () => 0
+  )
+
+  const currentIndex = userIndex ?? storedIndex
 
   useEffect(() => {
     currentIndexRef.current = currentIndex
@@ -87,7 +98,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     const selectedTheme = themes[newIndex]
 
     setDirection(dir)
-    setCurrentIndex(newIndex)
+    setUserIndex(newIndex)
     onSelect?.(selectedTheme)
 
     if (document.startViewTransition) {
@@ -295,7 +306,6 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
                     cy="16"
                     r={BORDER_RADIUS}
                     fill="none"
-                    stroke={SELECTED_BORDER_COLOR}
                     strokeWidth="2"
                     strokeDasharray={BORDER_CIRCUMFERENCE}
                     style={{ strokeDashoffset: BORDER_CIRCUMFERENCE }}

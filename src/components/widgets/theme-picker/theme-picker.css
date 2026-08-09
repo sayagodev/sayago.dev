@@ -58,4 +58,8 @@
     pointer-events: none;
     color: var(--accent);
   }
+
+  .theme-option__border circle {
+    stroke: var(--ring-accent);
+  }
 }

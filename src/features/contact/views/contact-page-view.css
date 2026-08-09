@@ -1,0 +1,86 @@
+@layer components {
+  .contact-view {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
+  }
+
+  .contact-inner {
+    margin-inline: auto;
+    inline-size: 100%;
+    max-inline-size: 64rem;
+    padding-inline: 1.25rem;
+    padding-block-end: 11rem;
+  }
+
+  @media (width >= 40rem) {
+    .contact-inner {
+      padding-inline: 2rem;
+    }
+  }
+
+  .ct-intro {
+    opacity: 0;
+  }
+
+  .contact-blink {
+    animation: contact-blink 1.05s steps(1) infinite;
+  }
+
+  @keyframes contact-blink {
+    0%,
+    49% {
+      opacity: 1;
+    }
+
+    50%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .contact-heading {
+    margin-block-start: 2rem;
+    margin-block-end: 0;
+    font-family: var(--font-krypton);
+    font-size: clamp(1.125rem, 5.75vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--foreground);
+  }
+
+  @media (width >= 40rem) {
+    .contact-heading {
+      margin-block-start: 5rem;
+    }
+  }
+
+  @media (width >= 64rem) {
+    .contact-heading {
+      font-size: clamp(1.125rem, calc(8.4vw - 2.4rem), 3.75rem);
+    }
+  }
+
+  .contact-subtitle {
+    margin-block-start: var(--space-6);
+    max-inline-size: 36rem;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--foreground);
+  }
+
+  .contact-subtitle__highlight {
+    color: var(--foreground);
+    font-weight: 700;
+  }
+
+  .contact-word {
+    display: inline-block;
+    overflow: hidden;
+    background: var(--foreground);
+    color: var(--background);
+    padding-inline: 0.75rem;
+  }
+}

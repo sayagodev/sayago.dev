@@ -1,3 +1,5 @@
+import { ShowVersion } from '@/components/widgets/show-version'
+import { ContactPageView } from '@/features/contact/views/contact-page-view'
 import { NextPageIntlayer } from 'next-intlayer'
 import { IntlayerServerProvider } from 'next-intlayer/server'
 
@@ -6,7 +8,9 @@ const ContactPage: NextPageIntlayer = async ({ params }) => {
 
   return (
     <IntlayerServerProvider locale={locale}>
-      <div>Contact</div>
+      <ShowVersion />
+
+      <ContactPageView />
     </IntlayerServerProvider>
   )
 }

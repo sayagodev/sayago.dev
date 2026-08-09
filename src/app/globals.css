@@ -15,7 +15,7 @@
     --faint: #fafafa;
     --faint-foreground: #a1a1aa;
     --accent: #f4f4f5;
-    --danger: #d32f2f;
+    --danger: #b54141;
     --danger-foreground: #fafafa;
     --success: #008032;
     --success-foreground: #fafafa;
@@ -25,6 +25,18 @@
     --input: #d4d4d8;
     --ring: #574747;
     --corner: #ffa4a4;
+    --ring-accent: #d23c6d;
+    --placeholder-foreground: #6b7280;
+    --fg-badge: #09090b;
+
+    /* Beidou (ko) overlay — colors resolve per theme via vars */
+    --ko-ring-c: var(--ring-accent);
+    --ko-input-ring: var(--ring-accent);
+    --ko-badge-bg: var(--corner);
+    --ko-badge-fg: var(--fg-badge);
+    --ko-input-bg: var(--background);
+    --ko-input-fg: var(--foreground);
+    --ko-input-border: 1px solid var(--ring-accent);
 
     /* ==================== */
 
@@ -100,11 +112,34 @@
     --faint-foreground: #e4e4e7;
     --border: #a1a1aa;
     --corner: #fff;
+    --ring-accent: #ffffff;
+    --danger: #c47a5e;
+    --danger-foreground: #09090b;
+    --placeholder-foreground: #9ca3af;
+  }
+
+  html[data-theme='dark2'],
+  :root[data-theme='dark2'] {
+    --danger: #f2545f;
+    --danger-foreground: #09090b;
+    --placeholder-foreground: #b5a59e;
   }
 
   html[data-theme='light2'],
   :root[data-theme='light2'] {
-    --corner: #ffe4f3;
+    --corner: #30afff;
+    --ring-accent: #0a6fcc;
+    --placeholder-foreground: #5d6f85;
+    --danger: #0867c2;
+    --fg-badge: #fff;
+  }
+
+  html[data-theme='light3'],
+  :root[data-theme='light3'] {
+    --corner: #ffbf86;
+    --ring-accent: #c2560e;
+    --placeholder-foreground: #8a6d3b;
+    --danger: #a84e08;
   }
 }
 

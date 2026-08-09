@@ -1,0 +1,32 @@
+@layer components {
+  .text-rotate__text {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .text-rotate__word {
+    display: inline-flex;
+  }
+
+  .text-rotate__char {
+    display: inline-block;
+  }
+
+  .text-rotate__space {
+    white-space: pre;
+  }
+}
+
+@layer utilities {
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
