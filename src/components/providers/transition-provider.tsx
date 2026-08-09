@@ -14,41 +14,19 @@ const FLY_EASE = 'power3.inOut'
 
 const CORNER_SELECTOR = '.corner-top-r, .corner-top-l, .corner-bottom-l, .corner-bottom-r'
 
-// Anima un elemento hasta que su centro quede en (x, y) del viewport.
-// Usa deltas RELATIVOS ("+="): funciona tanto con corners pineados
-// (transform: none) como con transforms acumulados del intro.
-function moveTo(el: HTMLElement, x: number, y: number, vars: gsap.TweenVars) {
-  const rect = el.getBoundingClientRect()
-  return gsap.to(el, {
-    x: `+=${x - (rect.left + rect.width / 2)}`,
-    y: `+=${y - (rect.top + rect.height / 2)}`,
-    ...vars,
-  })
-}
-
-// El snap()/reveal dejan transforms inline cuyo estado GSAP-cacheado puede
-// diferir del estado computado real (el fly-out del intro vs el pin crudo).
-// Sincroniza la caché de GSAP con la matriz computada para que los deltas
-// "+=" partan del estado real. También zeroea xPercent/yPercent: el reveal
-// los deja en -50 en la caché y GSAP los compondría al escribir x/y,
-// desplazando los corners ~30px.
-function syncTransformCache(elements: HTMLElement[]) {
+// Congela elementos en su posición visual actual usando left/top en px y
+// transform: none. Así animamos left/top sin depender de la caché de GSAP
+// (corrompida por el pin crudo del snap() y los transforms base del CSS),
+// que hacía que los corners se teletransportaran a posiciones absurdas.
+function freezeAtCurrentPosition(elements: HTMLElement[]) {
   elements.forEach((el) => {
-    const m = new DOMMatrix(getComputedStyle(el).transform)
-    gsap.set(el, { x: m.e, y: m.f, xPercent: 0, yPercent: 0 })
-  })
-}
-
-// Las láminas (200%×200svh con translate(-50%,-50%)) tienen un transform
-// base que corrompe la caché de GSAP. Las congelamos en su posición visual
-// actual con left/top en px y transform: none, y animamos left/top (sin
-// transform ni caché de por medio).
-function freezeFrames(frames: HTMLElement[]) {
-  frames.forEach((frame) => {
-    const r = frame.getBoundingClientRect()
-    frame.style.transform = 'none'
-    frame.style.left = `${r.left}px`
-    frame.style.top = `${r.top}px`
+    const r = el.getBoundingClientRect()
+    el.style.position = 'fixed'
+    el.style.transform = 'none'
+    el.style.left = `${r.left}px`
+    el.style.top = `${r.top}px`
+    el.style.right = 'auto'
+    el.style.bottom = 'auto'
   })
 }
 
@@ -61,12 +39,12 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
   const leave = (next: () => void) => {
     const vw = window.innerWidth
     const vh = window.innerHeight
+    const half = CORNER_SIZE / 2
     const corners = gsap.utils.toArray<HTMLElement>(CORNER_SELECTOR)
     const frames = gsap.utils.toArray<HTMLElement>('.frame-top-r, .frame-bottom-l')
     const tl = gsap.timeline({ onComplete: next })
 
-    syncTransformCache(corners)
-    freezeFrames(frames)
+    freezeAtCurrentPosition([...corners, ...frames])
 
     // El colon (la figura de abajo): normalizamos a su posición CSS
     // (translate(-50%, 35%) → y ≈ 42px) para que quede 12px debajo del
@@ -89,10 +67,12 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
     tl.set('.square', { opacity: 0 }, 0)
     if (colon) tl.set(colon, { opacity: 0 }, 0)
 
-    // 1) corners + láminas → centro
+    // 1) corners + láminas → centro (left/top puro, sin transform)
     corners.forEach((el) => {
       tl.add(
-        moveTo(el, vw / 2, vh / 2, {
+        gsap.to(el, {
+          left: vw / 2 - half,
+          top: vh / 2 - half,
           duration: FLY_DURATION,
           ease: FLY_EASE,
         }),
@@ -141,15 +121,14 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
   const enter = (next: () => void) => {
     const vw = window.innerWidth
     const vh = window.innerHeight
-    // Mismos targets que el snap(): el borde exterior del corner toca el gap
     const outerGap = vw < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
-    const half = CORNER_SIZE / 2
 
+    // Mismos targets que el snap(): el borde exterior del corner toca el gap
     const targets: Record<string, [number, number]> = {
-      '.corner-top-r': [vw - outerGap - half, outerGap + half],
-      '.corner-top-l': [outerGap + half, outerGap + half],
-      '.corner-bottom-l': [outerGap + half, vh - outerGap - half],
-      '.corner-bottom-r': [vw - outerGap - half, vh - outerGap - half],
+      '.corner-top-r': [vw - outerGap - CORNER_SIZE, outerGap],
+      '.corner-top-l': [outerGap, outerGap],
+      '.corner-bottom-l': [outerGap, vh - outerGap - CORNER_SIZE],
+      '.corner-bottom-r': [vw - outerGap - CORNER_SIZE, vh - outerGap - CORNER_SIZE],
     }
 
     const tl = gsap.timeline({
@@ -159,18 +138,35 @@ export function TransitionProvider({ children }: { children: React.ReactNode }) 
       },
     })
 
+    const corners = gsap.utils.toArray<HTMLElement>(CORNER_SELECTOR)
     const frames = gsap.utils.toArray<HTMLElement>('.frame-top-r, .frame-bottom-l')
-    freezeFrames(frames)
+    freezeAtCurrentPosition([...corners, ...frames])
 
     // Colon sale primero, el square desaparece justo después
     tl.to('.colon', { opacity: 0, y: '70%', duration: FLY_DURATION, ease: FLY_EASE }, 0)
     tl.set('.square', { opacity: 0 }, '<0.3')
 
     // Corners + láminas salen en paralelo (como el reveal)
-    Object.entries(targets).forEach(([selector, [tx, ty]]) => {
-      const el = document.querySelector<HTMLElement>(selector)
-      if (!el) return
-      tl.add(moveTo(el, tx, ty, { duration: FLY_DURATION, ease: FLY_EASE }), '<')
+    corners.forEach((el) => {
+      const [tx, ty] =
+        targets[
+          el.classList.contains('corner-top-l')
+            ? '.corner-top-l'
+            : el.classList.contains('corner-top-r')
+              ? '.corner-top-r'
+              : el.classList.contains('corner-bottom-l')
+                ? '.corner-bottom-l'
+                : '.corner-bottom-r'
+        ]
+      tl.add(
+        gsap.to(el, {
+          left: tx,
+          top: ty,
+          duration: FLY_DURATION,
+          ease: FLY_EASE,
+        }),
+        '<'
+      )
     })
     frames.forEach((frame) => {
       const isTop = frame.classList.contains('frame-top-r')
