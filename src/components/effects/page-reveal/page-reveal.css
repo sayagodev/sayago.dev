@@ -20,7 +20,7 @@
     left: 50%;
     width: 200%;
     height: 200svh;
-    background-color: var(--background);
+    background-color: var(--reveal-bg);
     transform: translate(-50%, -50%);
   }
 
@@ -131,7 +131,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--background);
+  background-color: var(--reveal-bg);
   z-index: 1;
 }
 

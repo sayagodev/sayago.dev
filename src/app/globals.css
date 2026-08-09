@@ -27,6 +27,7 @@
     --corner: #ffa4a4;
     --ring-accent: #d23c6d;
     --placeholder-foreground: #6b7280;
+    --reveal-bg: #fefcf5;
     --fg-badge: #09090b;
 
     /* Beidou (ko) overlay — colors resolve per theme via vars */
@@ -116,6 +117,7 @@
     --danger: #c47a5e;
     --danger-foreground: #09090b;
     --placeholder-foreground: #9ca3af;
+    --reveal-bg: #210f37;
   }
 
   html[data-theme='dark2'],
@@ -123,6 +125,7 @@
     --danger: #f2545f;
     --danger-foreground: #09090b;
     --placeholder-foreground: #b5a59e;
+    --reveal-bg: #8b1e2d;
   }
 
   html[data-theme='light2'],
@@ -132,6 +135,7 @@
     --placeholder-foreground: #5d6f85;
     --danger: #0867c2;
     --fg-badge: #fff;
+    --reveal-bg: #eaf7ff;
   }
 
   html[data-theme='light3'],
@@ -140,6 +144,7 @@
     --ring-accent: #c2560e;
     --placeholder-foreground: #8a6d3b;
     --danger: #a84e08;
+    --reveal-bg: #fffef2;
   }
 }
 
