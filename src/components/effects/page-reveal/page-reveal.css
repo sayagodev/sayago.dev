@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100svh;
+  height: 100dvh;
   z-index: 9999;
   pointer-events: none;
 }
@@ -19,7 +19,7 @@
     top: 50%;
     left: 50%;
     width: 200%;
-    height: 200svh;
+    height: 200dvh;
     background-color: var(--reveal-bg);
     transform: translate(-50%, -50%);
   }
@@ -118,7 +118,7 @@
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100svh;
+  height: 100dvh;
   z-index: 9998;
   pointer-events: none;
   overflow: hidden;

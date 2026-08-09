@@ -15,7 +15,8 @@ const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
 const BORDER_DELAY = 1.6
 const BORDER_DURATION = 0.6
 const STAGGER_DELAY = 0.05
-const VT_DELAY_AFTER_SLIDE = 800
+const VT_SETTLE_DELAY = 120
+const VT_FALLBACK_DELAY = 1500
 
 const BOX_SHADOW = {
   idle: '0 2px 6px rgb(from #000 r g b / 0.15)',
@@ -59,6 +60,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
   const currentIndexRef = useRef(0)
   const vtTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingThemeRef = useRef<Theme | null>(null)
 
   const storedIndex = useSyncExternalStore(
     (onStoreChange) => {
@@ -95,7 +97,60 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   const isVertical = orientation === 'vertical'
   const offset = isVertical ? 44 : 52
 
-  const navigate = async (dir: number) => {
+  const runThemeTransition = async (selectedTheme: Theme) => {
+    if (!document.startViewTransition) {
+      setTheme(selectedTheme.name.toLowerCase())
+      return
+    }
+
+    const centerEl = itemRefs.current[1]
+    if (!centerEl) {
+      setTheme(selectedTheme.name.toLowerCase())
+      return
+    }
+
+    const rect = centerEl.getBoundingClientRect()
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2
+    const maxRadius = Math.hypot(
+      Math.max(rect.left, window.innerWidth - rect.left),
+      Math.max(rect.top, window.innerHeight - rect.top)
+    )
+
+    const root = document.documentElement
+    root.style.setProperty('--vt-c1', selectedTheme.gradient[0])
+    root.style.setProperty('--vt-c2', selectedTheme.gradient[1])
+    root.style.setProperty('--vt-c3', selectedTheme.gradient[2])
+
+    const vt = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(selectedTheme.name.toLowerCase())
+      })
+    })
+
+    await vt.ready
+
+    document.documentElement.animate(
+      {
+        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
+      },
+      {
+        duration: 800,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        pseudoElement: '::view-transition-new(root)',
+      }
+    )
+  }
+
+  const consumePendingTheme = () => {
+    const pending = pendingThemeRef.current
+    if (!pending) return
+    pendingThemeRef.current = null
+    if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
+    vtTimerRef.current = setTimeout(() => runThemeTransition(pending), VT_SETTLE_DELAY)
+  }
+
+  const navigate = (dir: number) => {
     const newIndex = getCircularIndex(currentIndexRef.current + dir)
     const selectedTheme = themes[newIndex]
 
@@ -103,51 +158,14 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     setUserIndex(newIndex)
     onSelect?.(selectedTheme)
 
-    if (document.startViewTransition) {
-      if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
-
-      vtTimerRef.current = setTimeout(async () => {
-        const centerEl = itemRefs.current[1]
-        if (!centerEl) {
-          setTheme(selectedTheme.name.toLowerCase())
-          return
-        }
-
-        const rect = centerEl.getBoundingClientRect()
-        const x = rect.left + rect.width / 2
-        const y = rect.top + rect.height / 2
-        const maxRadius = Math.hypot(
-          Math.max(rect.left, window.innerWidth - rect.left),
-          Math.max(rect.top, window.innerHeight - rect.top)
-        )
-
-        const root = document.documentElement
-        root.style.setProperty('--vt-c1', selectedTheme.gradient[0])
-        root.style.setProperty('--vt-c2', selectedTheme.gradient[1])
-        root.style.setProperty('--vt-c3', selectedTheme.gradient[2])
-
-        const vt = document.startViewTransition(() => {
-          flushSync(() => {
-            setTheme(selectedTheme.name.toLowerCase())
-          })
-        })
-
-        await vt.ready
-
-        document.documentElement.animate(
-          {
-            clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
-          },
-          {
-            duration: 800,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            pseudoElement: '::view-transition-new(root)',
-          }
-        )
-      }, VT_DELAY_AFTER_SLIDE)
-    } else {
-      setTheme(selectedTheme.name.toLowerCase())
-    }
+    pendingThemeRef.current = selectedTheme
+    if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
+    vtTimerRef.current = setTimeout(() => {
+      const pending = pendingThemeRef.current
+      if (!pending) return
+      pendingThemeRef.current = null
+      runThemeTransition(pending)
+    }, VT_FALLBACK_DELAY)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -209,15 +227,26 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
           y: isVertical ? basePosition + direction * offset : 0,
           opacity: 0,
         })
+      })
 
-        gsap.to(item, {
-          x: isVertical ? 0 : basePosition,
-          y: isVertical ? basePosition : 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'back.out(1.7)',
-          delay: position * STAGGER_DELAY,
-        })
+      // El carrusel se desliza primero; la transición de vista se dispara
+      // SOLO cuando el deslizamiento termina (onComplete), así el origen de
+      // la animación siempre es la bola central ya asentada, incluso en
+      // dispositivos lentos. El timer de fallback (navigate) se cancela aquí
+      // para no lanzar la transición a mitad del deslizamiento.
+      if (pendingThemeRef.current && vtTimerRef.current) {
+        clearTimeout(vtTimerRef.current)
+        vtTimerRef.current = null
+      }
+
+      gsap.to(items, {
+        x: (i: number) => (isVertical ? 0 : (i - 1) * offset),
+        y: (i: number) => (isVertical ? (i - 1) * offset : 0),
+        opacity: 1,
+        duration: 0.6,
+        ease: 'back.out(1.7)',
+        delay: (i: number) => i * STAGGER_DELAY,
+        onComplete: consumePendingTheme,
       })
     },
     { dependencies: [currentIndex, direction, isVertical, offset, mounted] }
