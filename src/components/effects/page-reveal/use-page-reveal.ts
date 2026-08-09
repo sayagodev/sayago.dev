@@ -375,6 +375,9 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       // Snap corners to correct edges after frames clear
       tl.call(() => {
         const snap = () => {
+          // Skip while a page transition has the semicolon overlay visible
+          const overlay = document.querySelector<HTMLElement>('.preloader-overlay')
+          if (overlay && getComputedStyle(overlay).visibility === 'visible') return
           const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
           const vw = window.innerWidth
           const vh = window.innerHeight
@@ -534,4 +537,11 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
     if (os && !os.state().destroyed) os.update(true)
     snapRef.current?.()
   }, [pathname])
+
+  // Re-pin corners once a page transition finishes (enter complete)
+  useEffect(() => {
+    const onTransitionEnd = () => snapRef.current?.()
+    window.addEventListener('page-transition-end', onTransitionEnd)
+    return () => window.removeEventListener('page-transition-end', onTransitionEnd)
+  }, [])
 }

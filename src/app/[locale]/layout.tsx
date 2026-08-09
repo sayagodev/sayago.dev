@@ -8,6 +8,7 @@ import { themes } from '@/lib/constants'
 import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
 import PageReveal from '@/components/effects/page-reveal'
+import { TransitionProvider } from '@/components/providers/transition-provider'
 
 const monaArgon = localFont({
   src: [
@@ -70,20 +71,22 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
     >
       <body data-ko-ctx="root" data-overlayscrollbars-initialize>
         <Providers locale={locale}>
-          <PageReveal>
-            {children}
-            <div>
-              {/* Theme Picker - RIGHT side on desktop (vertical) */}
-              <div className="theme-picker-desktop">
-                <ThemePicker themes={themes} orientation="vertical" />
-              </div>
+          <TransitionProvider>
+            <PageReveal>
+              {children}
+              <div>
+                {/* Theme Picker - RIGHT side on desktop (vertical) */}
+                <div className="theme-picker-desktop">
+                  <ThemePicker themes={themes} orientation="vertical" />
+                </div>
 
-              {/* Theme Picker - TOP on mobile (horizontal) */}
-              <div className="theme-picker-mobile">
-                <ThemePicker themes={themes} orientation="horizontal" />
+                {/* Theme Picker - TOP on mobile (horizontal) */}
+                <div className="theme-picker-mobile">
+                  <ThemePicker themes={themes} orientation="horizontal" />
+                </div>
               </div>
-            </div>
-          </PageReveal>
+            </PageReveal>
+          </TransitionProvider>
         </Providers>
         <Script src="/oat.min.js" strategy="afterInteractive" />
       </body>
