@@ -45,7 +45,7 @@ export default function PageReveal({ children }: { children: React.ReactNode }) 
   return (
     <div ref={containerRef}>
       {/* Layer 1: Semicolon preloader overlay — covers everything */}
-      <div className="preloader-overlay">
+      <div className="preloader-overlay" aria-hidden="true">
         <div className="semicolon">
           <div className="frame-top-r" />
           <div className="frame-bottom-l" />
@@ -59,7 +59,7 @@ export default function PageReveal({ children }: { children: React.ReactNode }) 
       </div>
 
       {/* Layer 2: Cards overlay — white bg + gradient cards */}
-      <div className="cards-overlay">
+      <div className="cards-overlay" aria-hidden="true">
         <div className="cards-overlay__bg" />
         <div className="cards-container">
           {sortedGradients.map((g, i) => (

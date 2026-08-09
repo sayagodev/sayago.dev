@@ -39,6 +39,16 @@ const WorkContent = {
       es: 'Previsualización',
       en: 'Preview',
     }),
+    metadata: {
+      title: t({
+        es: 'Proyectos',
+        en: 'Projects',
+      }),
+      description: t({
+        es: 'El oficio de crear — proyectos nacidos de la curiosidad, construidos con precisión y pulidos con obsesión por el detalle.',
+        en: 'The craft of creating — projects born from curiosity, built with precision and polished with an obsession for detail.',
+      }),
+    },
     descriptions: {
       zihuame: t({
         es: 'Interfaz de comercio digital a medida para accesorios sustentables de lujo. Tipografía de alta fidelidad y patrones de interacción mínimos.',

@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useSyncExternalStore } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useTheme } from 'next-themes'
+import { useIntlayer } from 'next-intlayer'
 import { flushSync } from 'react-dom'
 import './theme-picker.css'
 
@@ -11,7 +12,6 @@ gsap.registerPlugin(useGSAP)
 
 const BORDER_RADIUS = 14
 const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
-const SELECTED_BORDER_COLOR = '#FFE5BF'
 const BORDER_DELAY = 1.6
 const BORDER_DURATION = 0.6
 const STAGGER_DELAY = 0.05
@@ -20,12 +20,13 @@ const VT_DELAY_AFTER_SLIDE = 800
 const BOX_SHADOW = {
   idle: '0 2px 6px rgb(from #000 r g b / 0.15)',
   hover: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-  selected: `0 0 20px 0 rgba(255, 229, 191, 0.9)`,
+  selected: '0 0 20px 0 color-mix(in srgb, var(--corner) 90%, transparent)',
 }
 
 const STORAGE_KEY = 'sayagodev-colortheme'
 
 const getStoredThemeIndex = (themes: Theme[]): number => {
+  if (typeof window === 'undefined') return 0
   const stored = localStorage.getItem(STORAGE_KEY)
   if (!stored) return 0
   const clean = stored.replace(/^"|"$/g, '')
@@ -47,16 +48,28 @@ interface ThemePickerProps {
 }
 
 export function ThemePicker({ themes, orientation = 'vertical', onSelect }: ThemePickerProps) {
-  const [currentIndex, setCurrentIndex] = useState(() => getStoredThemeIndex(themes))
+  const [userIndex, setUserIndex] = useState<number | null>(null)
   const [direction, setDirection] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const { setTheme } = useTheme()
+  const content = useIntlayer('theme-picker')
 
   const itemRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
   const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
   const currentIndexRef = useRef(0)
   const vtTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const storedIndex = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener('storage', onStoreChange)
+      return () => window.removeEventListener('storage', onStoreChange)
+    },
+    () => getStoredThemeIndex(themes),
+    () => 0
+  )
+
+  const currentIndex = userIndex ?? storedIndex
 
   useEffect(() => {
     currentIndexRef.current = currentIndex
@@ -87,7 +100,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     const selectedTheme = themes[newIndex]
 
     setDirection(dir)
-    setCurrentIndex(newIndex)
+    setUserIndex(newIndex)
     onSelect?.(selectedTheme)
 
     if (document.startViewTransition) {
@@ -253,6 +266,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     <div
       role="listbox"
       tabIndex={0}
+      aria-label={content.aria.label}
       onKeyDown={handleKeyDown}
       className="theme-picker"
       data-orientation={orientation}
@@ -267,8 +281,12 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
               key={position}
               ref={(el) => {
                 itemRefs.current[position] = el
+                // Beidou detecta interactivos vía [onclick] en el DOM; React no
+                // emite el atributo, así que lo marcamos nativamente
+                el?.setAttribute('onclick', 'void(0)')
               }}
               role="option"
+              aria-label={content.aria.options[theme.name as keyof typeof content.aria.options]}
               aria-selected={position === 1}
               onClick={() => {
                 if (position === 0) navigate(-1)
@@ -280,13 +298,14 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
             >
               <div
                 className="theme-option__circle"
+                aria-hidden="true"
                 style={{
                   background: `linear-gradient(135deg, ${color1} 0%, ${color2} 50%, ${color3} 100%)`,
                   boxShadow: getBoxShadow(position),
                 }}
               />
               {position === 1 && (
-                <svg className="theme-option__border" viewBox="0 0 32 32">
+                <svg className="theme-option__border" viewBox="0 0 32 32" aria-hidden="true">
                   <circle
                     ref={(el) => {
                       borderRefs.current[1] = el
@@ -295,7 +314,6 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
                     cy="16"
                     r={BORDER_RADIUS}
                     fill="none"
-                    stroke={SELECTED_BORDER_COLOR}
                     strokeWidth="2"
                     strokeDasharray={BORDER_CIRCUMFERENCE}
                     style={{ strokeDashoffset: BORDER_CIRCUMFERENCE }}

@@ -8,7 +8,7 @@
     padding: var(--space-4);
 
     &:focus-visible {
-      outline: 2px solid var(--accent);
+      outline: 2px solid var(--ring);
       outline-offset: 2px;
     }
 
@@ -38,6 +38,9 @@
     position: absolute;
     cursor: pointer;
     z-index: 1;
+    /* El outline del ring de Beidou sigue el border-radius del elemento:
+       sin esto el ring se dibuja cuadrado alrededor del círculo */
+    border-radius: var(--radius-full);
   }
 
   .theme-option__circle {
@@ -57,5 +60,9 @@
     block-size: 2rem;
     pointer-events: none;
     color: var(--accent);
+  }
+
+  .theme-option__border circle {
+    stroke: var(--ring-accent);
   }
 }

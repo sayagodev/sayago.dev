@@ -13,21 +13,21 @@ export const GRAINIENT_COLORS = {
   },
   light2: {
     tone: 'light',
-    color1: '#FF97D0',
-    color2: '#B331F1',
-    color3: '#FBF5A7',
+    color1: '#30AFFF',
+    color2: '#92EEFF',
+    color3: '#D8FFC5',
   },
   dark2: {
     tone: 'dark',
-    color1: '#BBDC12',
-    color2: '#8ECA3C',
-    color3: '#276F27',
+    color1: '#8B1E2D',
+    color2: '#E63946',
+    color3: '#F4D35E',
   },
   light3: {
     tone: 'light',
-    color1: '#00E0BA',
-    color2: '#FFCF00',
-    color3: '#FF3483',
+    color1: '#FFF47D',
+    color2: '#FFBF86',
+    color3: '#C2F784',
   },
 } as const
 
