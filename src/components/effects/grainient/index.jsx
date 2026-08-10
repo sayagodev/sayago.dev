@@ -137,7 +137,7 @@ const Grainient = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      dpr: Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1.5 : 2),
     })
 
     const gl = renderer.gl
@@ -199,17 +199,37 @@ const Grainient = ({
     ro.observe(container)
     setSize()
 
+    // Solo renderiza mientras el canvas sea visible: las tarjetas del
+    // reveal fuera de pantalla (desplazadas a ±100vw) dejan de gastar
+    // GPU/CPU en móvil. El hero (fondo fijo) siempre está visible y
+    // sigue animando.
     let raf = 0
+    let running = false
     const t0 = performance.now()
     const loop = (t) => {
       program.uniforms.iTime.value = (t - t0) * 0.001
       renderer.render({ scene: mesh })
       raf = requestAnimationFrame(loop)
     }
-    raf = requestAnimationFrame(loop)
+    const start = () => {
+      if (running) return
+      running = true
+      raf = requestAnimationFrame(loop)
+    }
+    const stop = () => {
+      running = false
+      cancelAnimationFrame(raf)
+    }
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) start()
+      else stop()
+    })
+    io.observe(container)
+    start()
 
     return () => {
-      cancelAnimationFrame(raf)
+      stop()
+      io.disconnect()
       ro.disconnect()
       try {
         container.removeChild(canvas)
