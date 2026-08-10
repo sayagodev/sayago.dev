@@ -13,6 +13,16 @@ const homeNavigationContent = {
         en: 'Contact',
       }),
     },
+    metadata: {
+      title: t({
+        es: 'Inicio',
+        en: 'Home',
+      }),
+      description: t({
+        es: 'Ángel Sáyago — desarrollo de aplicaciones web con bases sólidas y obsesión por el detalle.',
+        en: 'Ángel Sáyago — web development with solid foundations and an obsession for detail.',
+      }),
+    },
   },
 } satisfies Dictionary
 

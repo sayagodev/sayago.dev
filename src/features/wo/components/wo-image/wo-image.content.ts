@@ -13,6 +13,16 @@ const WoImageContent = {
       es: '¿Poco tiempo/interes?',
       en: 'Short on time/interest?',
     }),
+    metadata: {
+      title: t({
+        es: 'Sobre mí',
+        en: 'About me',
+      }),
+      description: t({
+        es: 'Ángel Sáyago — egresado de la UANL, autodidacta del desarrollo de aplicaciones desde ~2017.',
+        en: 'Ángel Sáyago — UANL graduate, self-taught app developer since ~2017.',
+      }),
+    },
   },
 } satisfies Dictionary
 

@@ -21,7 +21,7 @@
     inset-block-start: 0;
     z-index: 40;
     inline-size: 300px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--foreground);
     background: var(--background);
     box-shadow: 0 16px 60px rgba(0, 0, 0, 0.7);
     pointer-events: none;
@@ -53,7 +53,7 @@
   .work-projects__preview-img {
     aspect-ratio: 3 / 2;
     inline-size: 100%;
-    background: var(--border);
+    background: color-mix(in srgb, var(--foreground) 10%, transparent);
   }
 
   .work-projects__header {
@@ -124,7 +124,7 @@
   }
 
   .work-projects__filter {
-    border: 1px solid var(--muted-foreground);
+    border: 1px solid var(--foreground);
     border-radius: 0;
     padding: 0.375rem 1rem;
     font-size: 11px;
@@ -140,7 +140,7 @@
   }
 
   .work-projects__filter:hover {
-    border-color: var(--muted-foreground);
+    border-color: var(--foreground);
     color: var(--foreground);
   }
 
@@ -152,7 +152,7 @@
 
   .work-projects__list {
     margin-block-start: var(--space-10);
-    border-block-start: 1px solid var(--border);
+    border-block-start: 1px solid var(--foreground);
   }
 
   .work-projects__item {
@@ -232,7 +232,7 @@
   .work-projects__tag {
     font-size: 11px;
     padding: 0.125rem 0.5rem;
-    border: 1px solid var(--muted-foreground);
+    border: 1px solid var(--foreground);
     color: var(--foreground);
     letter-spacing: 0.04em;
   }
@@ -303,17 +303,17 @@
 
   .work-projects__accordion-content {
     margin: 0 var(--space-1) var(--space-6);
-    border: 1px solid var(--border);
+    border: 1px solid var(--foreground);
   }
 
   .work-projects__accordion-img {
     aspect-ratio: 3 / 2;
     inline-size: 100%;
-    background: var(--border);
+    background: color-mix(in srgb, var(--foreground) 10%, transparent);
   }
 
   .work-projects__accordion-body {
-    border-block-start: 1px solid var(--border);
+    border-block-start: 1px solid var(--foreground);
     padding: var(--space-4);
   }
 

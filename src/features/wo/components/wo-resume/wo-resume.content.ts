@@ -9,12 +9,20 @@ Como es obvio por el diseño de mi página, estoy aprendiendo mandarín; me gust
 - <span className="text-symbol">\*</span>Mi padre es chef y desde que tengo uso de razón trabaja en su restaurante **(El Dragón de Oro)** haciendo comida china; supongo que de ahí algo despertó en mí jaja.
 `
 
+const resumeTLDREs = `**Ángel Sáyago** — egresado de la **UANL** como **Lic. en Seguridad en TI**. Autodidacta del desarrollo desde **~2017**: bases sólidas, infraestructura, pruebas, despliegues y AI. Aprendiendo mandarín por fascinación con la cultura china. Hijo de chef (El Dragón de Oro).`
+
+const resumeTLDREn = `**Ángel Sáyago** — BSc in **IT Security** from **UANL**. Self-taught developer since **~2017**: solid fundamentals, infrastructure, testing, deployments and AI. Learning Mandarin, fascinated by Chinese culture. Son of a chef (El Dragón de Oro).`
+
 const WoResumeContent = {
   key: 'wo-resume',
   content: {
     resumeL: t({
       es: md(resumeLargeEs),
       en: md(resumeLargeEs),
+    }),
+    resumeTLDRL: t({
+      es: md(resumeTLDREs),
+      en: md(resumeTLDREn),
     }),
   },
 } satisfies Dictionary

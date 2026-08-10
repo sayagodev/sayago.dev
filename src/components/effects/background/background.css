@@ -4,7 +4,12 @@
     top: 0;
     left: 0;
     width: 100vw;
+    /* lvh = viewport grande (barra de URL oculta): siempre cubre lo
+       visible aunque la barra del móvil colapse/expanda durante el
+       scroll; vh/svh quedan como fallback para navegadores antiguos */
+    height: 100vh;
     height: 100svh;
+    height: 100lvh;
     z-index: -999;
 
     & .background-grainient {

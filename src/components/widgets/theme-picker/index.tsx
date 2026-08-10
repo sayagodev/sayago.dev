@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useSyncExternalStore } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { useTheme } from 'next-themes'
+import { useIntlayer } from 'next-intlayer'
 import { flushSync } from 'react-dom'
 import './theme-picker.css'
 
@@ -11,21 +12,22 @@ gsap.registerPlugin(useGSAP)
 
 const BORDER_RADIUS = 14
 const BORDER_CIRCUMFERENCE = 2 * Math.PI * BORDER_RADIUS
-const SELECTED_BORDER_COLOR = '#FFE5BF'
 const BORDER_DELAY = 1.6
 const BORDER_DURATION = 0.6
 const STAGGER_DELAY = 0.05
-const VT_DELAY_AFTER_SLIDE = 800
+const VT_SETTLE_DELAY = 120
+const VT_FALLBACK_DELAY = 1500
 
 const BOX_SHADOW = {
   idle: '0 2px 6px rgb(from #000 r g b / 0.15)',
   hover: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-  selected: `0 0 20px 0 rgba(255, 229, 191, 0.9)`,
+  selected: '0 0 20px 0 color-mix(in srgb, var(--corner) 90%, transparent)',
 }
 
 const STORAGE_KEY = 'sayagodev-colortheme'
 
 const getStoredThemeIndex = (themes: Theme[]): number => {
+  if (typeof window === 'undefined') return 0
   const stored = localStorage.getItem(STORAGE_KEY)
   if (!stored) return 0
   const clean = stored.replace(/^"|"$/g, '')
@@ -47,16 +49,29 @@ interface ThemePickerProps {
 }
 
 export function ThemePicker({ themes, orientation = 'vertical', onSelect }: ThemePickerProps) {
-  const [currentIndex, setCurrentIndex] = useState(() => getStoredThemeIndex(themes))
+  const [userIndex, setUserIndex] = useState<number | null>(null)
   const [direction, setDirection] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const { setTheme } = useTheme()
+  const content = useIntlayer('theme-picker')
 
   const itemRefs = useRef<(HTMLDivElement | null)[]>([null, null, null])
   const borderRefs = useRef<(SVGCircleElement | null)[]>([null, null, null])
   const currentIndexRef = useRef(0)
   const vtTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingThemeRef = useRef<Theme | null>(null)
+
+  const storedIndex = useSyncExternalStore(
+    (onStoreChange) => {
+      window.addEventListener('storage', onStoreChange)
+      return () => window.removeEventListener('storage', onStoreChange)
+    },
+    () => getStoredThemeIndex(themes),
+    () => 0
+  )
+
+  const currentIndex = userIndex ?? storedIndex
 
   useEffect(() => {
     currentIndexRef.current = currentIndex
@@ -82,59 +97,85 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   const isVertical = orientation === 'vertical'
   const offset = isVertical ? 44 : 52
 
-  const navigate = async (dir: number) => {
+  const runThemeTransition = async (selectedTheme: Theme) => {
+    if (!document.startViewTransition) {
+      setTheme(selectedTheme.name.toLowerCase())
+      return
+    }
+
+    const centerEl = itemRefs.current[1]
+    if (!centerEl) {
+      setTheme(selectedTheme.name.toLowerCase())
+      return
+    }
+
+    const rect = centerEl.getBoundingClientRect()
+    // El clip-path del ::view-transition-new(root) se resuelve en el
+    // espacio del documento raíz, que en Chrome Android incluye la zona
+    // de la barra de URL: sin compensar, el círculo arranca ~180px más
+    // arriba de la bola (en la zona de la URL). rootTop + scrollY
+    // aíslan esa altura en cualquier estado de scroll; en desktop y en
+    // headless es 0.
+    const barOffset = Math.max(
+      0,
+      -document.documentElement.getBoundingClientRect().top - window.scrollY
+    )
+    const x = rect.left + rect.width / 2
+    const y = rect.top + rect.height / 2 + barOffset
+    const maxRadius = Math.hypot(
+      Math.max(rect.left, window.innerWidth - rect.left),
+      Math.max(rect.top, window.innerHeight - rect.top)
+    )
+
+    const root = document.documentElement
+    root.style.setProperty('--vt-c1', selectedTheme.gradient[0])
+    root.style.setProperty('--vt-c2', selectedTheme.gradient[1])
+    root.style.setProperty('--vt-c3', selectedTheme.gradient[2])
+
+    const vt = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(selectedTheme.name.toLowerCase())
+      })
+    })
+
+    await vt.ready
+
+    document.documentElement.animate(
+      {
+        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
+      },
+      {
+        duration: 800,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        pseudoElement: '::view-transition-new(root)',
+      }
+    )
+  }
+
+  const consumePendingTheme = () => {
+    const pending = pendingThemeRef.current
+    if (!pending) return
+    pendingThemeRef.current = null
+    if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
+    vtTimerRef.current = setTimeout(() => runThemeTransition(pending), VT_SETTLE_DELAY)
+  }
+
+  const navigate = (dir: number) => {
     const newIndex = getCircularIndex(currentIndexRef.current + dir)
     const selectedTheme = themes[newIndex]
 
     setDirection(dir)
-    setCurrentIndex(newIndex)
+    setUserIndex(newIndex)
     onSelect?.(selectedTheme)
 
-    if (document.startViewTransition) {
-      if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
-
-      vtTimerRef.current = setTimeout(async () => {
-        const centerEl = itemRefs.current[1]
-        if (!centerEl) {
-          setTheme(selectedTheme.name.toLowerCase())
-          return
-        }
-
-        const rect = centerEl.getBoundingClientRect()
-        const x = rect.left + rect.width / 2
-        const y = rect.top + rect.height / 2
-        const maxRadius = Math.hypot(
-          Math.max(rect.left, window.innerWidth - rect.left),
-          Math.max(rect.top, window.innerHeight - rect.top)
-        )
-
-        const root = document.documentElement
-        root.style.setProperty('--vt-c1', selectedTheme.gradient[0])
-        root.style.setProperty('--vt-c2', selectedTheme.gradient[1])
-        root.style.setProperty('--vt-c3', selectedTheme.gradient[2])
-
-        const vt = document.startViewTransition(() => {
-          flushSync(() => {
-            setTheme(selectedTheme.name.toLowerCase())
-          })
-        })
-
-        await vt.ready
-
-        document.documentElement.animate(
-          {
-            clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxRadius}px at ${x}px ${y}px)`],
-          },
-          {
-            duration: 800,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            pseudoElement: '::view-transition-new(root)',
-          }
-        )
-      }, VT_DELAY_AFTER_SLIDE)
-    } else {
-      setTheme(selectedTheme.name.toLowerCase())
-    }
+    pendingThemeRef.current = selectedTheme
+    if (vtTimerRef.current) clearTimeout(vtTimerRef.current)
+    vtTimerRef.current = setTimeout(() => {
+      const pending = pendingThemeRef.current
+      if (!pending) return
+      pendingThemeRef.current = null
+      runThemeTransition(pending)
+    }, VT_FALLBACK_DELAY)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -196,15 +237,26 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
           y: isVertical ? basePosition + direction * offset : 0,
           opacity: 0,
         })
+      })
 
-        gsap.to(item, {
-          x: isVertical ? 0 : basePosition,
-          y: isVertical ? basePosition : 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'back.out(1.7)',
-          delay: position * STAGGER_DELAY,
-        })
+      // El carrusel se desliza primero; la transición de vista se dispara
+      // SOLO cuando el deslizamiento termina (onComplete), así el origen de
+      // la animación siempre es la bola central ya asentada, incluso en
+      // dispositivos lentos. El timer de fallback (navigate) se cancela aquí
+      // para no lanzar la transición a mitad del deslizamiento.
+      if (pendingThemeRef.current && vtTimerRef.current) {
+        clearTimeout(vtTimerRef.current)
+        vtTimerRef.current = null
+      }
+
+      gsap.to(items, {
+        x: (i: number) => (isVertical ? 0 : (i - 1) * offset),
+        y: (i: number) => (isVertical ? (i - 1) * offset : 0),
+        opacity: 1,
+        duration: 0.6,
+        ease: 'back.out(1.7)',
+        delay: (i: number) => i * STAGGER_DELAY,
+        onComplete: consumePendingTheme,
       })
     },
     { dependencies: [currentIndex, direction, isVertical, offset, mounted] }
@@ -253,6 +305,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     <div
       role="listbox"
       tabIndex={0}
+      aria-label={content.aria.label}
       onKeyDown={handleKeyDown}
       className="theme-picker"
       data-orientation={orientation}
@@ -267,8 +320,12 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
               key={position}
               ref={(el) => {
                 itemRefs.current[position] = el
+                // Beidou detecta interactivos vía [onclick] en el DOM; React no
+                // emite el atributo, así que lo marcamos nativamente
+                el?.setAttribute('onclick', 'void(0)')
               }}
               role="option"
+              aria-label={content.aria.options[theme.name as keyof typeof content.aria.options]}
               aria-selected={position === 1}
               onClick={() => {
                 if (position === 0) navigate(-1)
@@ -280,13 +337,14 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
             >
               <div
                 className="theme-option__circle"
+                aria-hidden="true"
                 style={{
                   background: `linear-gradient(135deg, ${color1} 0%, ${color2} 50%, ${color3} 100%)`,
                   boxShadow: getBoxShadow(position),
                 }}
               />
               {position === 1 && (
-                <svg className="theme-option__border" viewBox="0 0 32 32">
+                <svg className="theme-option__border" viewBox="0 0 32 32" aria-hidden="true">
                   <circle
                     ref={(el) => {
                       borderRefs.current[1] = el
@@ -295,7 +353,6 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
                     cy="16"
                     r={BORDER_RADIUS}
                     fill="none"
-                    stroke={SELECTED_BORDER_COLOR}
                     strokeWidth="2"
                     strokeDasharray={BORDER_CIRCUMFERENCE}
                     style={{ strokeDashoffset: BORDER_CIRCUMFERENCE }}
