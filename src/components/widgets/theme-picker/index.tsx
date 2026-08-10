@@ -110,8 +110,18 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
     }
 
     const rect = centerEl.getBoundingClientRect()
+    // El clip-path del ::view-transition-new(root) se resuelve en el
+    // espacio del documento raíz, que en Chrome Android incluye la zona
+    // de la barra de URL: sin compensar, el círculo arranca ~180px más
+    // arriba de la bola (en la zona de la URL). rootTop + scrollY
+    // aíslan esa altura en cualquier estado de scroll; en desktop y en
+    // headless es 0.
+    const barOffset = Math.max(
+      0,
+      -document.documentElement.getBoundingClientRect().top - window.scrollY
+    )
     const x = rect.left + rect.width / 2
-    const y = rect.top + rect.height / 2
+    const y = rect.top + rect.height / 2 + barOffset
     const maxRadius = Math.hypot(
       Math.max(rect.left, window.innerWidth - rect.left),
       Math.max(rect.top, window.innerHeight - rect.top)
