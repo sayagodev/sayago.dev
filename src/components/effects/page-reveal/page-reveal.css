@@ -4,10 +4,7 @@
 
 .preloader-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100dvh;
+  inset: 0;
   z-index: 9999;
   pointer-events: none;
 }
@@ -115,10 +112,7 @@
 
 .cards-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100dvh;
+  inset: 0;
   z-index: 9998;
   pointer-events: none;
   overflow: hidden;
