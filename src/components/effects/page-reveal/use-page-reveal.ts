@@ -263,9 +263,12 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
 
       // Hide the background behind the hero image just in case — pero solo
       // cuando el hero YA cubre la pantalla (al final de su expansión):
-      // si se oculta antes, el fondo del body (blanco/negro) se ve alrededor
-      tl.set('.cards-overlay__bg', { opacity: 0 }, `<${HERO_EXPAND_DURATION}`)
-      tl.set('.preloader-overlay', { visibility: 'hidden' }, '<0.5')
+      // si se oculta antes, el fondo del body (blanco/negro) se ve alrededor.
+      // Las posiciones son absolutas respecto al hero (label): si se encadenan
+      // con '<', el call del contenido se empuja 0.5s más tarde.
+      tl.addLabel('heroStart', '<')
+      tl.set('.preloader-overlay', { visibility: 'hidden' }, 'heroStart+=0.5')
+      tl.set('.cards-overlay__bg', { opacity: 0 }, 'heroStart+=1.5')
 
       // --- Phase 5: Reveal Content ---
       tl.call(() => {
