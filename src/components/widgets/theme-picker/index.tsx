@@ -95,7 +95,7 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
   ]
 
   const isVertical = orientation === 'vertical'
-  const offset = isVertical ? 44 : 52
+  const offset = isVertical ? 36 : 44
 
   const runThemeTransition = async (selectedTheme: Theme) => {
     if (!document.startViewTransition) {
