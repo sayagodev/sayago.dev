@@ -44,9 +44,9 @@
     margin-block-start: 2rem;
     margin-block-end: 0;
     font-family: var(--font-krypton);
-    font-size: clamp(1.125rem, 5.75vw, 3.75rem);
+    font-size: clamp(1.75rem, 5.75vw, 3.75rem);
     font-weight: 800;
-    line-height: 1.08;
+    line-height: 1.2;
     letter-spacing: -0.025em;
     color: var(--foreground);
   }
@@ -54,6 +54,16 @@
   @media (width >= 40rem) {
     .contact-heading {
       margin-block-start: 5rem;
+    }
+  }
+
+  /* Pantallas muy pequeñas: la frase rotativa más larga ("tu plataforma.")
+     cabría en una sola línea pero a 28px se desborda; bajamos el cuerpo del
+     título para que no se quiebre, manteniéndolo por encima del texto de los
+     campos. */
+  @media (width < 23.75rem) {
+    .contact-heading {
+      font-size: clamp(1.5rem, 7vw, 1.75rem);
     }
   }
 
@@ -82,5 +92,6 @@
     background: var(--foreground);
     color: var(--background);
     padding-inline: 0.75rem;
+    margin-block-start: 0.15em;
   }
 }
