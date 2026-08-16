@@ -414,17 +414,26 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
             el.style.clipPath = clip
           }
 
-          // Top corners: always fixed at viewport top
+          // Top corners: anclados al inicio de la página (absolute), igual que
+          // los inferiores: se desplazan con el scroll y no se interponen sobre
+          // el contenido del viewport.
           container.querySelectorAll<HTMLElement>('.corner-top-r').forEach((el) => {
-            pin(el, 'fixed', {
+            setup(el, 'polygon(0 0, 100% 0, 100% 100%, 70% 100%, 70% 30%, 0 30%)')
+            pin(el, 'absolute', {
               left: vw - gap - CORNER_SIZE + 'px',
               top: gap + 'px',
-              bottom: 'auto',
               right: 'auto',
+              bottom: 'auto',
             })
           })
           container.querySelectorAll<HTMLElement>('.corner-top-l').forEach((el) => {
-            pin(el, 'fixed', { left: gap + 'px', top: gap + 'px', bottom: 'auto', right: 'auto' })
+            setup(el, 'polygon(0 0, 100% 0, 100% 30%, 30% 30%, 30% 100%, 0 100%)')
+            pin(el, 'absolute', {
+              left: gap + 'px',
+              top: gap + 'px',
+              right: 'auto',
+              bottom: 'auto',
+            })
           })
 
           // Bottom corners
