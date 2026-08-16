@@ -26,8 +26,8 @@ const ContactContent = {
       en: '~24h',
     }),
     subtitlePart2: t({
-      es: ', sin bots de por medio — 信.',
-      en: ', no bots in between — 信.',
+      es: ', sin bots de por medio 【信】.',
+      en: ', no bots in between 【信】.',
     }),
     form: {
       nameStart: t({
