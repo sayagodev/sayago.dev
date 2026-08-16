@@ -17,6 +17,44 @@
     margin: 0;
   }
 
+  .contact-form__field {
+    position: relative;
+    display: inline-block;
+  }
+
+  .contact-form__field--locked,
+  .contact-form__sentence--locked,
+  .contact-form__optional--locked {
+    cursor: not-allowed;
+  }
+
+  .contact-form__field--locked .contact-form__input,
+  .contact-form__sentence--locked .contact-form__budget,
+  .contact-form__optional--locked .contact-form__textarea {
+    pointer-events: none;
+  }
+
+  .contact-form__lock {
+    display: inline-block;
+    inline-size: 12px;
+    block-size: 12px;
+    margin-inline-start: var(--space-1);
+    color: var(--corner);
+    vertical-align: text-bottom;
+    pointer-events: none;
+  }
+
+  .contact-form__field .contact-form__lock {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin: 0;
+  }
+
+  .contact-form__label .contact-form__lock {
+    vertical-align: middle;
+  }
+
   .contact-form__input {
     border: 0;
     border-block-end: 1px solid var(--foreground);
@@ -37,6 +75,12 @@
 
   .contact-form__input:focus {
     border-color: var(--foreground);
+  }
+
+  .contact-form__input:disabled,
+  .contact-form__textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .contact-form__input--error {
@@ -86,6 +130,17 @@
     border-color: var(--foreground);
     background: var(--foreground);
     color: var(--background);
+  }
+
+  .contact-form__budget--active:hover {
+    border-color: var(--foreground);
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  .contact-form__budget:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 
   .contact-form__optional {
@@ -175,6 +230,32 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-3);
+  }
+
+  .contact-form__cooldown {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    border: 1px solid var(--foreground);
+    padding: var(--space-4) var(--space-6);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--foreground);
+  }
+
+  .contact-form__cooldown-check {
+    display: inline-flex;
+    align-items: center;
+    color: var(--success);
+  }
+
+  .contact-form__cooldown-time {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+    letter-spacing: 0.08em;
   }
 
   .contact-form__security {

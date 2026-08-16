@@ -8,7 +8,7 @@ export function ContactChannels() {
     {
       label: content.channels.emailLabel,
       value: content.channels.emailValue,
-      href: 'mailto:hola@sayago.dev',
+      href: 'mailto:hi@sayago.dev',
     },
     {
       label: content.channels.githubLabel,

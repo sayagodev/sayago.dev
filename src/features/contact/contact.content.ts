@@ -91,12 +91,32 @@ const ContactContent = {
         en: 'transmitting…',
       }),
       submitDone: t({
-        es: '✓ mensaje enviado — 收到',
-        en: '✓ message sent — 收到',
+        es: 'mensaje enviado — 收到',
+        en: 'message sent — 收到',
       }),
       error: t({
         es: 'Revisa los campos marcados.',
         en: 'Please check the highlighted fields.',
+      }),
+      errorServer: t({
+        es: 'Hubo un problema de conexión. Inténtalo de nuevo en unos minutos.',
+        en: 'There was a connection problem. Try again in a few minutes.',
+      }),
+      errorResend: t({
+        es: 'El envío falló con el proveedor de correo. Vuelve a intentarlo.',
+        en: 'Sending failed with the email provider. Please try again.',
+      }),
+      errorCooldown: t({
+        es: 'Ya enviaste un mensaje hace poco. Podrás escribir de nuevo en un momento.',
+        en: 'You recently sent a message. You can write again shortly.',
+      }),
+      cooldownMessage: t({
+        es: 'puedes enviar otro mensaje en {time}',
+        en: 'you can send another message in {time}',
+      }),
+      cooldownAriaLabel: t({
+        es: 'Tiempo restante antes de poder enviar otro mensaje',
+        en: 'Time remaining before you can send another message',
       }),
       security: t({
         es: 'cifrado en tránsito · sin spam · respuesta humana garantizada',
@@ -116,7 +136,7 @@ const ContactContent = {
         es: 'ubicación',
         en: 'location',
       }),
-      emailValue: 'hola@sayago.dev',
+      emailValue: 'hi@sayago.dev',
       githubValue: 'github.com/sayagodev',
       locationValue: 'SMA, MX — UTC-6',
     },
