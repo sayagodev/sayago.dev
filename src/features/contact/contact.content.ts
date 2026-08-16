@@ -4,18 +4,12 @@ const ContactContent = {
   key: 'contact',
   content: {
     headlinePrefix: t({
-      es: 'Tu idea se vuelve…',
-      en: 'Your idea becomes…',
+      es: 'Hago realidad…',
+      en: 'I make real…',
     }),
     rotatingWords: t({
-      es: [
-        'código.',
-        'un sistema robusto.',
-        'realidad.',
-        'un producto sólido.',
-        'algo que perdure.',
-      ],
-      en: ['code.', 'a robust system.', 'reality.', 'a solid product.', 'something that lasts.'],
+      es: ['tu idea.', 'tu producto.', 'tu sistema.', 'tu plataforma.', 'tu proyecto.'],
+      en: ['your idea.', 'your product.', 'your system.', 'your platform.', 'your project.'],
     }),
     subtitlePart1: t({
       es: 'Cuéntame qué quieres construir. Respondo en',
