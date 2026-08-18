@@ -31,7 +31,6 @@ function sortGradientsForHero(heroIdx: number): typeof gradients {
     return gradients[idx]
   })
 }
-
 export default function PageReveal({ children }: { children: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null)
 

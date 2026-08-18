@@ -26,6 +26,12 @@ const BOX_SHADOW = {
 
 const STORAGE_KEY = 'sayagodev-colortheme'
 
+// El intro (bolas volando) solo se reproduce una vez por sesión. Al cambiar de
+// idioma el layout [locale] se re-monta y con él el ThemePicker; sin este flag
+// el intro volvería a sonar en cada cambio de idioma. El flag vive a nivel de
+// módulo: se resetea en cada carga completa de página.
+let introPlayed = false
+
 const getStoredThemeIndex = (themes: Theme[]): number => {
   if (typeof window === 'undefined') return 0
   const stored = localStorage.getItem(STORAGE_KEY)
@@ -195,6 +201,22 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
       const items = itemRefs.current.filter(Boolean) as HTMLDivElement[]
       if (items.length === 0) return
 
+      // Re-mount por cambio de idioma: el intro ya se vio esta sesión, así que
+      // las bolas se colocan directamente en su posición final sin animación.
+      if (introPlayed) {
+        items.forEach((item, position) => {
+          gsap.set(item, {
+            x: isVertical ? 0 : (position - 1) * offset,
+            y: isVertical ? (position - 1) * offset : 0,
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+          })
+        })
+        setMounted(true)
+        return
+      }
+
       items.forEach((item, position) => {
         const basePosition = (position - 1) * offset
         gsap.set(item, {
@@ -216,7 +238,10 @@ export function ThemePicker({ themes, orientation = 'vertical', onSelect }: Them
         ease: 'back.out(1.4)',
         stagger: STAGGER_DELAY,
         delay: 0.5,
-        onComplete: () => setMounted(true),
+        onComplete: () => {
+          introPlayed = true
+          setMounted(true)
+        },
       })
     },
     { dependencies: [isVertical, offset], revertOnUpdate: false }

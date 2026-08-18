@@ -1,0 +1,280 @@
+@layer components {
+  .floating-nav {
+    /* Tokens propios del menú: la barra siempre es nuestro negro, el acento
+       de selección varía por theme (--corner). */
+    --fn-bg: #0a0a09;
+    --fn-ink: #f5f5f2;
+    --fn-ink-dim: rgba(245, 245, 242, 0.72);
+    --fn-ink-faint: rgba(245, 245, 242, 0.45);
+    --fn-line: rgba(245, 245, 242, 0.16);
+    --fn-line-soft: rgba(245, 245, 242, 0.08);
+    --fn-accent: var(--corner);
+    --fn-accent-ink: var(--background);
+
+    position: fixed;
+    inset-block-end: 1.25rem;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    z-index: var(--z-dropdown);
+    user-select: none;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: var(--font-krypton), monospace;
+    transition: inset-block-end 0.3s ease;
+  }
+
+  /* ---- barra ---- */
+
+  .floating-nav__bar {
+    display: flex;
+    align-items: center;
+    padding: 0.125rem;
+    border: 1px solid var(--fn-line);
+    background: color-mix(in srgb, var(--fn-bg) 90%, transparent);
+    box-shadow: 0 8px 40px rgb(0 0 0 / 0.35);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-small);
+  }
+
+  .floating-nav__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    block-size: 2.25rem;
+    inline-size: 2.25rem;
+    color: var(--fn-ink);
+    transition:
+      inline-size 0.3s ease-out,
+      padding-inline 0.3s ease-out,
+      background-color 0.3s ease-out,
+      color 0.3s ease-out;
+
+    &:hover {
+      background: color-mix(in srgb, var(--fn-ink) 8%, transparent);
+      color: var(--fn-ink);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--fn-accent);
+      outline-offset: 2px;
+    }
+
+    &[data-active='true'] {
+      inline-size: auto;
+      padding-inline: 0.75rem;
+      gap: 0.625rem;
+      background: var(--fn-accent);
+      color: var(--fn-accent-ink);
+    }
+  }
+
+  .floating-nav__hanzi {
+    /* La font CJK está descentrada en su caja: el glifo se compensa para que
+       quede visualmente centrado en el cuadrado cuando no hay label. */
+    font-family: var(--font-zi), sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+    translate: 4px -1px;
+  }
+
+  .floating-nav__label {
+    overflow: hidden;
+    white-space: nowrap;
+    max-inline-size: 0;
+    opacity: 0;
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition:
+      max-inline-size 0.3s ease-out,
+      opacity 0.3s ease-out;
+
+    [data-active='true'] & {
+      max-inline-size: 5rem;
+      opacity: 1;
+    }
+  }
+
+  .floating-nav__divider {
+    align-self: stretch;
+    inline-size: 1px;
+    margin-inline: 0.25rem;
+    background: var(--fn-line);
+  }
+
+  .floating-nav__toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    block-size: 2rem;
+    inline-size: 2rem;
+    /* Reset de OAT: [type=button] hereda background var(--primary) (café en
+       light) y border; lo neutralizamos para usar el estilo del menú. */
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: var(--fn-ink);
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+
+    &:hover {
+      background: color-mix(in srgb, var(--fn-ink) 8%, transparent);
+      color: var(--fn-ink);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--fn-accent);
+      outline-offset: 2px;
+    }
+
+    &[data-open='true'] {
+      background: var(--fn-accent);
+      color: var(--fn-accent-ink);
+    }
+  }
+
+  .floating-nav__glyph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+
+    &--open {
+      transform: rotate(90deg);
+    }
+  }
+
+  /* tooltip — solo dispositivos con hover real */
+  .floating-nav__tip {
+    position: absolute;
+    inset-block-end: calc(100% + 0.75rem);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--fn-line);
+    background: var(--fn-bg);
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fn-ink);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+
+    @media (hover: hover) and (pointer: fine) {
+      .floating-nav__item:hover &,
+      .floating-nav__toggle:hover & {
+        opacity: 1;
+      }
+    }
+  }
+
+  /* ---- panel de config ---- */
+
+  .floating-nav__panel {
+    position: absolute;
+    inset-block-end: calc(100% + 0.625rem);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: 14rem;
+    overflow: hidden;
+    border: 1px solid var(--fn-line);
+    background: color-mix(in srgb, var(--fn-bg) 95%, transparent);
+    box-shadow: 0 8px 40px rgb(0 0 0 / 0.35);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius-small);
+  }
+
+  .floating-nav__panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.875rem;
+    border-block-end: 1px solid var(--fn-line-soft);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fn-ink-dim);
+  }
+
+  .floating-nav__panel-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    color: var(--fn-ink);
+
+    &[data-disabled='true'] {
+      color: var(--fn-ink-dim);
+      cursor: not-allowed;
+    }
+  }
+
+  .floating-nav__langs {
+    display: flex;
+    gap: var(--space-1);
+  }
+
+  .floating-nav__lang {
+    font-family: inherit;
+    font-size: 0.75rem;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    color: var(--fn-ink-dim);
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--fn-ink);
+    }
+
+    &[data-active='true'] {
+      color: var(--fn-accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 0.25rem;
+    }
+  }
+
+  .floating-nav__soon {
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .floating-nav__panel-foot {
+    padding: 0.5rem 0.875rem;
+    border-block-start: 1px solid var(--fn-line-soft);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    color: var(--fn-ink-dim);
+  }
+
+  /* Mobile: mientras hay contenido que desplazarse, el dock queda pegado al
+     fondo (1.25rem); solo al llegar al final del scroll (donde están los
+     corners inferiores) sube 3rem para no chocar con ellos. */
+  @media (width < 40rem) {
+    .floating-nav[data-at-bottom='true'] {
+      inset-block-end: 3rem;
+    }
+  }
+
+  /* Desktop: el dock queda alineado con el espacio que dejan los corners
+     inferiores (CORNER_GAP_DESKTOP = 30px) para mantener uniformidad. */
+  @media (width >= 40rem) {
+    .floating-nav {
+      inset-block-end: 1.875rem;
+    }
+  }
+}

@@ -11,6 +11,14 @@ gsap.registerPlugin(useGSAP, SplitText, CustomEase)
 CustomEase.create('hop', '0.9, 0, 0.1, 1')
 CustomEase.create('glide', '0.8, 0, 0.2, 1')
 
+// La intro completa (preloader + cards) solo se reproduce una vez por sesión.
+// Cambiar de idioma cambia el segmento [locale] de la URL y Next.js re-monta
+// el layout (y con él PageReveal); sin este guard cada cambio de idioma
+// reproduciría la intro entera. El flag vive a nivel de módulo: se resetea
+// en cada carga completa de página (recarga del bundle), que es el único caso
+// en el que la intro debe volver a verse.
+let introPlayed = false
+
 // ============================================================
 // TIMING CONFIG — tweak these to adjust the animation rhythm
 // ============================================================
@@ -53,11 +61,6 @@ const NAV_TEXT_DURATION = 1
 const NAV_TEXT_STAGGER = 0.1
 const NAV_TEXT_EASE = 'power3.out'
 
-const HEADER_TEXT_OFFSET = '<'
-const HEADER_TEXT_DURATION = 1
-const HEADER_TEXT_STAGGER = 0.1
-const HEADER_TEXT_EASE = 'power3.out'
-
 // --- Corner snap ---
 const CORNER_SIZE = 60
 const CORNER_GAP_MOBILE = 15
@@ -82,6 +85,244 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       const vh = window.innerHeight
       const isMobile = vw < MOBILE_BREAKPOINT
       const off = (isMobile ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP) + CORNER_SIZE / 2
+
+      // --- Chrome setup: corners + scrollbar (siempre, con o sin intro) ---
+      let resize: (() => void) | null = null
+      let prevNeedsScroll = false
+      let scrollbarShown = false
+      let osInstance: OverlayScrollbars | null = null
+
+      const initScrollbar = () => {
+        if (!osInstance) {
+          osInstance = OverlayScrollbars(document.body, {
+            overflow: { x: 'hidden', y: 'scroll' },
+            scrollbars: {
+              theme: 'os-theme-sayago',
+              visibility: 'auto',
+              autoHide: 'never',
+              autoHideSuspend: true,
+            },
+          })
+          osRef.current = osInstance
+        }
+      }
+
+      const showScrollbar = () => {
+        initScrollbar()
+        if (!scrollbarShown) {
+          scrollbarShown = true
+          gsap.fromTo(
+            '.os-scrollbar-handle',
+            { opacity: 0 },
+            {
+              opacity: 1,
+              duration: 0.5,
+              ease: 'power2.out',
+              onComplete: () => {
+                gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
+              },
+            }
+          )
+        } else {
+          gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
+        }
+      }
+
+      // Snap corners to correct edges after frames clear
+      const setupChrome = () => {
+        const snap = () => {
+          // Skip while a page transition has the semicolon overlay visible
+          const overlay = document.querySelector<HTMLElement>('.preloader-overlay')
+          if (overlay && getComputedStyle(overlay).visibility === 'visible') return
+          const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
+          const vw = window.innerWidth
+          const vh = window.innerHeight
+          const osState = osInstance && !osInstance.state().destroyed ? osInstance.state() : null
+          const scrollExtent = osState
+            ? osState.scrollCoordinates.end.y
+            : document.documentElement.scrollHeight - vh
+          const needsScroll = scrollExtent > 0
+          const shouldAnimate = needsScroll && !prevNeedsScroll
+          prevNeedsScroll = needsScroll
+
+          container.style.position = 'relative'
+
+          const pin = (el: HTMLElement, pos: string, props: Record<string, string>) => {
+            el.style.position = pos
+            el.style.transform = 'none'
+            el.style.zIndex = '100'
+            el.style.visibility = 'visible'
+            el.style.width = CORNER_SIZE + 'px'
+            el.style.height = CORNER_SIZE + 'px'
+            el.style.backgroundColor = 'var(--corner)'
+            Object.entries(props).forEach(([k, v]) => {
+              el.style.setProperty(k, v)
+            })
+          }
+
+          const setup = (el: HTMLElement, clip: string) => {
+            if (el.parentElement !== container) container.appendChild(el)
+            el.style.clipPath = clip
+          }
+
+          // Top corners: anclados al inicio de la página (absolute), igual que
+          // los inferiores: se desplazan con el scroll y no se interponen sobre
+          // el contenido del viewport.
+          container.querySelectorAll<HTMLElement>('.corner-top-r').forEach((el) => {
+            setup(el, 'polygon(0 0, 100% 0, 100% 100%, 70% 100%, 70% 30%, 0 30%)')
+            pin(el, 'absolute', {
+              left: vw - gap - CORNER_SIZE + 'px',
+              top: gap + 'px',
+              right: 'auto',
+              bottom: 'auto',
+            })
+          })
+          container.querySelectorAll<HTMLElement>('.corner-top-l').forEach((el) => {
+            setup(el, 'polygon(0 0, 100% 0, 100% 30%, 30% 30%, 30% 100%, 0 100%)')
+            pin(el, 'absolute', {
+              left: gap + 'px',
+              top: gap + 'px',
+              right: 'auto',
+              bottom: 'auto',
+            })
+          })
+
+          // Bottom corners
+          if (needsScroll && shouldAnimate) {
+            // Step 1: fixed at viewport bottom
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'fixed', {
+                left: gap + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'fixed', {
+                left: vw - gap - CORNER_SIZE + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+
+            showScrollbar()
+
+            // Step 2: slide down, then switch to absolute
+            gsap.to('.corner-bottom-l, .corner-bottom-r', {
+              y: scrollExtent,
+              duration: 0.5,
+              ease: 'power2.out',
+              onComplete: () => {
+                container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+                  pin(el, 'absolute', {
+                    left: gap + 'px',
+                    bottom: gap + 'px',
+                    right: 'auto',
+                    top: 'auto',
+                  })
+                  el.style.clipPath = 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)'
+                })
+                container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+                  pin(el, 'absolute', {
+                    right: gap + 'px',
+                    bottom: gap + 'px',
+                    left: 'auto',
+                    top: 'auto',
+                  })
+                  el.style.clipPath = 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)'
+                })
+              },
+            })
+          } else if (needsScroll) {
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'absolute', {
+                left: gap + 'px',
+                bottom: gap + 'px',
+                right: 'auto',
+                top: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'absolute', {
+                right: gap + 'px',
+                bottom: gap + 'px',
+                left: 'auto',
+                top: 'auto',
+              })
+            })
+            showScrollbar()
+          } else {
+            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
+              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
+              pin(el, 'fixed', {
+                left: gap + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
+              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
+              pin(el, 'fixed', {
+                left: vw - gap - CORNER_SIZE + 'px',
+                top: vh - gap - CORNER_SIZE + 'px',
+                right: 'auto',
+                bottom: 'auto',
+              })
+            })
+            showScrollbar()
+          }
+        }
+        snap()
+        snapRef.current = snap
+        resize = snap
+        window.addEventListener('resize', snap)
+      }
+
+      const cleanup = () => {
+        if (osInstance) {
+          osInstance.destroy()
+          osInstance = null
+        }
+        if (resize) window.removeEventListener('resize', resize)
+      }
+
+      // Remount por cambio de idioma (segmento [locale] en la URL): la intro ya
+      // se reprodujo esta sesión, así que solo mostramos el contenido y
+      // recolocamos corners/scrollbar sin reproducir la animación completa.
+      // El .cards-overlay (intro-img + <Background/>) es el fondo persistente:
+      // debe quedar visible con z-index 0, igual que deja el timeline al final.
+      if (introPlayed) {
+        const content = document.querySelector('.page-content')
+        if (content) content.classList.add('visible')
+        gsap.set('.preloader-overlay', { visibility: 'hidden' })
+        gsap.set('.cards-overlay', { opacity: 1, zIndex: 0 })
+        gsap.set('.cards-overlay__bg', { opacity: 0 })
+        gsap.set('.intro-img:nth-child(1), .intro-img:nth-child(2)', {
+          x: '-100vw',
+          scale: 1,
+          rotation: 0,
+          borderRadius: 0,
+        })
+        gsap.set('.intro-img:nth-child(4), .intro-img:nth-child(5)', {
+          x: '100vw',
+          scale: 1,
+          rotation: 0,
+          borderRadius: 0,
+        })
+        gsap.set('.hero-img', { x: 0, y: 0, scale: 1, rotation: 0, borderRadius: 0 })
+        gsap.set('.version-badge', { clearProps: 'transform,opacity' })
+        gsap.set('.theme-picker-desktop', { clearProps: 'transform,opacity' })
+        gsap.set('.floating-nav', { clearProps: 'transform,opacity' })
+        setupChrome()
+        return cleanup
+      }
 
       gsap.set('.corner-top-r, .corner-top-l, .corner-bottom-l, .corner-bottom-r', {
         xPercent: -50,
@@ -118,7 +359,7 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
 
       // --- Text split ---
       // Make sure we only split text that actually exists.
-      const textsToSplit = container.querySelectorAll('.home-nav, .footer-block')
+      const textsToSplit = container.querySelectorAll('.home-nav')
       if (textsToSplit.length > 0) {
         SplitText.create(textsToSplit, {
           type: 'lines',
@@ -311,6 +552,18 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         '<'
       )
 
+      // Slide up floating nav from bottom
+      tl.from(
+        '.floating-nav',
+        {
+          y: 56,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'back.out(1.4)',
+        },
+        '<'
+      )
+
       // --- Phase 6: Text reveal ---
       if (textsToSplit.length > 0) {
         tl.to(
@@ -323,224 +576,17 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
           },
           NAV_TEXT_OFFSET
         )
-
-        tl.to(
-          '.footer-block .line',
-          {
-            y: '0%',
-            duration: HEADER_TEXT_DURATION,
-            stagger: HEADER_TEXT_STAGGER,
-            ease: HEADER_TEXT_EASE,
-          },
-          HEADER_TEXT_OFFSET
-        )
       }
 
-      let resize: (() => void) | null = null
-      let prevNeedsScroll = false
-      let scrollbarShown = false
-      let osInstance: OverlayScrollbars | null = null
-
-      const initScrollbar = () => {
-        if (!osInstance) {
-          osInstance = OverlayScrollbars(document.body, {
-            overflow: { x: 'hidden', y: 'scroll' },
-            scrollbars: {
-              theme: 'os-theme-sayago',
-              visibility: 'auto',
-              autoHide: 'never',
-              autoHideSuspend: true,
-            },
-          })
-          osRef.current = osInstance
-        }
-      }
-
-      const showScrollbar = () => {
-        initScrollbar()
-        if (!scrollbarShown) {
-          scrollbarShown = true
-          gsap.fromTo(
-            '.os-scrollbar-handle',
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.5,
-              ease: 'power2.out',
-              onComplete: () => {
-                gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
-              },
-            }
-          )
-        } else {
-          gsap.set('.os-scrollbar-handle', { clearProps: 'opacity' })
-        }
-      }
-
-      // Snap corners to correct edges after frames clear
+      // Corners + scrollbar se recolocan al terminar la intro; la intro queda
+      // marcada como reproducida para que un remount (cambio de idioma) no la
+      // vuelva a ejecutar.
       tl.call(() => {
-        const snap = () => {
-          // Skip while a page transition has the semicolon overlay visible
-          const overlay = document.querySelector<HTMLElement>('.preloader-overlay')
-          if (overlay && getComputedStyle(overlay).visibility === 'visible') return
-          const gap = window.innerWidth < MOBILE_BREAKPOINT ? CORNER_GAP_MOBILE : CORNER_GAP_DESKTOP
-          const vw = window.innerWidth
-          const vh = window.innerHeight
-          const osState = osInstance && !osInstance.state().destroyed ? osInstance.state() : null
-          const scrollExtent = osState
-            ? osState.scrollCoordinates.end.y
-            : document.documentElement.scrollHeight - vh
-          const needsScroll = scrollExtent > 0
-          const shouldAnimate = needsScroll && !prevNeedsScroll
-          prevNeedsScroll = needsScroll
-
-          container.style.position = 'relative'
-
-          const pin = (el: HTMLElement, pos: string, props: Record<string, string>) => {
-            el.style.position = pos
-            el.style.transform = 'none'
-            el.style.zIndex = '100'
-            el.style.visibility = 'visible'
-            el.style.width = CORNER_SIZE + 'px'
-            el.style.height = CORNER_SIZE + 'px'
-            el.style.backgroundColor = 'var(--corner)'
-            Object.entries(props).forEach(([k, v]) => {
-              el.style.setProperty(k, v)
-            })
-          }
-
-          const setup = (el: HTMLElement, clip: string) => {
-            if (el.parentElement !== container) container.appendChild(el)
-            el.style.clipPath = clip
-          }
-
-          // Top corners: anclados al inicio de la página (absolute), igual que
-          // los inferiores: se desplazan con el scroll y no se interponen sobre
-          // el contenido del viewport.
-          container.querySelectorAll<HTMLElement>('.corner-top-r').forEach((el) => {
-            setup(el, 'polygon(0 0, 100% 0, 100% 100%, 70% 100%, 70% 30%, 0 30%)')
-            pin(el, 'absolute', {
-              left: vw - gap - CORNER_SIZE + 'px',
-              top: gap + 'px',
-              right: 'auto',
-              bottom: 'auto',
-            })
-          })
-          container.querySelectorAll<HTMLElement>('.corner-top-l').forEach((el) => {
-            setup(el, 'polygon(0 0, 100% 0, 100% 30%, 30% 30%, 30% 100%, 0 100%)')
-            pin(el, 'absolute', {
-              left: gap + 'px',
-              top: gap + 'px',
-              right: 'auto',
-              bottom: 'auto',
-            })
-          })
-
-          // Bottom corners
-          if (needsScroll && shouldAnimate) {
-            // Step 1: fixed at viewport bottom
-            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
-              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
-              pin(el, 'fixed', {
-                left: gap + 'px',
-                top: vh - gap - CORNER_SIZE + 'px',
-                right: 'auto',
-                bottom: 'auto',
-              })
-            })
-            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
-              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
-              pin(el, 'fixed', {
-                left: vw - gap - CORNER_SIZE + 'px',
-                top: vh - gap - CORNER_SIZE + 'px',
-                right: 'auto',
-                bottom: 'auto',
-              })
-            })
-
-            showScrollbar()
-
-            // Step 2: slide down, then switch to absolute
-            gsap.to('.corner-bottom-l, .corner-bottom-r', {
-              y: scrollExtent,
-              duration: 0.5,
-              ease: 'power2.out',
-              onComplete: () => {
-                container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
-                  pin(el, 'absolute', {
-                    left: gap + 'px',
-                    bottom: gap + 'px',
-                    right: 'auto',
-                    top: 'auto',
-                  })
-                  el.style.clipPath = 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)'
-                })
-                container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
-                  pin(el, 'absolute', {
-                    right: gap + 'px',
-                    bottom: gap + 'px',
-                    left: 'auto',
-                    top: 'auto',
-                  })
-                  el.style.clipPath = 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)'
-                })
-              },
-            })
-          } else if (needsScroll) {
-            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
-              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
-              pin(el, 'absolute', {
-                left: gap + 'px',
-                bottom: gap + 'px',
-                right: 'auto',
-                top: 'auto',
-              })
-            })
-            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
-              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
-              pin(el, 'absolute', {
-                right: gap + 'px',
-                bottom: gap + 'px',
-                left: 'auto',
-                top: 'auto',
-              })
-            })
-            showScrollbar()
-          } else {
-            container.querySelectorAll<HTMLElement>('.corner-bottom-l').forEach((el) => {
-              setup(el, 'polygon(0 0, 30% 0, 30% 70%, 100% 70%, 100% 100%, 0 100%)')
-              pin(el, 'fixed', {
-                left: gap + 'px',
-                top: vh - gap - CORNER_SIZE + 'px',
-                right: 'auto',
-                bottom: 'auto',
-              })
-            })
-            container.querySelectorAll<HTMLElement>('.corner-bottom-r').forEach((el) => {
-              setup(el, 'polygon(70% 0, 100% 0, 100% 100%, 0 100%, 0 70%, 70% 70%)')
-              pin(el, 'fixed', {
-                left: vw - gap - CORNER_SIZE + 'px',
-                top: vh - gap - CORNER_SIZE + 'px',
-                right: 'auto',
-                bottom: 'auto',
-              })
-            })
-            showScrollbar()
-          }
-        }
-        snap()
-        snapRef.current = snap
-        resize = snap
-        window.addEventListener('resize', snap)
+        introPlayed = true
+        setupChrome()
       })
 
-      return () => {
-        if (osInstance) {
-          osInstance.destroy()
-          osInstance = null
-        }
-        if (resize) window.removeEventListener('resize', resize)
-      }
+      return cleanup
     },
     { scope: containerRef }
   )

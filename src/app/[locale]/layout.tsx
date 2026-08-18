@@ -6,6 +6,7 @@ import { LocalPromiseParams } from 'next-intlayer'
 export { generateStaticParams } from 'next-intlayer'
 import { NextLayoutIntlayer } from 'next-intlayer'
 import { ThemePicker } from '@/components/widgets/theme-picker'
+import { FloatingNav } from '@/components/widgets/floating-nav'
 import { themes } from '@/lib/constants'
 import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
@@ -22,7 +23,7 @@ const monaArgon = localFont({
     },
   ],
   variable: '--font-mona-argon',
-  // Solo se usa en la home (nav + footer-clock): no pre-cargarlo en
+  // Solo se usa en la home (nav): no pre-cargarlo en
   // las demás páginas ahorra ~280KB de transferencia por visita
   preload: false,
 })
@@ -133,6 +134,8 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
                   <ThemePicker themes={themes} orientation="horizontal" />
                 </div>
               </div>
+
+              <FloatingNav />
             </PageReveal>
           </TransitionProvider>
         </Providers>
