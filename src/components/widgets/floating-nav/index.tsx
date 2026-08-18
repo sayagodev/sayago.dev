@@ -149,9 +149,7 @@ export function FloatingNav() {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false)
-        navRef.current
-          ?.querySelector<HTMLButtonElement>('.floating-nav__toggle')
-          ?.focus()
+        navRef.current?.querySelector<HTMLButtonElement>('.floating-nav__toggle')?.focus()
       }
     }
     window.addEventListener('keydown', onKeyDown)
@@ -161,11 +159,17 @@ export function FloatingNav() {
   // Roving focus con flechas: mueve el foco entre los items + toggle,
   // con wrap circular, mientras el foco está dentro de la barra.
   const handleNavKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' && e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
+    if (
+      e.key !== 'ArrowLeft' &&
+      e.key !== 'ArrowRight' &&
+      e.key !== 'ArrowUp' &&
+      e.key !== 'ArrowDown'
+    ) {
       return
     }
     const focusables = Array.from(
-      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ?? []
+      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ??
+        []
     )
     if (focusables.length === 0) return
     const currentIndex = focusables.indexOf(document.activeElement as HTMLElement)
@@ -181,7 +185,8 @@ export function FloatingNav() {
   // al salir de la barra, restaura el tab order natural.
   const handleNavFocus = () => {
     const focusables = Array.from(
-      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ?? []
+      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ??
+        []
     )
     focusables.forEach((el) => {
       el.tabIndex = el === document.activeElement ? 0 : -1
@@ -191,7 +196,8 @@ export function FloatingNav() {
   const handleNavBlur = (e: React.FocusEvent) => {
     if (navRef.current?.contains(e.relatedTarget as Node)) return
     const focusables = Array.from(
-      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ?? []
+      navRef.current?.querySelectorAll<HTMLElement>('.floating-nav__item, .floating-nav__toggle') ??
+        []
     )
     focusables.forEach((el) => {
       el.tabIndex = 0
