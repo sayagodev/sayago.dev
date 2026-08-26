@@ -319,7 +319,9 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
         gsap.set('.hero-img', { x: 0, y: 0, scale: 1, rotation: 0, borderRadius: 0 })
         gsap.set('.version-badge', { clearProps: 'transform,opacity' })
         gsap.set('.theme-picker-desktop', { clearProps: 'transform,opacity' })
-        gsap.set('.floating-nav', { clearProps: 'transform,opacity' })
+        gsap.set('.floating-nav', {
+          clearProps: 'transform,opacity,translate,rotate,scale',
+        })
         setupChrome()
         return cleanup
       }
@@ -584,6 +586,11 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
       tl.call(() => {
         introPlayed = true
         setupChrome()
+        // GSAP escribe translate/rotate/scale inline al gestionar transforms
+        // individuales; si quedan, pisan el CSS del dock (hide/show en mobile).
+        gsap.set('.floating-nav', {
+          clearProps: 'transform,opacity,translate,rotate,scale',
+        })
       })
 
       return cleanup
