@@ -13,7 +13,7 @@ export const generateMetadata = async ({ params }: LocalPromiseParams): Promise<
   const content = getIntlayer('wo-image', locale)
   const site = getIntlayer('site', locale)
 
-  return getPageMetadata(content, site, locale ?? '', '/wo')
+  return getPageMetadata(content, site, locale ?? '', '/me')
 }
 
 const WoPage: NextPageIntlayer = async ({ params }) => {

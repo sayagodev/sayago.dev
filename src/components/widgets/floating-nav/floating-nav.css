@@ -13,8 +13,11 @@
 
     position: fixed;
     inset-block-end: 1.25rem;
-    inset-inline-start: 50%;
-    translate: -50% 0;
+    /* Centrado sin transform ni translate: GSAP gestiona esas propiedades
+       (page-reveal) y las sobrescribe inline, rompiendo el centrado. */
+    inset-inline: 0;
+    margin-inline: auto;
+    inline-size: fit-content;
     z-index: var(--z-dropdown);
     user-select: none;
 
@@ -79,7 +82,7 @@
     font-family: var(--font-zi), sans-serif;
     font-size: 1rem;
     line-height: 1;
-    translate: 4px -1px;
+    translate: 0 -2px;
   }
 
   .floating-nav__label {
@@ -115,10 +118,13 @@
     flex-shrink: 0;
     block-size: 2rem;
     inline-size: 2rem;
+    margin-inline-end: 2px;
     /* Reset de OAT: [type=button] hereda background var(--primary) (café en
-       light) y border; lo neutralizamos para usar el estilo del menú. */
+       light), border y border-radius; lo neutralizamos para usar el estilo
+       del menú. */
     background: transparent;
     border: 0;
+    border-radius: 0;
     padding: 0;
     color: var(--fn-ink);
     transition:
@@ -191,7 +197,6 @@
     background: color-mix(in srgb, var(--fn-bg) 95%, transparent);
     box-shadow: 0 8px 40px rgb(0 0 0 / 0.35);
     backdrop-filter: blur(12px);
-    border-radius: var(--radius-small);
   }
 
   .floating-nav__panel-head {
@@ -261,20 +266,60 @@
     color: var(--fn-ink-dim);
   }
 
-  /* Mobile: mientras hay contenido que desplazarse, el dock queda pegado al
-     fondo (1.25rem); solo al llegar al final del scroll (donde están los
-     corners inferiores) sube 3rem para no chocar con ellos. */
-  @media (width < 40rem) {
+  /* Mobile estrecho (≤425px): mientras queda página por recorrer el dock
+     permanece fuera de pantalla; entra deslizándose con un scroll hacia arriba
+     y se fuerza visible al llegar al final. Se anima con la propiedad
+     `translate` (el centrado ya no depende de ella). */
+  @media (width <= 26.5625rem) {
+    .floating-nav {
+      translate: 0 calc(100% + 1.5rem);
+      transition:
+        inset-block-end 0.3s ease,
+        translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .floating-nav[data-visible='true'],
     .floating-nav[data-at-bottom='true'] {
+      translate: 0 0;
+    }
+  }
+
+  /* Mobile/tablet: mientras hay contenido que desplazarse, el dock queda pegado
+     al fondo (1.25rem); solo al llegar al final del scroll (donde están los
+     corners inferiores) sube 3rem para no chocar con ellos. En páginas sin
+     scroll nativo (home scroll-jackeada) los corners viven fijos en el viewport:
+     mismo lift vía data-pinned. El theme picker vive arriba en este breakpoint:
+     el dock muestra solo hanzi, sin label del ítem activo. */
+  @media (width < 40rem) {
+    .floating-nav[data-at-bottom='true'],
+    .floating-nav[data-pinned='true'] {
       inset-block-end: 3rem;
+    }
+
+    .floating-nav__label {
+      display: none;
+    }
+
+    /* Sin label, el activo no se expande: todos los ítems quedan como el mismo
+       cuadrado de 2.25rem, distinguible solo por el fondo de acento. */
+    .floating-nav__item[data-active='true'] {
+      inline-size: 2.25rem;
+      padding-inline: 0;
+      gap: 0;
     }
   }
 
   /* Desktop: el dock queda alineado con el espacio que dejan los corners
-     inferiores (CORNER_GAP_DESKTOP = 30px) para mantener uniformidad. */
+     inferiores (CORNER_GAP_DESKTOP = 30px) para mantener uniformidad. La font
+     CJK pide además una compensación horizontal distinta cuando convive con
+     el label del ítem activo. */
   @media (width >= 40rem) {
     .floating-nav {
       inset-block-end: 1.875rem;
+    }
+
+    .floating-nav__hanzi {
+      translate: 4px -2px;
     }
   }
 }

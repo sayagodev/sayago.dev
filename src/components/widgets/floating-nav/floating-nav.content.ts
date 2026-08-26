@@ -13,11 +13,11 @@ const FloatingNavContent = {
         en: 'projects',
       }),
       wo: t({
-        es: 'yo',
+        es: 'sobre mí',
         en: 'me',
       }),
       contact: t({
-        es: 'contacto',
+        es: 'hablemos',
         en: 'contact',
       }),
     },

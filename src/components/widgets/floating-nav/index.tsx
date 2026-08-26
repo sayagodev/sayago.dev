@@ -5,7 +5,7 @@ import NextLink from 'next/link'
 import { Menu, X } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { getLocalizedUrl } from 'intlayer'
 import { useIntlayer, useLocale } from 'next-intlayer'
 import { Link } from '@/components/localized-link'
@@ -25,22 +25,22 @@ interface NavItem {
 }
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { href: '/', hanzi: '首', labelKey: 'home', match: (p) => p === '/' },
+  { href: '/', hanzi: '始', labelKey: 'home', match: (p) => p === '/' },
   {
     href: '/work',
-    hanzi: '作',
+    hanzi: '艺',
     labelKey: 'work',
     match: (p) => p === '/work' || p.startsWith('/work/'),
   },
   {
-    href: '/wo',
-    hanzi: '我',
+    href: '/me',
+    hanzi: '人',
     labelKey: 'wo',
-    match: (p) => p === '/wo' || p.startsWith('/wo/'),
+    match: (p) => p === '/me' || p.startsWith('/me/'),
   },
   {
     href: '/contact',
-    hanzi: '信',
+    hanzi: '联',
     labelKey: 'contact',
     match: (p) => p === '/contact' || p.startsWith('/contact/'),
   },
@@ -64,8 +64,13 @@ export function FloatingNav() {
   const { locale, pathWithoutLocale, availableLocales } = useLocale()
   const content = useIntlayer('floating-nav')
   const pathname = usePathname()
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [atBottom, setAtBottom] = useState(false)
+  const [visible, setVisible] = useState(false)
+  // Sin scroll nativo (home scroll-jackeada): los corners quedan fijos en el
+  // viewport y el dock debe subir por encima de su banda.
+  const [pinned, setPinned] = useState(false)
   const [prevPathname, setPrevPathname] = useState(pathname)
   const navRef = useRef<HTMLElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -76,23 +81,26 @@ export function FloatingNav() {
     setOpen(false)
   }
 
-  // En mobile, el dock sube solo al llegar al final del scroll (donde aparecen
-  // los corners inferiores). El scroll puede vivir en el documento o en un
-  // viewport de OverlayScrollbars; escuchamos en fase de captura y en cada
-  // turno elegimos el elemento scrollable que realmente se desplaza.
+  // En mobile el dock vive fuera de pantalla mientras queda página por recorrer:
+  // entra con un scroll hacia arriba, se fuerza visible al llegar al final y,
+  // si no hay scroll, permanece visible. El scroll puede vivir en el documento
+  // o en un viewport de OverlayScrollbars; escuchamos en fase de captura y en
+  // cada turno elegimos el elemento scrollable que realmente se desplaza.
   useEffect(() => {
     let raf = 0
+    let lastY: number | null = null
 
-    // Devuelve el elemento con el mayor desbordamiento (el que de verdad hace
-    // scroll: OverlayScrollbars, html o body según el entorno/navegador).
-    const getViewport = (): HTMLElement | null => {
+    // Devuelve el elemento que realmente se desplaza (OverlayScrollbars, html
+    // o body según el entorno/navegador); si ninguno desborda, html como
+    // referencia — el branch de "sin scroll" se encarga.
+    const getViewport = (): HTMLElement => {
       const candidates = [
         document.querySelector<HTMLElement>('.os-viewport'),
         document.documentElement,
         document.body,
       ].filter((el): el is HTMLElement => !!el)
-      let best: HTMLElement | null = null
-      let bestOverflow = 0
+      let best: HTMLElement = document.documentElement
+      let bestOverflow = -1
       for (const el of candidates) {
         const overflow = el.scrollHeight - el.clientHeight
         if (overflow > bestOverflow) {
@@ -105,21 +113,48 @@ export function FloatingNav() {
 
     const update = () => {
       const vp = getViewport()
-      if (!vp) return
       const scrollable = vp.scrollHeight - vp.clientHeight
-      if (scrollable <= 0) return // sin scroll: el dock se queda abajo
-      const reached = vp.scrollTop + vp.clientHeight >= scrollable - 8
+      if (scrollable <= 0) {
+        // Sin scroll: el dock siempre a la vista y por encima de los corners
+        setAtBottom(false)
+        setVisible(true)
+        setPinned(true)
+        return
+      }
+      setPinned(false)
+      const y = vp.scrollTop
+      // Al final del scroll: el borde inferior del viewport toca (con 8px de
+      // gracia) el borde inferior del contenido.
+      const reached = y + vp.clientHeight >= vp.scrollHeight - 8
       setAtBottom(reached)
+      // Dirección de scroll (con zona muerta anti-jitter): arriba muestra,
+      // abajo oculta — salvo al final de la página, donde se fuerza visible.
+      if (lastY !== null && y !== lastY) {
+        if (reached) setVisible(true)
+        else if (y > lastY + 4) setVisible(false)
+        else if (y < lastY - 2) setVisible(true)
+      }
+      lastY = y
     }
     const onScroll = () => {
       cancelAnimationFrame(raf)
       raf = requestAnimationFrame(update)
     }
     update()
+    // El reveal monta/destruye el viewport de OverlayScrollbars y las fuentes
+    // cambian alturas después del montaje: el estado puede quedar congelado en
+    // páginas sin eventos de scroll (p. ej. la home scroll-jackeada). Re-chequeos
+    // temporizados cubren ese ciclo de vida; el RO cubre el resto de cambios.
+    const timers = [500, 1500, 3000, 6000, 10000].map((ms) => window.setTimeout(onScroll, ms))
+    const ro = new ResizeObserver(onScroll)
+    ro.observe(document.documentElement)
+    ro.observe(document.body)
     document.addEventListener('scroll', onScroll, { capture: true, passive: true })
     window.addEventListener('resize', onScroll)
     return () => {
       cancelAnimationFrame(raf)
+      timers.forEach(clearTimeout)
+      ro.disconnect()
       document.removeEventListener('scroll', onScroll, { capture: true })
       window.removeEventListener('resize', onScroll)
     }
@@ -142,6 +177,17 @@ export function FloatingNav() {
     },
     { dependencies: [open], scope: navRef }
   )
+
+  // Al abrir el panel, precarga la ruta equivalente en los demás idiomas.
+  // Así el RSC ya está en caché al cambiar de idioma y el swap es inmediato,
+  // sin flash ni espera de red.
+  useEffect(() => {
+    if (!open) return
+    availableLocales.forEach((item) => {
+      if (item === locale) return
+      router.prefetch(getLocalizedUrl(pathWithoutLocale, item))
+    })
+  }, [open, availableLocales, locale, pathWithoutLocale, router])
 
   // Cerrar el panel con Escape y devolver el foco al toggle
   useEffect(() => {
@@ -210,6 +256,8 @@ export function FloatingNav() {
       className="floating-nav"
       aria-label={content.aria.nav}
       data-at-bottom={atBottom}
+      data-pinned={pinned}
+      data-visible={visible}
       onKeyDown={handleNavKeyDown}
       onFocus={handleNavFocus}
       onBlur={handleNavBlur}
@@ -234,6 +282,7 @@ export function FloatingNav() {
                 href={getLocalizedUrl(pathWithoutLocale, item)}
                 hrefLang={item}
                 replace
+                scroll={false}
                 data-transition-ignore
                 className="floating-nav__lang"
                 data-active={locale === item}
