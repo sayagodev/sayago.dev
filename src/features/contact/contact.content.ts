@@ -20,9 +20,10 @@ const ContactContent = {
       en: '~24h',
     }),
     subtitlePart2: t({
-      es: ', sin bots de por medio 【信】.',
-      en: ', no bots in between 【信】.',
+      es: ', sin bots de por medio ',
+      en: ', no bots in between ',
     }),
+    subtitleHanzi: '【信】',
     form: {
       nameStart: t({
         es: 'Mi nombre es',

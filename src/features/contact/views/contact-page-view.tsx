@@ -46,6 +46,7 @@ export function ContactPageView() {
             {content.subtitlePart1}{' '}
             <span className="contact-subtitle__highlight">{content.subtitleHighlight}</span>
             {content.subtitlePart2}
+            <span className="font-zi">{content.subtitleHanzi}</span>.
           </p>
 
           <ContactForm />
