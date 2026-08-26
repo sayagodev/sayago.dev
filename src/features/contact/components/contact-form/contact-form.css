@@ -183,7 +183,8 @@
     display: block;
     margin-block-start: var(--space-4);
     padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--ring-accent);
+    border: none;
+    border-radius: 0;
     background: var(--corner);
     font-size: 12px;
     font-weight: 600;
