@@ -139,12 +139,13 @@
       background 200ms;
   }
 
-  .work-projects__filter:hover {
+  .work-projects__filters .work-projects__filter:hover {
     border-color: var(--foreground);
-    color: var(--foreground);
+    background: var(--foreground);
+    color: var(--background);
   }
 
-  .work-projects__filter--active {
+  .work-projects__filters .work-projects__filter--active {
     border-color: var(--foreground);
     background: var(--foreground);
     color: var(--background);

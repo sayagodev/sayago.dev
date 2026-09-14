@@ -1,0 +1,47 @@
+@layer components {
+  .custom-cursor__dot,
+  .custom-cursor__ring {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: 999;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .custom-cursor__dot-inner,
+  .custom-cursor__ring-inner {
+    translate: -50% -50%;
+    border-radius: var(--radius-full);
+    opacity: 0;
+    transition:
+      opacity 0.15s ease-out,
+      scale 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .custom-cursor__dot-inner {
+    width: 0.75rem;
+    height: 0.75rem;
+    background: var(--corner);
+  }
+
+  .custom-cursor__dot[data-show='true'] .custom-cursor__dot-inner {
+    opacity: 1;
+  }
+
+  .custom-cursor__ring-inner {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 1px solid var(--corner);
+    background: transparent;
+  }
+
+  .custom-cursor__ring[data-show='true'] .custom-cursor__ring-inner {
+    opacity: 1;
+  }
+
+  .custom-cursor__ring[data-pointer='true'] .custom-cursor__ring-inner {
+    scale: 1.4;
+    background: color-mix(in srgb, var(--corner) 5%, transparent);
+  }
+}

@@ -7,6 +7,7 @@ export { generateStaticParams } from 'next-intlayer'
 import { NextLayoutIntlayer } from 'next-intlayer'
 import { ThemePicker } from '@/components/widgets/theme-picker'
 import { FloatingNav } from '@/components/widgets/floating-nav'
+import { CustomCursor } from '@/components/widgets/custom-cursor/custom-cursor'
 import { themes } from '@/lib/constants'
 import { Providers } from '@/app/providers'
 import { cn } from '@/lib/utils'
@@ -136,6 +137,7 @@ const LocaleLayout: NextLayoutIntlayer = async ({ children, params }) => {
               </div>
 
               <FloatingNav />
+              <CustomCursor />
             </PageReveal>
           </TransitionProvider>
         </Providers>

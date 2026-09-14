@@ -27,6 +27,24 @@
     width: 100%;
   }
 
+  .wo-image__censor {
+    position: absolute;
+    inset-inline-end: -0.75rem;
+    inset-block-end: 36%;
+    z-index: 1;
+    padding: 0.25rem 0.75rem;
+    background: var(--foreground);
+    color: var(--background);
+    cursor: pointer;
+    will-change: transform;
+  }
+
+  @media (width >= 48rem) {
+    .wo-image__censor {
+      padding-inline: 3%;
+    }
+  }
+
   .wo-image__caption {
     font-size: 14px;
     font-weight: var(--font-medium);

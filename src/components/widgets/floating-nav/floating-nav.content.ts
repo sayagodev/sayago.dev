@@ -26,6 +26,10 @@ const FloatingNavContent = {
         es: 'idioma',
         en: 'language',
       }),
+      cursor: t({
+        es: 'cursor',
+        en: 'cursor',
+      }),
       soon: t({
         es: 'pronto',
         en: 'soon',

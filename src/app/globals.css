@@ -164,6 +164,20 @@
     text-decoration: none;
     text-underline-offset: 0;
   }
+
+  /* Custom cursor habilitado: oculta el cursor nativo en desktop. */
+  @media (width >= 64rem) {
+    body.custom-cursor-enabled,
+    body.custom-cursor-enabled a,
+    body.custom-cursor-enabled button,
+    body.custom-cursor-enabled [role='button'],
+    body.custom-cursor-enabled input,
+    body.custom-cursor-enabled select,
+    body.custom-cursor-enabled textarea,
+    body.custom-cursor-enabled summary {
+      cursor: none !important;
+    }
+  }
 }
 
 html {

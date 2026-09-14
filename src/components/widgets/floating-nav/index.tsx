@@ -2,13 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react'
 import NextLink from 'next/link'
-import { Menu, X } from 'lucide-react'
+import { Menu, MousePointer2, X } from 'lucide-react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { getLocalizedUrl } from 'intlayer'
 import { useIntlayer, useLocale } from 'next-intlayer'
 import { Link } from '@/components/localized-link'
+import { useCustomCursor } from '@/components/widgets/custom-cursor/cursor-store'
 import VERSION from '@/lib/version'
 import { cn } from '@/lib/utils'
 import './floating-nav.css'
@@ -74,6 +75,7 @@ export function FloatingNav() {
   const [prevPathname, setPrevPathname] = useState(pathname)
   const navRef = useRef<HTMLElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const { enabled: cursorEnabled, setEnabled: setCursorEnabled } = useCustomCursor()
 
   // El panel de config se cierra al cambiar de ruta (ajuste en render, sin effect)
   if (pathname !== prevPathname) {
@@ -292,6 +294,21 @@ export function FloatingNav() {
               </NextLink>
             ))}
           </span>
+        </div>
+
+        <div className="floating-nav__panel-row">
+          <span>{content.config.cursor}</span>
+          <button
+            type="button"
+            className="floating-nav__switch"
+            data-active={cursorEnabled}
+            aria-pressed={cursorEnabled}
+            aria-label={content.config.cursor}
+            onClick={() => setCursorEnabled(!cursorEnabled)}
+          >
+            <MousePointer2 size={12} strokeWidth={2} aria-hidden="true" />
+            <span className="floating-nav__switch-thumb" aria-hidden="true" />
+          </button>
         </div>
 
         <div className="floating-nav__panel-foot">
