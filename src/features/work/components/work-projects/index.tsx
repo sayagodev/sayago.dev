@@ -40,6 +40,18 @@ export function WorkProjects() {
   useGSAP(
     () => {
       const list = listRef.current
+      const preview = previewRef.current
+      // Las filas se desmontan sin disparar mouseleave: oculta el preview
+      // para que no quede trabado siguiendo el cursor.
+      if (preview) {
+        gsap.to(preview, {
+          scale: 0,
+          opacity: 0,
+          duration: 0.2,
+          ease: 'power2.in',
+          overwrite: 'auto',
+        })
+      }
       if (!list) return
       gsap.fromTo(
         list.querySelectorAll('.proj-row'),
@@ -84,7 +96,13 @@ export function WorkProjects() {
     const idx = preview.querySelector<HTMLElement>('[data-idx]')
     if (label) label.textContent = row.dataset.name ?? ''
     if (idx) idx.textContent = row.dataset.idx ?? ''
-    gsap.to(preview, { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' })
+    gsap.to(preview, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power3.out',
+      overwrite: 'auto',
+    })
   }, [])
 
   const handleRowLeave = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -93,15 +111,48 @@ export function WorkProjects() {
     hovered.current = null
     const preview = previewRef.current
     if (!preview) return
-    gsap.to(preview, { scale: 0, opacity: 0, duration: 0.28, ease: 'power2.in' })
+    gsap.to(preview, {
+      scale: 0,
+      opacity: 0,
+      duration: 0.28,
+      ease: 'power2.in',
+      overwrite: 'auto',
+    })
   }, [])
 
   const handleListLeave = useCallback(() => {
     hovered.current = null
     const preview = previewRef.current
     if (!preview) return
-    gsap.to(preview, { scale: 0, opacity: 0, duration: 0.28, ease: 'power2.in' })
+    gsap.to(preview, {
+      scale: 0,
+      opacity: 0,
+      duration: 0.28,
+      ease: 'power2.in',
+      overwrite: 'auto',
+    })
   }, [])
+
+  // Sin mouseleave cuando la página se desplaza bajo un cursor quieto:
+  // oculta el preview para que no quede trabado siguiendo el mouse.
+  useGSAP(
+    () => {
+      const onScroll = () => {
+        const preview = previewRef.current
+        if (!preview) return
+        gsap.to(preview, {
+          scale: 0,
+          opacity: 0,
+          duration: 0.2,
+          ease: 'power2.in',
+          overwrite: 'auto',
+        })
+      }
+      document.addEventListener('scroll', onScroll, { capture: true, passive: true })
+      return () => document.removeEventListener('scroll', onScroll, { capture: true })
+    },
+    { scope: rootRef }
+  )
 
   const filters: { value: Filter; label: string }[] = [
     { value: 'todos', label: content.filterAll.value },
