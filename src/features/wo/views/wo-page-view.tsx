@@ -1,4 +1,5 @@
 import { Logo } from '@/components/widgets/logo'
+import { WoBlog } from '../components/wo-blog'
 import { WoImage } from '../components/wo-image'
 import { WoResume } from '../components/wo-resume'
 import { Container } from '@/components/layout/container'
@@ -14,6 +15,8 @@ export function WoPageView() {
           <WoImage />
           <WoResume />
         </div>
+
+        <WoBlog />
       </Container>
     </main>
   )

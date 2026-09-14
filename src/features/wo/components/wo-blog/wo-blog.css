@@ -1,0 +1,48 @@
+@layer components {
+  .wo-blog {
+    padding-block-start: var(--space-14);
+    padding-block-end: var(--space-18);
+  }
+
+  .wo-blog__heading {
+    font-family: var(--font-argon), sans-serif;
+    font-size: var(--text-2);
+    font-weight: var(--font-bold);
+    margin-block-end: var(--space-18);
+  }
+
+  .wo-blog__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wo-blog__title {
+    font-size: var(--text-4);
+    font-weight: var(--font-bold);
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+
+  @media (width >= 64rem) {
+    .wo-blog__title {
+      font-size: var(--text-3);
+    }
+  }
+
+  .wo-blog__description {
+    margin-block-start: var(--space-1);
+    max-width: 20rem;
+    text-align: center;
+    font-size: var(--text-7);
+    letter-spacing: -0.05em;
+  }
+
+  @media (width >= 64rem) {
+    .wo-blog__description {
+      max-width: 28rem;
+      font-size: var(--text-4);
+    }
+  }
+}
