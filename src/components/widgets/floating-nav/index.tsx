@@ -270,7 +270,7 @@ export function FloatingNav() {
         style={{ height: 0, opacity: 0 }}
       >
         <div className="floating-nav__panel-head">
-          <span>{content.config.title}</span>
+          <span>config</span>
         </div>
 
         <div className="floating-nav__panel-row">
@@ -294,17 +294,9 @@ export function FloatingNav() {
           </span>
         </div>
 
-        <div className="floating-nav__panel-row" data-disabled="true">
-          <span>{content.config.sound}</span>
-          <span className="floating-nav__soon">{content.config.soon}</span>
+        <div className="floating-nav__panel-foot">
+          sāyago;dev — v{VERSION} <span className="font-zi">版本</span>
         </div>
-
-        <div className="floating-nav__panel-row" data-disabled="true">
-          <span>{content.config.theme}</span>
-          <span className="floating-nav__soon">{content.config.soon}</span>
-        </div>
-
-        <div className="floating-nav__panel-foot">sāyago;dev — v{VERSION} — 版本</div>
       </div>
 
       {/* barra — hanzi siempre visible, label solo en el activo */}

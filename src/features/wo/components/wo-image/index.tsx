@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import woImage from '@/public/images/wo.jpeg'
+import woImage from '@/public/images/wo.png'
 import { useIntlayer } from 'next-intlayer/server'
 import './wo-image.css'
 

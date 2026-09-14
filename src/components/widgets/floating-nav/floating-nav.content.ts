@@ -22,21 +22,9 @@ const FloatingNavContent = {
       }),
     },
     config: {
-      title: t({
-        es: 'config 設定',
-        en: 'config 設定',
-      }),
       language: t({
         es: 'idioma',
         en: 'language',
-      }),
-      sound: t({
-        es: 'sonido',
-        en: 'sound',
-      }),
-      theme: t({
-        es: 'tema テーマ',
-        en: 'theme テーマ',
       }),
       soon: t({
         es: 'pronto',

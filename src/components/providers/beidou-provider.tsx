@@ -7,7 +7,9 @@ export default function BeidouProvider() {
   const nav = useRef<Beidou | null>(null)
 
   useEffect(() => {
-    nav.current = new Beidou({})
+    nav.current = new Beidou({
+      key: 'AltLeft',
+    })
     return () => nav.current?.destroy()
   }, [])
 
