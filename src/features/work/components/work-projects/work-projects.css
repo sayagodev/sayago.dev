@@ -51,9 +51,15 @@
   }
 
   .work-projects__preview-img {
-    aspect-ratio: 3 / 2;
     inline-size: 100%;
+    overflow: hidden;
     background: color-mix(in srgb, var(--foreground) 10%, transparent);
+  }
+
+  .work-projects__preview-img img {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
   }
 
   .work-projects__header {
@@ -308,9 +314,15 @@
   }
 
   .work-projects__accordion-img {
-    aspect-ratio: 3 / 2;
     inline-size: 100%;
+    overflow: hidden;
     background: color-mix(in srgb, var(--foreground) 10%, transparent);
+  }
+
+  .work-projects__accordion-img img {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
   }
 
   .work-projects__accordion-body {
@@ -326,6 +338,7 @@
 
   .work-projects__accordion-links {
     display: flex;
+    justify-content: center;
     gap: 1.25rem;
     margin-block-start: var(--space-4);
     font-size: 11px;
@@ -347,11 +360,6 @@
 
   .work-projects__accordion-link:hover .work-projects__accordion-arrow {
     transform: translateX(2px);
-  }
-
-  .work-projects__accordion-link-dim {
-    color: var(--foreground);
-    text-decoration: none;
   }
 
   .work-projects__footer {

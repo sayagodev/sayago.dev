@@ -31,10 +31,6 @@ const WorkContent = {
       es: 'ver proyecto',
       en: 'view project',
     }),
-    sourceCode: t({
-      es: 'source_code </>',
-      en: 'source_code </>',
-    }),
     preview: t({
       es: 'Previsualización',
       en: 'Preview',
@@ -51,24 +47,20 @@ const WorkContent = {
     },
     descriptions: {
       zihuame: t({
-        es: 'Interfaz de comercio digital a medida para accesorios sustentables de lujo. Tipografía de alta fidelidad y patrones de interacción mínimos.',
-        en: 'Custom digital commerce interface for sustainable luxury accessories. High-fidelity typography and minimal interaction patterns.',
+        es: 'Sitio institucional para una ONG que apoya a pueblos originarios desde 2003. CMS editable, transparencia, eventos y donativos en línea.',
+        en: 'Institutional site for an NGO supporting indigenous communities since 2003. Editable CMS, transparency, events and online donations.',
       }),
-      lms: t({
-        es: 'Sistema propietario de gestión de aprendizaje para entrenamiento técnico interno. Renderizador markdown propio y motor de seguimiento de progreso.',
-        en: 'Proprietary learning management system for internal technical training. Custom markdown renderer and progress tracking engine.',
+      vanguardias: t({
+        es: 'Portal de una organización iberófona con comunicados, estatutos y directorio. Registro de miembros, galería y gestión de contenido.',
+        en: 'Portal for an iberophone organization with statements, statutes and directory. Member registration, gallery and content management.',
       }),
-      chat: t({
-        es: 'Terminal de mensajería cifrada de extremo a extremo. Sin persistencia, arquitectura zero-log enfocada en transmisión par-a-par.',
-        en: 'End-to-end encrypted messaging terminal. Zero-log architecture focused on peer-to-peer transmission.',
+      beidou: t({
+        es: 'Sitio del overlay de navegación por teclado: pulsa Alt y salta a cualquier botón con una letra. Documentación viva y demos interactivas.',
+        en: 'Home of the keyboard navigation overlay: press Alt and jump to any button with a keystroke. Living docs and interactive demos.',
       }),
-      hanzi: t({
-        es: 'Entrenador de escritura hanzi con orden de trazos, entrada pinyin y estadísticas de precisión. Nació de mis propias sesiones de estudio.',
-        en: 'Hanzi writing trainer with stroke order, pinyin input, and accuracy stats. Born from my own study sessions.',
-      }),
-      calendar: t({
-        es: 'Interfaz de agenda de alta densidad para equipos de desarrollo. Navegación keyboard-first y lienzo optimizado para modo oscuro.',
-        en: 'High-density calendar interface for development teams. Keyboard-first navigation and dark-mode optimized canvas.',
+      resonance: t({
+        es: 'Plataforma de texto a voz y clonado de voz con IA. Crea voces personalizadas, genera audio desde texto y gestiona tu historial.',
+        en: 'AI text-to-speech and voice cloning platform. Create custom voices, generate audio from text and manage your history.',
       }),
     },
   },

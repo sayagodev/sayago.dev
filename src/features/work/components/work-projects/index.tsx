@@ -94,8 +94,12 @@ export function WorkProjects() {
     if (!preview) return
     const label = preview.querySelector<HTMLElement>('[data-label]')
     const idx = preview.querySelector<HTMLElement>('[data-idx]')
+    const img = preview.querySelector<HTMLImageElement>('[data-img]')
     if (label) label.textContent = row.dataset.name ?? ''
     if (idx) idx.textContent = row.dataset.idx ?? ''
+    if (img && row.dataset.img && img.getAttribute('src') !== row.dataset.img) {
+      img.setAttribute('src', row.dataset.img)
+    }
     gsap.to(preview, {
       scale: 1,
       opacity: 1,
@@ -106,8 +110,8 @@ export function WorkProjects() {
   }, [])
 
   const handleRowLeave = useCallback((e: React.MouseEvent<HTMLElement>) => {
-    const related = e.relatedTarget as HTMLElement | null
-    if (related?.closest('[data-proj]')) return
+    const related = e.relatedTarget as Element | null
+    if (related instanceof Element && related.closest('[data-proj]')) return
     hovered.current = null
     const preview = previewRef.current
     if (!preview) return
@@ -169,7 +173,9 @@ export function WorkProjects() {
             —
           </span>
         </div>
-        <div className="work-projects__preview-img" />
+        <div className="work-projects__preview-img">
+          <img data-img src={projects[0].img} alt="" aria-hidden="true" />
+        </div>
       </div>
 
       <div className="proj-head work-projects__heading-row">
@@ -201,7 +207,15 @@ export function WorkProjects() {
             key={p.id}
             project={p}
             open={openId === p.id}
-            onToggle={() => setOpenId(openId === p.id ? null : p.id)}
+            onToggle={() => {
+              // En desktop el acordeón está oculto: el click abre el sitio en
+              // pestaña nueva. En mobile alterna el acordeón.
+              if (window.matchMedia('(min-width: 40rem)').matches) {
+                window.open(p.link, '_blank', 'noopener,noreferrer')
+              } else {
+                setOpenId(openId === p.id ? null : p.id)
+              }
+            }}
             onRowEnter={handleRowEnter}
             onRowLeave={handleRowLeave}
           />
@@ -233,6 +247,7 @@ function ProjectRow({
         data-proj={project.id}
         data-name={project.name}
         data-idx={project.idx}
+        data-img={project.img}
         onClick={onToggle}
         onMouseEnter={onRowEnter}
         onMouseLeave={onRowLeave}
@@ -280,11 +295,18 @@ function ProjectRow({
       >
         <div className="work-projects__accordion-inner">
           <div className="work-projects__accordion-content">
-            <div className="work-projects__accordion-img" />
+            <div className="work-projects__accordion-img">
+              <img src={project.img} alt="" aria-hidden="true" loading="lazy" />
+            </div>
             <div className="work-projects__accordion-body">
               <p className="work-projects__accordion-desc">{desc?.value}</p>
               <div className="work-projects__accordion-links">
-                <a href={project.link} className="work-projects__accordion-link">
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="work-projects__accordion-link"
+                >
                   {content.viewProject}
                   <svg
                     width="12"
@@ -298,9 +320,6 @@ function ProjectRow({
                       d="M12.943 3.463A.75.75 0 0 0 12.25 3h-5.5a.75.75 0 0 0 0 1.5h3.69l-7.22 7.22a.75.75 0 1 0 1.06 1.06l7.22-7.22v3.69a.75.75 0 0 0 1.5 0v-5.5a.8.8 0 0 0-.057-.287"
                     />
                   </svg>
-                </a>
-                <a href={project.source} className="work-projects__accordion-link-dim">
-                  {content.sourceCode}
                 </a>
               </div>
             </div>
