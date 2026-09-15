@@ -329,9 +329,14 @@ export function FloatingNav() {
               aria-label={content.items[item.labelKey]}
               aria-current={active ? 'page' : undefined}
             >
-              {/* tooltip — solo dispositivos con hover real */}
-              <span className="floating-nav__tip">{content.items[item.labelKey]}</span>
-              <span className="floating-nav__hanzi">{item.hanzi}</span>
+              {/* tooltip y hanzi son decorativos (duplican el label): fuera del
+                  árbol accesible para que no se lean dos veces. */}
+              <span className="floating-nav__tip" aria-hidden="true">
+                {content.items[item.labelKey]}
+              </span>
+              <span className="floating-nav__hanzi" aria-hidden="true">
+                {item.hanzi}
+              </span>
               <span className="floating-nav__label">{content.items[item.labelKey]}</span>
             </Link>
           )

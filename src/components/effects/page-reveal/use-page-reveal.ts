@@ -38,7 +38,10 @@ const FRAMES_DURATION = 0.3
 const FRAMES_EASE = 'hop'
 
 // --- Images (visual) ---
-const INTRO_IMG_SCALE = 0.2
+// Escala a la que se muestran las tarjetas del intro. Las 4 laterales se
+// quedan aquí durante toda la animación, así que su canvas WebGL puede
+// renderizarse a esta misma fracción de resolución sin perder nitidez.
+export const INTRO_IMG_SCALE = 0.2
 const INTRO_IMG_GAP = 40
 const INTRO_IMG_BORDER_RADIUS = '2.5rem'
 const INTRO_IMG_OFFSCREEN_MULTIPLIER = 1.3
@@ -367,6 +370,10 @@ export function usePageReveal(containerRef: RefObject<HTMLDivElement | null>) {
           type: 'lines',
           linesClass: 'line',
           mask: 'lines',
+          // El nav contiene enlaces: la máscara aria-hidden que SplitText añade
+          // por defecto dejaría elementos enfocables dentro de un subárbol
+          // oculto (aria-hidden-focus) y un aria-label prohibido en el div.
+          aria: 'none',
         })
         gsap.set('.line', { y: LINE_INITIAL_Y })
       }

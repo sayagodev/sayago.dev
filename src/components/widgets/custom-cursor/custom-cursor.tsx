@@ -59,6 +59,7 @@ export function CustomCursor() {
     let snapped = false
     let raf = 0
     let last = performance.now()
+    let pointerDirty = false
 
     const place = (clientX: number, clientY: number) => {
       lastPos.x = clientX
@@ -76,8 +77,9 @@ export function CustomCursor() {
 
     const handleMove = (e: MouseEvent) => {
       place(e.clientX, e.clientY)
-      setVisible(true)
-      setPointer(isPointerTarget(document.elementFromPoint(e.clientX, e.clientY)))
+      // El hit-test (elementFromPoint + getComputedStyle) se difiere al tick:
+      // hacerlo por evento fuerza un recalculo de layout en cada mousemove.
+      pointerDirty = true
     }
 
     const handleDown = (e: MouseEvent) => {
@@ -99,6 +101,11 @@ export function CustomCursor() {
       const x = springs.x.update(dt)
       const y = springs.y.update(dt)
       ring.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`
+      if (pointerDirty) {
+        pointerDirty = false
+        setVisible(true)
+        setPointer(isPointerTarget(document.elementFromPoint(lastPos.x, lastPos.y)))
+      }
       raf = requestAnimationFrame(tick)
     }
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { usePageReveal } from './use-page-reveal'
+import { usePageReveal, INTRO_IMG_SCALE } from './use-page-reveal'
 import { useRef, useState } from 'react'
 import { gradients, themes } from '@/lib/constants'
 import './page-reveal.css'
@@ -63,7 +63,15 @@ export default function PageReveal({ children }: { children: React.ReactNode }) 
         <div className="cards-container">
           {sortedGradients.map((g, i) => (
             <div key={i} className={`intro-img ${i === 2 ? 'hero-img' : ''}`}>
-              <Background {...(i === 2 ? {} : { c1: g.c1, c2: g.c2, c3: g.c3 })} />
+              {/* Las 4 tarjetas laterales se quedan a escala 0.2 durante toda la
+                  animación: renderizarlas a resolución completa obligaba a subir
+                  y componer 5 texturas de viewport entero por frame (caídas de
+                  frames en Firefox a 1440p). A 1/5 la nitidez es idéntica. */}
+              <Background
+                {...(i === 2
+                  ? {}
+                  : { c1: g.c1, c2: g.c2, c3: g.c3, resolutionScale: INTRO_IMG_SCALE })}
+              />
             </div>
           ))}
         </div>

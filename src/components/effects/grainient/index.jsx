@@ -123,6 +123,8 @@ const Grainient = ({
   centerX = 0.0,
   centerY = 0.0,
   zoom = 0.9,
+  resolutionScale = 1,
+  maxFps = 0,
   color1 = '#FF9FFC',
   color2 = '#5227FF',
   color3 = '#B497CF',
@@ -137,7 +139,8 @@ const Grainient = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1.5 : 2),
+      dpr:
+        Math.min(window.devicePixelRatio || 1, window.innerWidth < 640 ? 1.5 : 2) * resolutionScale,
     })
 
     const gl = renderer.gl
@@ -206,10 +209,17 @@ const Grainient = ({
     let raf = 0
     let running = false
     const t0 = performance.now()
+    // El degradado evoluciona muy despacio (timeSpeed 0.25), así que refrescarlo
+    // al ritmo del monitor (165Hz en pantallas de alta tasa) es trabajo tirado:
+    // el fondo se queda encendido toda la sesión. `maxFps` acota ese coste.
+    const frameBudget = maxFps > 0 ? 1000 / maxFps : 0
+    let lastRender = -Infinity
     const loop = (t) => {
+      raf = requestAnimationFrame(loop)
+      if (frameBudget && t - lastRender < frameBudget) return
+      lastRender = t
       program.uniforms.iTime.value = (t - t0) * 0.001
       renderer.render({ scene: mesh })
-      raf = requestAnimationFrame(loop)
     }
     const start = () => {
       if (running) return
@@ -257,6 +267,8 @@ const Grainient = ({
     centerX,
     centerY,
     zoom,
+    resolutionScale,
+    maxFps,
     color1,
     color2,
     color3,

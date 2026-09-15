@@ -9,7 +9,19 @@ const Grainient = dynamic(() => import('../grainient'), {
   ssr: false,
 })
 
-export function Background({ c1, c2, c3 }: { c1?: string; c2?: string; c3?: string }) {
+export function Background({
+  c1,
+  c2,
+  c3,
+  resolutionScale,
+  maxFps = 30,
+}: {
+  c1?: string
+  c2?: string
+  c3?: string
+  resolutionScale?: number
+  maxFps?: number
+}) {
   const { resolvedTheme } = useTheme()
 
   if (!c1 && !c2 && !c3) {
@@ -40,6 +52,8 @@ export function Background({ c1, c2, c3 }: { c1?: string; c2?: string; c3?: stri
           centerX={0}
           centerY={0}
           zoom={0.9}
+          resolutionScale={resolutionScale}
+          maxFps={maxFps}
         />
       </div>
     )
@@ -70,6 +84,8 @@ export function Background({ c1, c2, c3 }: { c1?: string; c2?: string; c3?: stri
           centerX={0}
           centerY={0}
           zoom={0.9}
+          resolutionScale={resolutionScale}
+          maxFps={maxFps}
         />
       </div>
     )

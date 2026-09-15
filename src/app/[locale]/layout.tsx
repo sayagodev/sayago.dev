@@ -38,6 +38,10 @@ const monaKrypton = localFont({
     },
   ],
   variable: '--font-mona-krypton',
+  // La intro tapa la pantalla con formas CSS y canvases: no hay texto visible
+  // hasta que termina, así que ninguna fuente hace falta en el primer pintado.
+  // Precargarlas ponía ~500KB a competir con el CSS y los JS críticos.
+  preload: false,
 })
 
 const monaNeon = localFont({
@@ -49,6 +53,7 @@ const monaNeon = localFont({
     },
   ],
   variable: '--font-mona-neon',
+  preload: false,
 })
 
 const zi = localFont({
@@ -60,6 +65,7 @@ const zi = localFont({
     },
   ],
   variable: '--font-zi',
+  preload: false,
 })
 
 export async function generateMetadata({ params }: LocalPromiseParams): Promise<Metadata> {
