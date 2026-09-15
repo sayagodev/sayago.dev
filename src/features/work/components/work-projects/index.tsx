@@ -185,7 +185,8 @@ export function WorkProjects() {
 
       <p className="proj-head work-projects__description">
         {content.description}
-        <em className="work-projects__hint"> {content.hoverHint}</em>
+        <em className="work-projects__hint work-projects__hint--hover"> {content.hoverHint}</em>
+        <em className="work-projects__hint work-projects__hint--touch"> {content.touchHint}</em>
       </p>
 
       <div className="proj-head work-projects__filters">

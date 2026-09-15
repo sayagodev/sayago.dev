@@ -122,6 +122,20 @@
     font-style: normal;
   }
 
+  .work-projects__hint--hover {
+    display: none;
+  }
+
+  @media (pointer: fine) {
+    .work-projects__hint--hover {
+      display: inline;
+    }
+
+    .work-projects__hint--touch {
+      display: none;
+    }
+  }
+
   .work-projects__filters {
     margin-block-start: var(--space-10);
     display: flex;

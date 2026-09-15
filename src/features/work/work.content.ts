@@ -8,12 +8,16 @@ const WorkContent = {
       en: 'Projects',
     }),
     description: t({
-      es: 'El oficio de crear — proyectos nacidos de la curiosidad, construidos con precisión y pulidos con obsesión por el detalle.',
-      en: 'The craft of creating — projects born from curiosity, built with precision and polished with an obsession for detail.',
+      es: 'Crear, probar y construir — una selección de proyectos que fueron tomando forma desde la primera idea hasta convertirse en algo real.',
+      en: 'Create, test, and build — a selection of projects that took shape from the first idea to something real.',
     }),
     hoverHint: t({
       es: 'Pasa el cursor sobre cada fila.',
       en: 'Hover over each row.',
+    }),
+    touchHint: t({
+      es: 'Toca cada fila para ver más.',
+      en: 'Tap each row to see more.',
     }),
     filterAll: t({
       es: 'todos',
@@ -41,8 +45,8 @@ const WorkContent = {
         en: 'Projects',
       }),
       description: t({
-        es: 'El oficio de crear — proyectos nacidos de la curiosidad, construidos con precisión y pulidos con obsesión por el detalle.',
-        en: 'The craft of creating — projects born from curiosity, built with precision and polished with an obsession for detail.',
+        es: 'Crear, probar y construir — una selección de proyectos que fueron tomando forma desde la primera idea hasta convertirse en algo real.',
+        en: 'Create, test, and build — a selection of projects that took shape from the first idea to something real.',
       }),
     },
     descriptions: {
