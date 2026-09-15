@@ -1,68 +1,107 @@
 @layer components {
   .theme-picker {
+    /* Geometría de la cinta. Los defaults reproducen el tamaño actual; el panel
+       de debug puede sobreescribirlas en vivo (development + #debug). */
+    --orb-size: 1.75rem;
+    --stroke-width: 2;
+
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    outline: none;
     padding: var(--space-4);
+    outline: none;
 
     &:focus-visible {
       outline: 2px solid var(--ring);
       outline-offset: 2px;
     }
 
-    &[data-orientation='vertical'] {
-      & .theme-picker__circles {
-        flex-direction: column;
-        block-size: 7rem;
-      }
+    &[data-orientation='vertical'] .theme-picker__dock {
+      flex-direction: column;
+      block-size: 7rem;
     }
 
-    &[data-orientation='horizontal'] {
-      & .theme-picker__circles {
-        flex-direction: row;
-        inline-size: 8rem;
-      }
+    &[data-orientation='horizontal'] .theme-picker__dock {
+      flex-direction: row;
+      inline-size: 8rem;
     }
   }
 
-  .theme-picker__circles {
+  .theme-picker__dock {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .theme-option {
+  /* Las bolas no se posicionan con CSS: GSAP las reparte por slots sobre el
+     centro del dock (su posición estática). */
+  .theme-orb {
     position: absolute;
+    display: grid;
+    place-items: center;
     cursor: pointer;
     z-index: 1;
     /* El outline del ring de Beidou sigue el border-radius del elemento:
        sin esto el ring se dibuja cuadrado alrededor del círculo */
     border-radius: var(--radius-full);
+
+    /* Slots ocultos: cierran el círculo para que el salto de extremo no se vea
+       y no roban clicks. */
+    &[data-slot='3'],
+    &[data-slot='4'] {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
-  .theme-option__circle {
-    inline-size: 1.75rem;
-    block-size: 1.75rem;
+  .theme-orb__surface {
+    inline-size: var(--orb-size);
+    block-size: var(--orb-size);
     border-radius: var(--radius-full);
     box-shadow: 0 2px 6px rgb(from #000 r g b / 0.15);
     transition: box-shadow 0.3s ease;
   }
 
-  .theme-option__border {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    inline-size: 2rem;
-    block-size: 2rem;
-    pointer-events: none;
-    color: var(--accent);
+  .theme-orb:not([data-selected='true']):hover .theme-orb__surface {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   }
 
-  .theme-option__border circle {
+  .theme-orb[data-selected='true'] .theme-orb__surface {
+    box-shadow: 0 0 20px 0 color-mix(in srgb, var(--corner) 90%, transparent);
+  }
+
+  .theme-orb__svg {
+    position: absolute;
+    inset: -2px;
+    inline-size: calc(100% + 4px);
+    block-size: calc(100% + 4px);
+    /* OAT base fija svg{max-width:100%}: sin esto el anillo se comprime al
+       ancho del orbe (28px) y queda como elipse vertical descentrada. */
+    max-width: none;
+    max-inline-size: none;
+    pointer-events: none;
+  }
+
+  .theme-orb__trace {
+    fill: none;
     stroke: var(--ring-accent);
+    stroke-width: var(--stroke-width);
+    opacity: 0;
+  }
+
+  /* X-Ray: solo lo activa el panel de debug. */
+  .theme-picker[data-theme-debug='true'] .theme-picker__dock {
+    outline: 1px dashed hotpink;
+    background: repeating-linear-gradient(
+      45deg,
+      hsl(320 100% 50% / 0.08) 0 2px,
+      transparent 2px 6px
+    );
+  }
+
+  .theme-picker[data-theme-debug='true'] .theme-orb {
+    outline: 1px dashed cyan;
   }
 }
