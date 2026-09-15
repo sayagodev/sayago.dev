@@ -256,6 +256,28 @@
     text-transform: uppercase;
   }
 
+  .floating-nav__cv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      color: var(--fn-accent);
+    }
+  }
+
+  .floating-nav__cv-status {
+    padding: 0 0.875rem 0.5rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: var(--fn-ink-dim);
+  }
+
   .floating-nav__switch {
     display: inline-flex;
     align-items: center;

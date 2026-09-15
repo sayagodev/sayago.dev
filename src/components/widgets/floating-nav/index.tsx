@@ -10,6 +10,7 @@ import { getLocalizedUrl } from 'intlayer'
 import { useIntlayer, useLocale } from 'next-intlayer'
 import { Link } from '@/components/localized-link'
 import { useCustomCursor } from '@/components/widgets/custom-cursor/cursor-store'
+import { CvDownload } from './cv-download'
 import VERSION from '@/lib/version'
 import { cn } from '@/lib/utils'
 import './floating-nav.css'
@@ -295,6 +296,8 @@ export function FloatingNav() {
             ))}
           </span>
         </div>
+
+        <CvDownload />
 
         <div className="floating-nav__panel-row">
           <span>{content.config.cursor}</span>
