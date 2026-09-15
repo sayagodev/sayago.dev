@@ -98,7 +98,6 @@ export async function generateMetadata({ params }: LocalPromiseParams): Promise<
     },
     icons: {
       icon: '/favicon.svg',
-      apple: '/favicon.png',
     },
     alternates: {
       canonical: canonicalUrl,
