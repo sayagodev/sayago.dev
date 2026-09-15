@@ -27,6 +27,14 @@
     width: 100%;
   }
 
+  /* El skeleton de Oat (role=status) es de flujo normal: aquí se ancla sobre la
+     imagen y se le quita el margen inferior para que calce exacto. */
+  .wo-image__wrapper [role='status'].skeleton {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+
   .wo-image__censor {
     position: absolute;
     inset-inline-end: -0.75rem;
