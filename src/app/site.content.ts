@@ -5,8 +5,8 @@ const SiteContent = {
   content: {
     title: 'sāyago;dev',
     description: t({
-      es: 'Portafolio de Ángel Sáyago — desarrollo de aplicaciones web con bases sólidas y obsesión por el detalle.',
-      en: 'Ángel Sáyago portfolio — web development with solid foundations and an obsession for detail.',
+      es: 'Portafolio de Ángel Sáyago',
+      en: 'Ángel Sáyago portfolio',
     }),
     keywords: t({
       es: [

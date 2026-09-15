@@ -37,8 +37,9 @@
 
   .wo-image__censor {
     position: absolute;
-    inset-inline-end: -0.75rem;
+    inset-inline-end: -1.55rem;
     inset-block-end: 36%;
+    font-size: 12px;
     z-index: 1;
     padding: 0.25rem 0.75rem;
     background: var(--foreground);
@@ -49,7 +50,10 @@
 
   @media (width >= 48rem) {
     .wo-image__censor {
+      font-size: inherit;
       padding-inline: 3%;
+      inset-inline-end: -0.75rem;
+      inset-block-end: 36%;
     }
   }
 
