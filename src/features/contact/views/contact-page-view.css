@@ -92,6 +92,12 @@
     background: var(--foreground);
     color: var(--background);
     padding-inline: 0.75rem;
+    /* Compensa las descendentes (y, g, p…): el interlineado reparte el aire
+       a partes iguales, pero la tinta no está centrada y por abajo quedaba
+       muy justo. Fijamos el line-height y damos más aire abajo para
+       normalizarlo ópticamente. */
+    padding-block: 0.09em 0.19em;
     margin-block-start: 0.15em;
+    line-height: 1.15;
   }
 }
