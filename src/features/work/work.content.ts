@@ -66,6 +66,10 @@ const WorkContent = {
         es: 'Plataforma de texto a voz y clonado de voz con IA. Crea voces personalizadas, genera audio desde texto y gestiona tu historial.',
         en: 'AI text-to-speech and voice cloning platform. Create custom voices, generate audio from text and manage your history.',
       }),
+      mo: t({
+        es: 'Capa de interfaz sin dependencias: HTML semántico, CSS moderno y un toque de JS. Sistema de tokens neutros y componentes componibles.',
+        en: 'Zero-dependency interface layer: semantic HTML, modern CSS and a touch of JS. Neutral token system with composable components.',
+      }),
     },
   },
 } satisfies Dictionary

@@ -50,4 +50,14 @@ export const projects: Project[] = [
     img: '/images/projects/resonance.png',
     link: 'https://tts.sayago.dev',
   },
+  {
+    id: 'mo',
+    idx: '05',
+    name: 'Mò 墨',
+    year: '2026',
+    type: 'personal',
+    tags: ['html', 'css', 'js'],
+    img: '/images/projects/mo.png',
+    link: 'https://mo.sayago.dev',
+  },
 ]
