@@ -6,16 +6,9 @@ import { getNotes } from '../notes.store'
 import { getVisits, type Visit } from '../visits.store'
 import { isAdmin, isAdminSetup } from '../actions'
 import { AdminLoginForm } from '../components/admin-login-form'
+import { LocalTime } from '../components/local-time'
 import { NotesManager } from '../components/notes-manager'
 import './admin-page-view.css'
-
-function formatDateTime(iso: string): string {
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return iso
-  const date = `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
-  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
-  return `${date} ${time}`
-}
 
 function locationOf(visit: Visit): string {
   const parts = [visit.city, visit.country].filter((p) => p.length > 0)
@@ -97,8 +90,12 @@ export async function AdminPageView({ locale }: { locale: string }) {
                             {visit.device} · {visit.os} · {visit.browser}
                           </td>
                           <td>{locationOf(visit)}</td>
-                          <td>{formatDateTime(visit.firstSeen)}</td>
-                          <td>{formatDateTime(visit.lastSeen)}</td>
+                          <td>
+                            <LocalTime iso={visit.firstSeen} />
+                          </td>
+                          <td>
+                            <LocalTime iso={visit.lastSeen} />
+                          </td>
                           <td>({visit.count})</td>
                         </tr>
                       ))}
