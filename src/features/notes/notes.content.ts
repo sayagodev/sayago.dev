@@ -102,6 +102,34 @@ const NotesContent = {
         es: 'Ver página pública',
         en: 'View public page',
       }),
+      visitsTitle: t({
+        es: 'Visitas',
+        en: 'Visits',
+      }),
+      visitsEmpty: t({
+        es: 'Aún no hay visitas registradas.',
+        en: 'No visits recorded yet.',
+      }),
+      thVisitor: t({
+        es: 'Visitante',
+        en: 'Visitor',
+      }),
+      thLocation: t({
+        es: 'Ubicación',
+        en: 'Location',
+      }),
+      thFirst: t({
+        es: 'Primera',
+        en: 'First',
+      }),
+      thLast: t({
+        es: 'Última',
+        en: 'Last',
+      }),
+      thCount: t({
+        es: 'Visitas',
+        en: 'Count',
+      }),
     },
   },
 } satisfies Dictionary

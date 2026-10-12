@@ -189,4 +189,60 @@
     text-underline-offset: 3px;
     cursor: pointer;
   }
+
+  .notes-admin__visits {
+    max-inline-size: 38rem;
+    margin-inline: auto;
+    inline-size: 100%;
+    margin-block-start: 3rem;
+  }
+
+  .notes-admin__visits-title {
+    font-size: var(--text-4);
+    font-weight: var(--font-medium);
+    margin-block-end: 1rem;
+    color: var(--foreground);
+  }
+
+  .notes-admin__count {
+    font-family: var(--font-krypton), monospace;
+    font-size: var(--text-7);
+    color: var(--muted-foreground);
+  }
+
+  .notes-admin__visits-empty {
+    font-size: var(--text-6);
+    color: var(--foreground);
+  }
+
+  .notes-admin__table-wrap {
+    overflow-x: auto;
+  }
+
+  .notes-admin__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-7);
+    color: var(--foreground);
+  }
+
+  .notes-admin__table th,
+  .notes-admin__table td {
+    text-align: start;
+    padding: 0.625rem 0.5rem;
+    border-block-start: 1px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+    white-space: nowrap;
+    vertical-align: top;
+  }
+
+  .notes-admin__table thead th {
+    font-family: var(--font-krypton), monospace;
+    font-size: var(--text-8);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .notes-admin__table tbody tr:last-child td {
+    border-block-end: 1px solid color-mix(in srgb, var(--foreground) 30%, transparent);
+  }
 }
