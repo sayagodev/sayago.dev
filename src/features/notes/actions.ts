@@ -120,8 +120,8 @@ export async function createNote(input: CreateNoteInput): Promise<{ ok: boolean;
       : {}),
   })
   await saveNotes(notes)
-  revalidatePath('/notas')
-  revalidatePath('/en/notas')
+  revalidatePath('/notes')
+  revalidatePath('/en/notes')
   revalidatePath('/admin')
   revalidatePath('/en/admin')
   return { ok: true }
@@ -131,8 +131,8 @@ export async function deleteNote(id: string): Promise<{ ok: boolean }> {
   if (!(await isAdmin())) return { ok: false }
   const notes = await getNotes()
   await saveNotes(notes.filter((n) => n.id !== id))
-  revalidatePath('/notas')
-  revalidatePath('/en/notas')
+  revalidatePath('/notes')
+  revalidatePath('/en/notes')
   revalidatePath('/admin')
   revalidatePath('/en/admin')
   return { ok: true }

@@ -315,13 +315,13 @@ export function FloatingNav() {
         </div>
 
         <Link
-          href="/notas"
+          href="/notes"
           className="floating-nav__panel-row floating-nav__notes"
-          data-active={pathWithoutLocale === '/notas'}
-          aria-current={pathWithoutLocale === '/notas' ? 'page' : undefined}
+          data-active={pathWithoutLocale === '/notes'}
+          aria-current={pathWithoutLocale === '/notes' ? 'page' : undefined}
         >
           <span>{content.items.notes}</span>
-          <span className="floating-nav__notes-hanzi" aria-hidden="true">
+          <span className="floating-nav__notes-hanzi font-zi" aria-hidden="true">
             念
           </span>
         </Link>

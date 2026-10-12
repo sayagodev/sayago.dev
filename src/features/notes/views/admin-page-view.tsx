@@ -34,7 +34,7 @@ export async function AdminPageView({ locale }: { locale: string }) {
         ) : (
           <NotesManager
             initialNotes={notes}
-            publicHref={getLocalizedUrl('/notas', locale)}
+            publicHref={getLocalizedUrl('/notes', locale)}
             labels={{
               placeholder: content.admin.placeholder,
               quotePlaceholder: content.admin.quotePlaceholder,
