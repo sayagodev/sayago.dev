@@ -333,6 +333,25 @@
     background: var(--fn-accent);
   }
 
+  .floating-nav__notes {
+    color: var(--fn-ink);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--fn-accent);
+    }
+
+    &[data-active='true'] {
+      color: var(--fn-accent);
+    }
+  }
+
+  .floating-nav__notes-hanzi {
+    font-family: var(--font-zi), sans-serif;
+    font-size: 1rem;
+    line-height: 1;
+  }
+
   .floating-nav__panel-foot {
     padding: 0.5rem 0.875rem;
     border-block-start: 1px solid var(--fn-line-soft);

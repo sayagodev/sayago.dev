@@ -314,6 +314,18 @@ export function FloatingNav() {
           </button>
         </div>
 
+        <Link
+          href="/notas"
+          className="floating-nav__panel-row floating-nav__notes"
+          data-active={pathWithoutLocale === '/notas'}
+          aria-current={pathWithoutLocale === '/notas' ? 'page' : undefined}
+        >
+          <span>{content.items.notes}</span>
+          <span className="floating-nav__notes-hanzi" aria-hidden="true">
+            念
+          </span>
+        </Link>
+
         <div className="floating-nav__panel-foot">
           sāyago;dev — v{VERSION} <span className="font-zi">版本</span>
         </div>

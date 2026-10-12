@@ -16,6 +16,10 @@ const FloatingNavContent = {
         es: 'sobre mí',
         en: 'me',
       }),
+      notes: t({
+        es: 'notas',
+        en: 'notes',
+      }),
       contact: t({
         es: 'hablemos',
         en: 'contact',
