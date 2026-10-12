@@ -13,7 +13,7 @@ export const generateMetadata = async ({ params }: LocalPromiseParams): Promise<
   const content = getIntlayer('notes', locale)
   const site = getIntlayer('site', locale)
 
-  return getPageMetadata(content, site, locale ?? '', '/notas')
+  return getPageMetadata(content, site, locale ?? '', '/notes')
 }
 
 const NotesPage: NextPageIntlayer = async ({ params }) => {
