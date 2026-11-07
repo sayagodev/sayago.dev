@@ -70,7 +70,7 @@ const ContactContent = {
         en: 'Your email',
       }),
       optionalLabel: t({
-        es: 'opcional — comparto más:',
+        es: 'opcional — compárteme más:',
         en: 'optional — tell me more:',
       }),
       optionalPlaceholder: t({
